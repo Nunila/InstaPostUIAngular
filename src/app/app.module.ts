@@ -5,6 +5,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { HomeComponent } from './home/home.component';
+import {PostService} from './services/post.service';
+
+import {MatCardModule} from '@angular/material/card';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatButtonModule, MatCheckboxModule} from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -14,9 +19,12 @@ import { HomeComponent } from './home/home.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    MatCardModule,
+    BrowserAnimationsModule,
+    MatButtonModule, MatCheckboxModule
   ],
-  providers: [],
+  providers: [PostService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

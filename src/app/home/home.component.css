@@ -1,0 +1,13 @@
+
+.post {
+  /*width: 50%;*/
+  /*height: 50%;*/
+  margin: 15px;
+}
+
+.flex-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+}

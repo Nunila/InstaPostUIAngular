@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {HttpHeaders, HttpClient} from '@angular/common/http';
+import { PostService} from '../services/post.service';
 
 @Component({
   selector: 'app-home',
@@ -8,30 +8,21 @@ import {HttpHeaders, HttpClient} from '@angular/common/http';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private http: HttpClient) { }
-
-  mainUrl = `http://localhost:5000/InstaPost`;
-  data: string;
+  constructor(private postService: PostService ) { }
+  private got = 0;
 
   ngOnInit() {
+    this.postService.getAllPostsFromDB();
   }
 
-  test() {
-    const url =  this.mainUrl + `/chats`;
-    const headersDict = {
-      'Content-Type': 'application/json',
-      'Cache-Control': 'no-cache'
-    };
-    const requestOptions = {
-      headers: new HttpHeaders(headersDict)
-    };
-
-    this.http.get(url, requestOptions)
-      .subscribe(data => {
-        console.log(data);
-        this.data = data.toString();
-      });
-
+  getAllPosts() {
+    const posts: HTMLCollectionOf<Element> = document.getElementsByClassName('cardsimg');
+    if ( posts.length > 0 && this.postService.getAllPosts().length > 0) {
+      for (let i = 0 ; i < posts.length ; i++) {
+        posts[i].setAttribute('src', this.postService.getAllPosts()[i][3]);
+      }
+    }
+    return this.postService.getAllPosts();
   }
 
 }
