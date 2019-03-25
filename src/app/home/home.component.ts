@@ -9,7 +9,7 @@ import { PostService} from '../services/post.service';
 export class HomeComponent implements OnInit {
 
   constructor(private postService: PostService ) { }
-  private got = 0;
+  private counter = 0;
 
   ngOnInit() {
     this.postService.getAllPostsFromDB();
@@ -23,6 +23,11 @@ export class HomeComponent implements OnInit {
       }
     }
     return this.postService.getAllPosts();
+  }
+
+  addLike(one) {
+    this.counter++;
+    console.log(one);
   }
 
 }

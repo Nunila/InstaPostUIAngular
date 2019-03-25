@@ -11,3 +11,8 @@
   flex-direction: row;
   justify-content: center;
 }
+
+.test {
+  position: fixed;
+  bottom: 0;
+}

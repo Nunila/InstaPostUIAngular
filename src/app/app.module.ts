@@ -9,7 +9,7 @@ import {PostService} from './services/post.service';
 
 import {MatCardModule} from '@angular/material/card';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatButtonModule, MatCheckboxModule} from '@angular/material';
+import {MatButtonModule, MatCheckboxModule, MatToolbarModule} from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -22,7 +22,9 @@ import {MatButtonModule, MatCheckboxModule} from '@angular/material';
     HttpClientModule,
     MatCardModule,
     BrowserAnimationsModule,
-    MatButtonModule, MatCheckboxModule
+    MatButtonModule,
+    MatCheckboxModule,
+    MatToolbarModule
   ],
   providers: [PostService],
   bootstrap: [AppComponent]
