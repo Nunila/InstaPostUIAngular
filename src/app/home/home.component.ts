@@ -10,7 +10,10 @@ import {MatBottomSheet, MatBottomSheetRef} from '@angular/material';
 export class HomeComponent implements OnInit {
 
   constructor(private postService: PostService) {}
-  private counter = 0;
+  private newPost = {
+    src: null,
+    caption: null
+  };
 
   ngOnInit() {
     this.postService.getAllPostsFromDB();
@@ -26,16 +29,16 @@ export class HomeComponent implements OnInit {
     return this.postService.getAllPosts();
   }
 
-  loadFile(event) {
-    var x = document.getElementById('thePicture');
-    URL.createObjectURL(event.target.files[0]);
-    console.log(event.target.files);
+  loadFile(e) {
+    const x = document.getElementById('preview');
+    const src = URL.createObjectURL(e.target.files[0]);
+    x.setAttribute('src', src);
+    this.newPost.src = src;
+    console.log(this.newPost)
   }
-  addFile(){
-    // var x = document.getElementById('thePicture');
-    // if ('files' in x) {
-    //   console.log(x.files);
-    // }
+
+  addPost() {
+    this.postService.addPost(this.newPost);
   }
 
 }

@@ -20,6 +20,17 @@ export class PostService {
 
   constructor(private http: HttpClient) { }
 
+  addPost(newPost){
+    const post: Post = {
+      postid: null,
+      chatid: null,
+      userid:null,
+      photourl: newPost.src,
+      postdate: new Date().toString()
+    };
+    this.allPosts.push(post);
+  }
+
   getAllPosts() {
     return this.allPosts;
   }
