@@ -26,9 +26,16 @@ export class HomeComponent implements OnInit {
     return this.postService.getAllPosts();
   }
 
-  addLike(one) {
-    this.counter++;
-    console.log(one);
+  loadFile(event) {
+    var x = document.getElementById('thePicture');
+    URL.createObjectURL(event.target.files[0]);
+    console.log(event.target.files);
+  }
+  addFile(){
+    // var x = document.getElementById('thePicture');
+    // if ('files' in x) {
+    //   console.log(x.files);
+    // }
   }
 
 }
