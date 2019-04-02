@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PostService} from '../services/post.service';
+import {MatBottomSheet, MatBottomSheetRef} from '@angular/material';
 
 @Component({
   selector: 'app-home',
@@ -8,7 +9,7 @@ import { PostService} from '../services/post.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private postService: PostService ) { }
+  constructor(private postService: PostService) {}
   private counter = 0;
 
   ngOnInit() {
@@ -17,7 +18,6 @@ export class HomeComponent implements OnInit {
 
   getAllPosts() {
     const posts: HTMLCollectionOf<Element> = document.getElementsByClassName('cardsimg');
-    console.log(this.postService.getAllPosts());
     if ( posts.length > 0 && this.postService.getAllPosts().length > 0) {
       for (let i = 0 ; i < posts.length ; i++) {
         posts[i].setAttribute('src', this.postService.getAllPosts()[i].photourl);
