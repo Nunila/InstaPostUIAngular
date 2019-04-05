@@ -4,23 +4,12 @@
       <details>
         <summary>Show all comments</summary>
         <table mat-table>
-          <tr>
+          <tr id="comments" *ngFor="let reply of getAllReplies()">
             <div class="row comment-header">
-              <div>titokayak2020</div>
-              <div>Mar 22,2019 7:45pm</div>
+              <p>{{reply.userId}}</p>
+              <p>{{reply.messagedate}}</p>
             </div>
-            <div class="row">I am glad you are having a good time! Btw: that is such a cute puppy!</div>
-            <div class="row">
-              <button mat-button>LIKE</button>
-              <button mat-button>DISLIKE</button>
-            </div>
-          </tr>
-          <tr>
-            <div class="row comment-header">
-              <div>memeandande15</div>
-              <div>Mar 22,2019 7:59pm</div>
-            </div>
-            <div class="row">Chico no seas lambe ojo!</div>
+            <div class="row">{{reply.content}}</div>
             <div class="row">
               <button mat-button>LIKE</button>
               <button mat-button>DISLIKE</button>

@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { HomeComponent } from './home/home.component';
 import {PostService} from './services/post.service';
+import {ReplyService} from './services/reply.service';
 
 import {MatCardModule} from '@angular/material/card';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -28,7 +29,7 @@ import { CommentComponent } from './comment/comment.component';
     BrowserAnimationsModule,
     MatButtonModule, MatCheckboxModule
   ],
-  providers: [PostService],
+  providers: [PostService, ReplyService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
