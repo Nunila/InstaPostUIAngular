@@ -6,7 +6,7 @@ interface Reply{
   postId: number;
   userId: number;
   content: string;
-  messagedate: string;
+  messageDate: string;
 }
 
 @Injectable({
@@ -20,6 +20,7 @@ export class ReplyService {
   constructor(private http: HttpClient) { }
 
   getAllReplies(){
+    console.log(this.allReplies);
     return this.allReplies;
   }
 
@@ -35,8 +36,10 @@ export class ReplyService {
 
     this.http.get(url, requestOptions)
       .subscribe(data => {
+       //console.log(data)
         const asd = data as Reply[];
         this.allReplies = asd;
+       //console.log(data);
       },
         (err) => console.log(err),
         () => {
