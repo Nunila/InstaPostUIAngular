@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PostService} from '../services/post.service';
+import {MatBottomSheet, MatBottomSheetRef} from '@angular/material';
 
 @Component({
   selector: 'app-home',
@@ -8,8 +9,11 @@ import { PostService} from '../services/post.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private postService: PostService) { }
-  private got = 0;
+  constructor(private postService: PostService) {}
+  private newPost = {
+    src: null,
+    caption: null
+  };
 
   ngOnInit() {
     this.postService.getAllPostsFromDB();
@@ -17,13 +21,24 @@ export class HomeComponent implements OnInit {
 
   getAllPosts() {
     const posts: HTMLCollectionOf<Element> = document.getElementsByClassName('cardsimg');
-    console.log(this.postService.getAllPosts());
     if ( posts.length > 0 && this.postService.getAllPosts().length > 0) {
       for (let i = 0 ; i < posts.length ; i++) {
         posts[i].setAttribute('src', this.postService.getAllPosts()[i].photourl);
       }
     }
     return this.postService.getAllPosts();
+  }
+
+  loadFile(e) {
+    const x = document.getElementById('preview');
+    const src = URL.createObjectURL(e.target.files[0]);
+    x.setAttribute('src', src);
+    this.newPost.src = src;
+    console.log(this.newPost)
+  }
+
+  addPost() {
+    this.postService.addPost(this.newPost);
   }
 
 }

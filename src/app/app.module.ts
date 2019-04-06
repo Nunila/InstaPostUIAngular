@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -10,9 +11,11 @@ import {ReplyService} from './services/reply.service';
 
 import {MatCardModule} from '@angular/material/card';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatButtonModule, MatCheckboxModule} from '@angular/material';
+import {MatButtonModule, MatCheckboxModule, MatToolbarModule} from '@angular/material';
 import { ChatComponent } from './chat/chat.component';
 import { CommentComponent } from './comment/comment.component';
+import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
+import { MatFormFieldModule, MatInputModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -25,9 +28,15 @@ import { CommentComponent } from './comment/comment.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    FormsModule,
     MatCardModule,
     BrowserAnimationsModule,
-    MatButtonModule, MatCheckboxModule
+    MatButtonModule,
+    MatCheckboxModule,
+    MatToolbarModule,
+    MatBottomSheetModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   providers: [PostService, ReplyService],
   bootstrap: [AppComponent]
