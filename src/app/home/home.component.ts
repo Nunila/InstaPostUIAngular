@@ -11,7 +11,7 @@ export class HomeComponent implements OnInit {
   constructor(private postService: PostService) {}
   private newPost = {
     src: null,
-    caption: null
+    content: 'sample caption'
   };
 
   ngOnInit() {

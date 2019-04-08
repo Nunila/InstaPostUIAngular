@@ -52,7 +52,7 @@ export class PostService {
       messageId: null,
       photourl: newPost.src,
       postDate: new Date().toString(),
-      content: 'sample caption',
+      content: newPost.content,
       username: 'ANewUser'
     };
     this.allPosts.push(post);
