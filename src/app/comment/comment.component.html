@@ -1,14 +1,14 @@
   <div class="panel panel-default">
     <div class="panel-body">
       <details>
-        <summary>Show all comments</summary>
-        <table mat-table>
-          <tr id="comments" *ngFor="let reply of getAllReplies()">
+        <summary (click)="getRepliesByPostId()">Show all comments</summary>
+        <table mat-table class="container comment-table">
+          <tr class="comments-list" *ngFor="let reply of getAllReplies()">
             <div class="row comment-header">
               <p>{{reply.userId}}</p>
               <p>{{reply.messageDate}}</p>
             </div>
-            <div class="row">{{reply.content}}</div>
+            <div class="row comment-content">{{reply.content}}</div>
             <div class="row">
               <button mat-button>LIKE</button>
               <button mat-button>DISLIKE</button>
@@ -16,5 +16,13 @@
           </tr>
         </table>
       </details>
+      <div class="row container write-reply">
+          <mat-form-field class="reply-input-text">
+            <textarea matInput placeholder="Write a comment" [(ngModel)]="newReply.content"></textarea>
+          </mat-form-field>
+          <button mat-mini-fab (click)="form.reset()" class="submit-reply-button">
+            <i class="material-icons right">send</i>
+          </button>
+      </div>
     </div>
   </div>

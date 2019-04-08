@@ -26,7 +26,7 @@ export class HomeComponent implements OnInit {
         posts[i].setAttribute('src', this.postService.getAllPosts()[i].photourl);
       }
     }
-    return this.postService.getAllPosts();
+    return this.postService.getAllPosts();;
   }
 
   loadFile(e) {

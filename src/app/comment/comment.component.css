@@ -3,3 +3,25 @@ display: flex;
 justify-content: space-between;
 flex-direction: row;
 }
+
+.comment-content{
+  align-content: flex-start;
+}
+
+.comment-table{
+  display: flex;
+  border-width: thin;
+}
+
+.write-reply{
+  border-top: 15px;
+  border-top-color: aquamarine;
+}
+
+.reply-input-text{
+  width: 85%;
+}
+
+.submit-reply-button{
+}
+

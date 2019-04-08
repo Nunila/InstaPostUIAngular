@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import {HttpHeaders, HttpClient} from '@angular/common/http';
 
 interface Post {
-  postid: number;
-  chatid: number;
-  userid: number;
+  postId: number;
+  chatId: number;
+  userId: number;
   photourl: string;
-  postdate: string;
+  postDate: string;
 }
 
 
@@ -22,11 +22,11 @@ export class PostService {
 
   addPost(newPost){
     const post: Post = {
-      postid: null,
-      chatid: null,
-      userid:null,
+      postId: null,
+      chatId: null,
+      userId:null,
       photourl: newPost.src,
-      postdate: new Date().toString()
+      postDate: new Date().toString()
     };
     this.allPosts.push(post);
   }

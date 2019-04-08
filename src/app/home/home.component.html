@@ -15,7 +15,7 @@
         <mat-card-content>
           <img class="cardsimg" style="max-width: 400px" mat-card-image alt="Photo in post">
           <p>
-            {{post.postdate}}
+            {{post.postDate}}
           </p>
         </mat-card-content>
         <mat-card-actions>
@@ -24,7 +24,7 @@
           <button mat-button>DISLIKE</button>
         </mat-card-actions>
 
-        <app-comment></app-comment>
+        <app-comment [postId]="post.postId"></app-comment>
       </mat-card>
     <nav class="navbar navbar-dark bg-dark addPost font">
       Add Post

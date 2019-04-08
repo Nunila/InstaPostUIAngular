@@ -19,6 +19,17 @@ export class ReplyService {
 
   constructor(private http: HttpClient) { }
 
+  addReply(newReply){
+    const reply: Reply={
+      messageId: null,
+      postId: newReply.postId,
+      userId: null,
+      content: newReply.content,
+      messageDate: new Date().toString()
+    };
+    this.allReplies.push(reply);
+  }
+
   getAllReplies(){
     console.log(this.allReplies);
     return this.allReplies;
@@ -45,5 +56,27 @@ export class ReplyService {
         () => {
         }
     );
+  }
+
+  getRepliesByPostIdFromDB(postId){
+    const url = this.mainUrl + '/messages/repliesbypostid/'+postId
+    const headersDict = {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headersDict)
+    };
+
+    this.http.get(url, requestOptions)
+      .subscribe(data => {
+          //console.log(data)
+          this.allReplies  = data as Reply[];
+          //console.log(data);
+        },
+        (err) => console.log(err),
+        () => {
+        }
+      );
   }
 }
