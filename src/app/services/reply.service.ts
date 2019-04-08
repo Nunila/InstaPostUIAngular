@@ -7,6 +7,7 @@ interface Reply{
   userId: number;
   content: string;
   messageDate: string;
+  username: string;
 }
 
 @Injectable({
@@ -25,7 +26,8 @@ export class ReplyService {
       postId: newReply.postId,
       userId: null,
       content: newReply.content,
-      messageDate: new Date().toString()
+      messageDate: new Date().toString(),
+      username: null
     };
     this.allReplies.push(reply);
   }

@@ -4,8 +4,8 @@
         <summary (click)="getRepliesByPostId()">Show all comments</summary>
         <table mat-table class="container comment-table">
           <tr class="comments-list" *ngFor="let reply of getAllReplies()">
-            <div class="row comment-header">
-              <p>{{reply.userId}}</p>
+            <div class="comment-header">
+              <p>{{reply.username}}</p>
               <p>{{reply.messageDate}}</p>
             </div>
             <div class="row comment-content">{{reply.content}}</div>
@@ -18,9 +18,9 @@
       </details>
       <div class="row container write-reply">
           <mat-form-field class="reply-input-text">
-            <textarea matInput placeholder="Write a comment" [(ngModel)]="newReply.content"></textarea>
+            <textarea matInput matTextareaAutosize matAutosizeMinRows=1 matAutosizeMaxRows=5 placeholder="Write a comment" [(ngModel)]="newReply.content"></textarea>
           </mat-form-field>
-          <button mat-mini-fab (click)="form.reset()" class="submit-reply-button">
+          <button mat-mini-fab class="submit-reply-button">
             <i class="material-icons right">send</i>
           </button>
       </div>

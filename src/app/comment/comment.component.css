@@ -1,16 +1,19 @@
 .comment-header{
-display: flex;
-justify-content: space-between;
-flex-direction: row;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .comment-content{
-  align-content: flex-start;
+  align-content: center;
 }
 
 .comment-table{
   display: flex;
-  border-width: thin;
+}
+
+.comment-list{
+  border-bottom: 1pt solid black;
 }
 
 .write-reply{
