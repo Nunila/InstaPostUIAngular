@@ -8,8 +8,8 @@
       <mat-card id="cards" class="post" style="max-width: 50%" *ngFor="let post of getAllPosts()" >
         <mat-card-header>
           <div mat-card-avatar class="example-header-image"></div>
-          <mat-card-title>Shiba Inu</mat-card-title>
-          <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+          <mat-card-title>{{post.username}}</mat-card-title>
+          <mat-card-subtitle>{{post.content}}</mat-card-subtitle>
           <h2>{{post.postId}}</h2>
         </mat-card-header>
 
@@ -54,7 +54,7 @@
         </div>
         <mat-form-field appearance="legacy">
           <mat-label>Caption</mat-label>
-          <input matInput placeholder="caption" [(ngModel)]="newPost.caption">
+          <input matInput placeholder="caption" [(ngModel)]="newPost.content">
         </mat-form-field>
         <img id="preview" src="#" alt="your image" />
       </div>
