@@ -5,7 +5,7 @@
 
   <div class="flex-wrap">
 
-      <mat-card id="cards" class="post" style="max-width: 50%" *ngFor="let post of getAllPosts()">
+      <mat-card id="cards" class="post" style="max-width: 50%" *ngFor="let post of getAllPosts()" >
         <mat-card-header>
           <div mat-card-avatar class="example-header-image"></div>
           <mat-card-title>Shiba Inu</mat-card-title>
@@ -15,13 +15,12 @@
         <mat-card-content>
           <img class="cardsimg" style="max-width: 400px" mat-card-image alt="Photo in post">
           <p>
-            {{post.postdate}}
+            {{post.postId}}
           </p>
         </mat-card-content>
-        <mat-card-actions>
-          <h6>{{counter}}</h6>
-          <button mat-button (click)="addLike(post[0])">LIKE</button>
-          <button mat-button>DISLIKE</button>
+        <mat-card-actions >
+          <button  mat-icon-button ><mat-icon matBadge="{{getReactionsMap(post.postId, 'likes')}}" matBadgeColor="warn">thumb_up</mat-icon></button>
+          <button  mat-icon-button ><mat-icon matBadge="{{getReactionsMap(post.postId, 'dislikes')}}"  matBadgeColor="warn">thumb_down</mat-icon></button>
         </mat-card-actions>
 
         <app-comment></app-comment>

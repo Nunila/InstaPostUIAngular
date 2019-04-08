@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { PostService} from '../services/post.service';
-import {MatBottomSheet, MatBottomSheetRef} from '@angular/material';
 
 @Component({
   selector: 'app-home',
@@ -15,8 +14,14 @@ export class HomeComponent implements OnInit {
     caption: null
   };
 
+  private postReactions ={
+    likes: 0,
+    dislikes: 0,
+};
+
   ngOnInit() {
     this.postService.getAllPostsFromDB();
+    this.postService.getAllReactionsfromDB();
   }
 
   getAllPosts() {
@@ -29,12 +34,30 @@ export class HomeComponent implements OnInit {
     return this.postService.getAllPosts();
   }
 
+//   getReactionsMap(postid) {
+//     console.log(postid);
+//     console.log('tfkfkkukffk');
+//     // this.postReactions.likes = this.postService.getReactionsMap(postid, 'LIKES');
+//     // this.postReactions.dislikes = this.postService.getReactionsMap(postid, 'DISLIKES');
+//
+// }
+
+  // getReactionsMap1(postid, type: string) {
+  //   console.log('carrajo');
+  //   return this.postService.getReactionsMapOnService(postid, type);
+  //
+  // }
+
+  getReactionsMap(postId, ss) {
+    return this.postService.getReactionsMap(postId, ss);
+  }
+
   loadFile(e) {
     const x = document.getElementById('preview');
     const src = URL.createObjectURL(e.target.files[0]);
     x.setAttribute('src', src);
     this.newPost.src = src;
-    console.log(this.newPost)
+    console.log(this.newPost);
   }
 
   addPost() {
