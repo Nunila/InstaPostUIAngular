@@ -26,25 +26,11 @@ export class HomeComponent implements OnInit {
     const posts: HTMLCollectionOf<Element> = document.getElementsByClassName('cardsimg');
     if ( posts.length > 0 && this.postService.getAllPosts().length > 0) {
       for (let i = 0 ; i < posts.length ; i++) {
-        posts[i].setAttribute('src', this.postService.getAllPosts()[i].photourl);
+         posts[i].setAttribute('src', 'http://localhost:5000/InstaPost/images/' + this.postService.getAllPosts()[i].photourl);
       }
     }
     return this.postService.getAllPosts();
   }
-
-//   getReactionsMap(postid) {
-//     console.log(postid);
-//     console.log('tfkfkkukffk');
-//     // this.postReactions.likes = this.postService.getReactionsMap(postid, 'LIKES');
-//     // this.postReactions.dislikes = this.postService.getReactionsMap(postid, 'DISLIKES');
-//
-// }
-
-  // getReactionsMap1(postid, type: string) {
-  //   console.log('carrajo');
-  //   return this.postService.getReactionsMapOnService(postid, type);
-  //
-  // }
 
   getReactionsMap(postId, ss) {
     return this.postService.getReactionsMap(postId, ss);
