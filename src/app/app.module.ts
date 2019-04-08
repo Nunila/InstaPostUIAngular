@@ -14,8 +14,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatButtonModule, MatCheckboxModule, MatToolbarModule} from '@angular/material';
 import { ChatComponent } from './chat/chat.component';
 import { CommentComponent } from './comment/comment.component';
-import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import { MatFormFieldModule, MatInputModule } from '@angular/material';
+import {MatIconModule} from '@angular/material/icon';
+import {MatBadgeModule} from '@angular/material/badge';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { MatFormFieldModule, MatInputModule } from '@angular/material';
     MatButtonModule,
     MatCheckboxModule,
     MatToolbarModule,
-    MatBottomSheetModule,
+    MatIconModule,
+    MatBadgeModule,
     MatFormFieldModule,
     MatInputModule
   ],

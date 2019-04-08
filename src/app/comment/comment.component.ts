@@ -11,29 +11,29 @@ export class CommentComponent implements OnInit {
   @Input() postId: number;
 
   constructor(private replyService: ReplyService) { }
-  private newReply={
+  private newReply= {
     postId: null,
     userId: null,
     content: null
   }
 
   ngOnInit() {
-    //console.log(this.postId);
-    //this.replyService.getRepliesByPostIdFromDB(this.postId);
+    // console.log(this.postId);
+    // this.replyService.getRepliesByPostIdFromDB(this.postId);
   }
 
 
-  getAllReplies(){
-    //console.log(this.replyService.getAllReplies());
+  getAllReplies() {
+    // console.log(this.replyService.getAllReplies());
     return this.replyService.getAllReplies();
   }
 
-  getRepliesByPostId(){
+  getRepliesByPostId() {
     console.log(this.postId);
     this.replyService.getRepliesByPostIdFromDB(this.postId);
   }
 
-  addReply(){
+  addReply() {
     this.replyService.addReply(this.newReply);
   }
 }

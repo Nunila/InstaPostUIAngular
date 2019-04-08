@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpHeaders, HttpClient} from '@angular/common/http';
 
-interface Reply{
+interface Reply {
   messageId: number;
   postId: number;
   userId: number;
@@ -20,8 +20,8 @@ export class ReplyService {
 
   constructor(private http: HttpClient) { }
 
-  addReply(newReply){
-    const reply: Reply={
+  addReply(newReply) {
+    const reply: Reply = {
       messageId: null,
       postId: newReply.postId,
       userId: null,
@@ -32,13 +32,13 @@ export class ReplyService {
     this.allReplies.push(reply);
   }
 
-  getAllReplies(){
-    console.log(this.allReplies);
+  getAllReplies() {
+    // console.log(this.allReplies);
     return this.allReplies;
   }
 
-  getAllRepliesFromDB(){
-    const url = this.mainUrl + '/messages/replies'
+  getAllRepliesFromDB() {
+    const url = this.mainUrl + '/messages/replies';
     const headersDict = {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache'
@@ -49,10 +49,10 @@ export class ReplyService {
 
     this.http.get(url, requestOptions)
       .subscribe(data => {
-       //console.log(data)
+       // console.log(data)
         const asd = data as Reply[];
         this.allReplies = asd;
-       //console.log(data);
+       // console.log(data);
       },
         (err) => console.log(err),
         () => {
@@ -60,8 +60,8 @@ export class ReplyService {
     );
   }
 
-  getRepliesByPostIdFromDB(postId){
-    const url = this.mainUrl + '/messages/repliesbypostid/'+postId
+  getRepliesByPostIdFromDB(postId) {
+    const url = this.mainUrl + '/messages/repliesbypostid/' + postId;
     const headersDict = {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache'
@@ -72,9 +72,9 @@ export class ReplyService {
 
     this.http.get(url, requestOptions)
       .subscribe(data => {
-          //console.log(data)
+          // console.log(data)
           this.allReplies  = data as Reply[];
-          //console.log(data);
+          // console.log(data);
         },
         (err) => console.log(err),
         () => {
