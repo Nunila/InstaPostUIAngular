@@ -6,8 +6,11 @@ interface Post {
   postId: number;
   chatId: number;
   userId: number;
+  messageId: number;
   photourl: string;
   postDate: string;
+  content: string;
+  username: string;
 }
 
 interface Reactions {
@@ -61,8 +64,11 @@ export class PostService {
       postId: null,
       chatId: null,
       userId: null,
+      messageId: null,
       photourl: newPost.src,
-      postDate: new Date().toString()
+      postDate: new Date().toString(),
+      content: newPost.content,
+      username: 'ANewUser'
     };
     this.allPosts.push(post);
   }
