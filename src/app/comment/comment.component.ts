@@ -22,6 +22,9 @@ export class CommentComponent implements OnInit {
     // this.postService.getRepliesByPostIdFromDB(this.postId);
   }
 
+  getReactionsMap(messageId) {
+    return this.postService.getReactionsMap(messageId);
+  }
 
   getAllReplies() {
     // console.log(this.postService.getAllReplies());

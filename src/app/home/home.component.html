@@ -5,12 +5,11 @@
   <button mat-button (click)="refresh()">Refresh</button>
   <div class="flex-wrap">
 
-      <mat-card id="cards" class="post" style="max-width: 50%" *ngFor="let post of getAllPosts()" >
+      <mat-card id="cards" class="post" style="max-width: 70%" *ngFor="let post of getAllPosts()" >
         <mat-card-header>
           <div mat-card-avatar class="example-header-image"></div>
-          <mat-card-title>Shiba Inu</mat-card-title>
-          <mat-card-subtitle>Dog Breed</mat-card-subtitle>
-          <h2>{{post.postId}}</h2>
+          <mat-card-title style="display: flex">{{post.username}}</mat-card-title>
+          <mat-card-subtitle style="display: flex">{{post.content}} (PostId={{post.postId}}, MessageId={{post.messageId}})</mat-card-subtitle>
         </mat-card-header>
 
         <mat-card-content>
@@ -20,8 +19,12 @@
           </p>
         </mat-card-content>
         <mat-card-actions >
-          <button  mat-icon-button ><mat-icon matBadge="{{getReactionsMap(post.postId, 'likes')}}" matBadgeColor="warn">thumb_up</mat-icon></button>
-          <button  mat-icon-button ><mat-icon matBadge="{{getReactionsMap(post.postId, 'dislikes')}}"  matBadgeColor="warn">thumb_down</mat-icon></button>
+          <button mat-icon-button (click)="postService.addReaction(post.messageId, 'like')">
+            <mat-icon matBadge="{{getReactionsMap(post.messageId).likes}}" matBadgeColor="warn">thumb_up</mat-icon>
+          </button>
+          <button  mat-icon-button (click)="postService.addReaction(post.messageId, 'dislike')">
+            <mat-icon matBadge="{{getReactionsMap(post.messageId).dislikes}}"  matBadgeColor="warn">thumb_down</mat-icon>
+          </button>
         </mat-card-actions>
 
         <app-comment [postId]="post.postId"></app-comment>
@@ -54,7 +57,7 @@
         </div>
         <mat-form-field appearance="legacy">
           <mat-label>Caption</mat-label>
-          <input matInput placeholder="caption" [(ngModel)]="newPost.caption">
+          <input matInput placeholder="caption" [(ngModel)]="newPost.content">
         </mat-form-field>
         <img id="preview" src="#" alt="your image" />
       </div>

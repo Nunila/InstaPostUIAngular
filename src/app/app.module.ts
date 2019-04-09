@@ -17,6 +17,8 @@ import { CommentComponent } from './comment/comment.component';
 import { MatFormFieldModule, MatInputModule } from '@angular/material';
 import {MatIconModule} from '@angular/material/icon';
 import {MatBadgeModule} from '@angular/material/badge';
+import {MatDividerModule} from '@angular/material/divider';
+
 
 @NgModule({
   declarations: [
@@ -38,7 +40,8 @@ import {MatBadgeModule} from '@angular/material/badge';
     MatIconModule,
     MatBadgeModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatDividerModule
   ],
   providers: [PostService, ReplyService],
   bootstrap: [AppComponent]
