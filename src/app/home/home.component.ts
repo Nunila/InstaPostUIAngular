@@ -32,8 +32,8 @@ export class HomeComponent implements OnInit {
     return this.postService.getAllPosts();
   }
 
-  getReactionsMap(postId, ss) {
-    return this.postService.getReactionsMap(postId, ss);
+  getReactionsMap(messageId) {
+    return this.postService.getReactionsMap(messageId);
   }
 
   loadFile(e) {

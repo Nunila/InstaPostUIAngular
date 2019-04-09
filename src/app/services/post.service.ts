@@ -12,13 +12,13 @@ interface Post {
   username: string;
 }
 
-interface Reactions {
-  type: string;
-  messageId: number;
-  count: number;
-}
+// interface Reactions {
+//   type: string;
+//   messageId: number;
+//   count: number;
+// }
 
-interface DividedReactions {
+interface Reactions {
   messageId: number;
   likes: number;
   dislikes: number;
@@ -32,7 +32,7 @@ export class PostService {
 
   mainUrl = `http://localhost:5000/InstaPost`;
   private allPosts: Post[] = new Array();
-  private allReactionsMap: Map<number, DividedReactions[]> = new Map();
+  private allReactionsMap: Map<number, Reactions> = new Map();
   public mapdone = false;
 
   constructor(private http: HttpClient) { }
@@ -84,14 +84,6 @@ export class PostService {
     );
   }
 
-  getReactionsMap(postid, reactiontype: string) {
-    if (this.allReactionsMap.get(postid)) {
-      return this.allReactionsMap.get(postid)[0][reactiontype];
-    } else {
-      return 0;
-    }
-  }
-
   getAllReactionsfromDB() {
     const url =  this.mainUrl + `/reactionsPerMessage`;
     const headersDict = {
@@ -104,31 +96,24 @@ export class PostService {
 
     this.http.get(url, requestOptions)
       .subscribe(data => {
-          const entries = Object.entries(data);
-          entries.forEach(post => {
-            const postid: number = parseInt(post[0], 10);
-            const object: Reactions[] = post[1];
-            const dividedReactions: DividedReactions[] = new Array();
-            const sampledividedreaction: DividedReactions = {
-              likes: 0, dislikes: 0, messageId: null
-            };
-            object.forEach(reaction  => {
-              if (reaction.type === 'DISLIKE') {
-                sampledividedreaction.dislikes = reaction.count;
-              } else {
-                sampledividedreaction.likes = reaction.count;
-              }
-              sampledividedreaction.messageId = reaction.messageId;
-            });
-            dividedReactions.push(sampledividedreaction);
-            this.allReactionsMap.set(postid, dividedReactions);
-          });
+        const reactions = data as Reactions[];
+        reactions.forEach(reaction => {
+            this.allReactionsMap.set(reaction.messageId, reaction);
+        });
         },
         (err) => console.log(err),
         () => {
-          this.mapdone = true;
+          console.log(this.allReactionsMap);
         }
       );
+  }
+
+  getReactionsMap(messageid) {
+    if (this.allReactionsMap.get(messageid)) {
+      return this.allReactionsMap.get(messageid);
+    } else {
+      return 0;
+    }
   }
 
 }
