@@ -18,7 +18,7 @@
       </details>
       <div class="row container write-reply">
           <mat-form-field class="reply-input-text">
-            <textarea id="replyinput" matInput matTextareaAutosize matAutosizeMinRows=1.5 matAutosizeMaxRows=5 placeholder="Write a comment" [(ngModel)]="newReply.content"></textarea>
+            <textarea matInput matTextareaAutosize matAutosizeMinRows=1.5 matAutosizeMaxRows=5 placeholder="Write a comment" [(ngModel)]="newReply.content"></textarea>
           </mat-form-field>
           <button mat-mini-fab class="submit-reply-button" (click)="addReply()">
             <i class="material-icons right">send</i>
