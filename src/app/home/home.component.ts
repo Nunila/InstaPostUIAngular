@@ -17,6 +17,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.postService.getAllPostsFromDB();
     this.postService.getAllReactionsfromDB();
+    this.postService.getAllRepliesFromDB();
   }
 
   refresh() {

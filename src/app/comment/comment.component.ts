@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import {ReplyService} from '../services/reply.service';
+import {PostService} from '../services/post.service';
 import {MatBottomSheet, MatBottomSheetRef} from '@angular/material';
 
 @Component({
@@ -10,7 +10,7 @@ import {MatBottomSheet, MatBottomSheetRef} from '@angular/material';
 export class CommentComponent implements OnInit {
   @Input() postId: number;
 
-  constructor(private replyService: ReplyService) { }
+  constructor(private postService: PostService) { }
   private newReply= {
     postId: null,
     userId: null,
@@ -19,21 +19,24 @@ export class CommentComponent implements OnInit {
 
   ngOnInit() {
     // console.log(this.postId);
-    // this.replyService.getRepliesByPostIdFromDB(this.postId);
+    // this.postService.getRepliesByPostIdFromDB(this.postId);
   }
 
 
   getAllReplies() {
-    // console.log(this.replyService.getAllReplies());
-    return this.replyService.getAllReplies();
+    // console.log(this.postService.getAllReplies());
+    return this.postService.getRepliesMap(this.postId);
   }
 
   getRepliesByPostId() {
     console.log(this.postId);
-    this.replyService.getRepliesByPostIdFromDB(this.postId);
+    this.postService.getRepliesMap(this.postId);
   }
 
   addReply() {
-    this.replyService.addReply(this.newReply);
+    console.log(this.postId);
+    this.newReply.postId = this.postId;
+    this.postService.addReply(this.newReply);
+    this.newReply.content='';
   }
 }

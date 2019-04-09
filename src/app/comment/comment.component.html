@@ -1,7 +1,7 @@
   <div class="panel panel-default">
     <div class="panel-body">
       <details>
-        <summary (click)="getRepliesByPostId()">Show all comments</summary>
+        <summary>Show all comments</summary>
         <table mat-table class="container comment-table">
           <tr class="comments-list" *ngFor="let reply of getAllReplies()">
             <div class="comment-header">
@@ -18,9 +18,9 @@
       </details>
       <div class="row container write-reply">
           <mat-form-field class="reply-input-text">
-            <textarea matInput matTextareaAutosize matAutosizeMinRows=1 matAutosizeMaxRows=5 placeholder="Write a comment" [(ngModel)]="newReply.content"></textarea>
+            <textarea id="replyinput" matInput matTextareaAutosize matAutosizeMinRows=1.5 matAutosizeMaxRows=5 placeholder="Write a comment" [(ngModel)]="newReply.content"></textarea>
           </mat-form-field>
-          <button mat-mini-fab class="submit-reply-button">
+          <button mat-mini-fab class="submit-reply-button" (click)="addReply()">
             <i class="material-icons right">send</i>
           </button>
       </div>
