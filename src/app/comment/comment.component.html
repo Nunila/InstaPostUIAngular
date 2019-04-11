@@ -2,17 +2,23 @@
     <div class="panel-body">
       <details>
         <summary>Show all comments</summary>
+        <mat-divider></mat-divider>
         <table mat-table class="container comment-table">
           <tr class="comments-list" *ngFor="let reply of getAllReplies()">
             <div class="comment-header">
               <p>{{reply.username}}</p>
               <p>{{reply.messageDate}}</p>
             </div>
-            <div class="row comment-content">{{reply.content}}</div>
-            <div class="row">
-              <button mat-button>LIKE</button>
-              <button mat-button>DISLIKE</button>
+            <div class="comment-content" style="display: flex;">{{reply.content}}</div>
+            <div style="display: flex;">
+              <button mat-icon-button (click)="postService.addReaction(reply.messageId, 'like')">
+                <mat-icon matBadge="{{getReactionsMap(reply.messageId).likes}}" matBadgeColor="warn">thumb_up</mat-icon>
+              </button>
+              <button mat-icon-button (click)="postService.addReaction(reply.messageId, 'dislike')">
+                <mat-icon matBadge="{{getReactionsMap(reply.messageId).dislikes}}" matBadgeColor="warn">thumb_down</mat-icon>
+              </button>
             </div>
+            <mat-divider></mat-divider>
           </tr>
         </table>
       </details>

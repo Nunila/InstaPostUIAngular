@@ -13,13 +13,13 @@ interface Post {
   username: string;
 }
 
-interface Reactions {
-  type: string;
-  messageId: number;
-  count: number;
-}
+// interface Reactions {
+//   type: string;
+//   messageId: number;
+//   count: number;
+// }
 
-interface DividedReactions {
+interface Reactions {
   messageId: number;
   likes: number;
   dislikes: number;
@@ -41,7 +41,7 @@ export class PostService {
 
   mainUrl = `http://localhost:5000/InstaPost`;
   private allPosts: Post[] = new Array();
-  private allReactionsMap: Map<number, DividedReactions[]> = new Map();
+  private allReactionsMap: Map<number, Reactions> = new Map();
   public mapdone = false;
   private allReplies: Reply[] = new Array();
   private allRepliesMap: Map<number, Reply[]> = new Map();
@@ -80,10 +80,10 @@ export class PostService {
       userId: null,
       content: newReply.content,
       messageDate: new Date().toString(),
-      username: "New User"
+      username: 'New User'
     };
-    var replies: Reply[] = new Array();
-    if(!this.allRepliesMap.has(reply.postId)){
+    let replies: Reply[] = new Array();
+    if (!this.allRepliesMap.has(reply.postId)) {
       replies.push(reply);
       this.allRepliesMap.set(reply.postId, replies);
     } else{
@@ -91,7 +91,15 @@ export class PostService {
       replies.push(reply);
       this.allRepliesMap.set(reply.postId, replies);
     }
-    console.log(this.allRepliesMap.get(reply.postId));
+  }
+  addReaction(messageId, likeordislike) {
+    let old = this.allReactionsMap.get(messageId);
+    if (likeordislike === 'like') {
+      old.likes += 1;
+    } else {
+      old.dislikes += 1;
+    }
+    this.allReactionsMap.set(messageId, old);
   }
 
   getAllPosts() {
@@ -110,8 +118,7 @@ export class PostService {
 
     this.http.get(url, requestOptions)
       .subscribe(data => {
-        const asd = data as Post[];
-        this.allPosts = asd;
+        this.allPosts = data as Post[];
         console.log(this.allPosts);
       },
         (err) => console.log(err),
@@ -120,17 +127,9 @@ export class PostService {
     );
   }
 
-  getReactionsMap(postid, reactiontype: string) {
-    if (this.allReactionsMap.get(postid)) {
-      return this.allReactionsMap.get(postid)[0][reactiontype];
-    } else {
-      return 0;
-    }
-  }
-
-  getRepliesMap(postid){
-    if(this.allRepliesMap.has(postid)){
-      return this.allRepliesMap.get(postid)
+  getRepliesMap(postid) {
+    if (this.allRepliesMap.has(postid)) {
+      return this.allRepliesMap.get(postid);
     } else {
       return 0;
     }
@@ -148,29 +147,14 @@ export class PostService {
 
     this.http.get(url, requestOptions)
       .subscribe(data => {
-          const entries = Object.entries(data);
-          entries.forEach(post => {
-            const postid: number = parseInt(post[0], 10);
-            const object: Reactions[] = post[1];
-            const dividedReactions: DividedReactions[] = new Array();
-            const sampledividedreaction: DividedReactions = {
-              likes: 0, dislikes: 0, messageId: null
-            };
-            object.forEach(reaction  => {
-              if (reaction.type === 'DISLIKE') {
-                sampledividedreaction.dislikes = reaction.count;
-              } else {
-                sampledividedreaction.likes = reaction.count;
-              }
-              sampledividedreaction.messageId = reaction.messageId;
-            });
-            dividedReactions.push(sampledividedreaction);
-            this.allReactionsMap.set(postid, dividedReactions);
-          });
+        const reactions = data as Reactions[];
+        reactions.forEach(reaction => {
+            this.allReactionsMap.set(reaction.messageId, reaction);
+        });
         },
         (err) => console.log(err),
         () => {
-          this.mapdone = true;
+          console.log(this.allReactionsMap);
         }
       );
   }
@@ -190,32 +174,37 @@ export class PostService {
           // console.log(data)
           this.allReplies = data as Reply[];
           console.log(this.allReplies);
-          this.allReplies.forEach(reply=>{
-            //console.log(reply);
-            var replies: Reply[] = new Array();
-            if(!this.allRepliesMap.has(reply.postId)){
+          this.allReplies.forEach(reply => {
+            // console.log(reply);
+            let replies: Reply[] = new Array();
+            if (!this.allRepliesMap.has(reply.postId)) {
               replies.push(reply);
               this.allRepliesMap.set(reply.postId, replies);
-            } else{
+            } else {
               replies = this.allRepliesMap.get(reply.postId);
               replies.push(reply);
               this.allRepliesMap.set(reply.postId, replies);
             }
-          })
-          //console.log(this.allRepliesMap);
-          // console.log(data);
+          });
+
         },
         (err) => console.log(err),
         () => {
         }
       );
   }
-
-  postHasReplies(postId){
-    if(this.allRepliesMap.has(postId)){
+  postHasReplies(postId) {
+    if (this.allRepliesMap.has(postId)) {
       return true;
-    } else{
+    } else {
       return false;
+    }
+  }
+  getReactionsMap(messageid) {
+    if (this.allReactionsMap.get(messageid)) {
+      return this.allReactionsMap.get(messageid);
+    } else {
+      return 0;
     }
   }
 

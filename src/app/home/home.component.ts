@@ -27,14 +27,18 @@ export class HomeComponent implements OnInit {
     const posts: HTMLCollectionOf<Element> = document.getElementsByClassName('cardsimg');
     if ( posts.length > 0 && this.postService.getAllPosts().length > 0) {
       for (let i = 0 ; i < posts.length ; i++) {
-         posts[i].setAttribute('src', 'http://localhost:5000/InstaPost/images/' + this.postService.getAllPosts()[i].photourl);
+        if (this.postService.getAllPosts()[i].postId === null) {
+          posts[i].setAttribute('src', this.postService.getAllPosts()[i].photourl);
+        } else {
+          posts[i].setAttribute('src', 'http://localhost:5000/InstaPost/images/' + this.postService.getAllPosts()[i].photourl);
+        }
       }
     }
     return this.postService.getAllPosts();
   }
 
-  getReactionsMap(postId, ss) {
-    return this.postService.getReactionsMap(postId, ss);
+  getReactionsMap(messageId) {
+    return this.postService.getReactionsMap(messageId);
   }
 
   loadFile(e) {
