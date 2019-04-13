@@ -1,4 +1,23 @@
 
+
+@media(max-width:767px){
+  .addPost {
+    position: fixed;
+    bottom: 8px;
+    width: 80%;
+    color:white;
+  }
+}
+@media (min-width: 768px)  {
+  .addPost {
+    position: fixed;
+    bottom: 8px;
+    width: 50%;
+    color:white;
+  }
+}
+
+
 .post {
   /*width: 50%;*/
   /*height: 50%;*/
@@ -21,12 +40,6 @@
 
 }
 
-.addPost {
-  position: fixed;
-  bottom: 10px;
-  width: 100vh;
-  color:white;
-}
 .font {
   font-family: 'Baloo Chettan', cursive;
 }
