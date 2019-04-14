@@ -17,6 +17,10 @@
   }
 }
 
+mat-list-item{
+  cursor: pointer;
+  text-align: start;
+}
 
 .post {
   /*width: 50%;*/

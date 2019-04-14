@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PostService} from '../services/post.service';
+import {HomeService} from '../services/home.service';
 
 @Component({
   selector: 'app-home',
@@ -8,18 +9,27 @@ import { PostService} from '../services/post.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private postService: PostService) {}
+  constructor(private postService: PostService, private homeService: HomeService) {}
   private newPost = {
     src: null,
     content: 'sample caption'
   };
 
   ngOnInit() {
-    this.postService.getAllPostsFromDB();
-    this.postService.getAllReactionsfromDB();
-    this.postService.getAllRepliesFromDB();
+    // this.postService.getAllPostsFromDB();
+    // this.postService.getAllReactionsfromDB();
+    // this.postService.getAllRepliesFromDB();
+    this.homeService.getChatsOfUserFromDB(1);
+    this.homeService.getContactsOfUserFromDB(1);
   }
 
+  getChats() {
+    return this.homeService.getChatsOfUser();
+  }
+
+  getContacts() {
+    return this.homeService.getContactsOfUser();
+  }
   refresh() {
     this.postService.refresh();
   }

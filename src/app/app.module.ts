@@ -8,6 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { HomeComponent } from './home/home.component';
 import {PostService} from './services/post.service';
 import {ReplyService} from './services/reply.service';
+import {HomeService} from './services/home.service';
 
 import {MatCardModule} from '@angular/material/card';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -18,6 +19,8 @@ import { MatFormFieldModule, MatInputModule } from '@angular/material';
 import {MatIconModule} from '@angular/material/icon';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatDividerModule} from '@angular/material/divider';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatListModule} from '@angular/material/list';
 
 
 @NgModule({
@@ -41,9 +44,11 @@ import {MatDividerModule} from '@angular/material/divider';
     MatBadgeModule,
     MatFormFieldModule,
     MatInputModule,
-    MatDividerModule
+    MatDividerModule,
+    MatTabsModule,
+    MatListModule
   ],
-  providers: [PostService, ReplyService],
+  providers: [PostService, ReplyService, HomeService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
