@@ -55,6 +55,7 @@ export class HomeService {
       );
   }
 
+
   getChatsOfUser() {
     return this.chatsOfUser;
   }

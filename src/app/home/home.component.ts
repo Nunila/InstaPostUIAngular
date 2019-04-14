@@ -10,17 +10,32 @@ import {HomeService} from '../services/home.service';
 export class HomeComponent implements OnInit {
 
   constructor(private postService: PostService, private homeService: HomeService) {}
+  SIGNEDINUSER = 1;
   private newPost = {
     src: null,
     content: 'sample caption'
+  };
+  private newChat = {
+    chatName : 'SomeChatName',
+    members : [],
+    creationDate : new Date().toString(),
+    ownerId : this.SIGNEDINUSER
   };
 
   ngOnInit() {
     // this.postService.getAllPostsFromDB();
     // this.postService.getAllReactionsfromDB();
     // this.postService.getAllRepliesFromDB();
-    this.homeService.getChatsOfUserFromDB(1);
-    this.homeService.getContactsOfUserFromDB(1);
+    this.homeService.getChatsOfUserFromDB(this.SIGNEDINUSER);
+    this.homeService.getContactsOfUserFromDB(this.SIGNEDINUSER);
+  }
+
+  boxchecked(e) {
+    if (e.checked) this.newChat.members.push(e.source.value);
+    else {
+      const i = this.newChat.members.findIndex(mem => mem === e.source.value )
+      this.newChat.members.splice(i,1);
+    };
   }
 
   getChats() {

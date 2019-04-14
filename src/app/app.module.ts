@@ -46,7 +46,7 @@ import {MatListModule} from '@angular/material/list';
     MatInputModule,
     MatDividerModule,
     MatTabsModule,
-    MatListModule
+    MatListModule,
   ],
   providers: [PostService, ReplyService, HomeService],
   bootstrap: [AppComponent]
