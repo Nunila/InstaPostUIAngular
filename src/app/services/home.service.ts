@@ -5,7 +5,7 @@ interface Chat {
   chatId: number;
   chatName: string;
   creationDate: string;
-  ownerId: number
+  ownerId: number;
 }
 
 interface Contact {
@@ -27,6 +27,7 @@ export class HomeService {
   mainUrl = `http://localhost:5000/InstaPost`;
   private chatsOfUser: Chat[] = [];
   private contactsOfUser: Contact[] = [];
+  SIGNEDINUSER = 1;
 
   constructor(private http: HttpClient) { }
 
@@ -55,12 +56,61 @@ export class HomeService {
       );
   }
 
+  addChat(newchat) {
+    console.log(newchat);
+    const url =  this.mainUrl + `/chats`;
+    const headersDict = {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headersDict)
+    };
+
+    this.http.post(url, newchat )
+      .subscribe(data => {
+          console.log(data);
+          const a = data as Chat;
+          this.addParticipates(a.chatId, newchat.ownerId, newchat.members);
+        },
+        (err) => console.log(err),
+        () => {
+          this.getChatsOfUserFromDB(this.SIGNEDINUSER);
+        }
+      );
+  }
+
+  addParticipates(chatid, ownerid, xmembers) {
+    const a = {
+      chatId : chatid,
+      ownerId : ownerid,
+      members : xmembers
+    };
+    const url =  this.mainUrl + `/participates`;
+    const headersDict = {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headersDict)
+    };
+
+    this.http.post(url, a )
+      .subscribe(data => {
+          console.log(data);
+        },
+        (err) => console.log(err),
+        () => {
+        }
+      );
+  }
 
   getChatsOfUser() {
     return this.chatsOfUser;
   }
 
   getChatsOfUserFromDB(uid) {
+    this.chatsOfUser = [];
     const url =  this.mainUrl + `/chats/member/` + uid;
     const headersDict = {
       'Content-Type': 'application/json',

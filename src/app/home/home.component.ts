@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
   private newChat = {
     chatName : 'SomeChatName',
     members : [],
-    creationDate : new Date().toString(),
+    creationDate : new Date().getFullYear() + '-' + new Date().getMonth() + '-' + new Date().getDay(),
     ownerId : this.SIGNEDINUSER
   };
 
@@ -76,6 +76,16 @@ export class HomeComponent implements OnInit {
 
   addPost() {
     this.postService.addPost(this.newPost);
+  }
+
+  addChat() {
+    this.homeService.addChat(this.newChat);
+    this.newChat = {
+      chatName : 'SomeChatName',
+        members : [],
+        creationDate : new Date().getFullYear() + '-' + new Date().getMonth() + '-' + new Date().getDay(),
+        ownerId : this.SIGNEDINUSER
+    };
   }
 
 }
