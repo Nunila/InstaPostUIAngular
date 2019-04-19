@@ -21,6 +21,7 @@ import {MatBadgeModule} from '@angular/material/badge';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatListModule} from '@angular/material/list';
+import { LoginComponent } from './login/login.component';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import {MatListModule} from '@angular/material/list';
     AppComponent,
     HomeComponent,
     ChatComponent,
-    CommentComponent
+    CommentComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
