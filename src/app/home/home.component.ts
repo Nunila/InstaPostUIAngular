@@ -94,7 +94,6 @@ export class HomeComponent implements OnInit {
     };
     const a = document.getElementsByTagName('mat-checkbox');
     for (let i = 0; i < a.length; i++) {
-      console.log(a[i]);
       a[i].className = 'mat-checkbox mat-accent ng-star-inserted';
     }
   }

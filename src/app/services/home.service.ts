@@ -68,10 +68,13 @@ export class HomeService {
 
     this.http.post(url, newchat )
       .subscribe(data => {
+        const a = data as Chat;
+        this.chatsOfUser.push({chatId: a.chatId, creationDate: a.creationDate, chatName: a.chatName, ownerId: this.SIGNEDINUSER});
         },
         (err) => console.log(err),
         () => {
-          this.getChatsOfUserFromDB(this.SIGNEDINUSER);
+          //this.getChatsOfUserFromDB(this.SIGNEDINUSER);
+
         }
       );
   }
@@ -81,12 +84,12 @@ export class HomeService {
 
     this.http.delete(url)
       .subscribe(data => {
-          console.log(data);
-
         },
         (err) => console.log(err),
         () => {
-          this.getChatsOfUserFromDB(this.SIGNEDINUSER);
+          //this.getChatsOfUserFromDB(this.SIGNEDINUSER);
+          const i = this.chatsOfUser.findIndex(chat => chat.chatId === chatid);
+          this.chatsOfUser.splice(i, 1);
         }
       );
   }
