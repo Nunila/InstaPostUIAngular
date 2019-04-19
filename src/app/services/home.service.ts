@@ -27,7 +27,7 @@ export class HomeService {
   mainUrl = `http://localhost:5000/InstaPost`;
   private chatsOfUser: Chat[] = [];
   private contactsOfUser: Contact[] = [];
-  SIGNEDINUSER = 1;
+  public SIGNEDINUSER = 1;
 
   constructor(private http: HttpClient) { }
 
@@ -57,7 +57,6 @@ export class HomeService {
   }
 
   addChat(newchat) {
-    console.log(newchat);
     const url =  this.mainUrl + `/chats`;
     const headersDict = {
       'Content-Type': 'application/json',
@@ -69,9 +68,21 @@ export class HomeService {
 
     this.http.post(url, newchat )
       .subscribe(data => {
+        },
+        (err) => console.log(err),
+        () => {
+          this.getChatsOfUserFromDB(this.SIGNEDINUSER);
+        }
+      );
+  }
+
+  deleteChat(chatid) {
+    const url =  this.mainUrl + `/chats/` + chatid;
+
+    this.http.delete(url)
+      .subscribe(data => {
           console.log(data);
-          const a = data as Chat;
-          this.addParticipates(a.chatId, newchat.ownerId, newchat.members);
+
         },
         (err) => console.log(err),
         () => {

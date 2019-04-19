@@ -4,15 +4,18 @@
   <mat-tab-group>
     <mat-tab>
       <ng-template mat-tab-label>
-        <mat-icon class="example-tab-icon">thumb_up</mat-icon>&#160; Chats
+        <mat-icon class="example-tab-icon">chat</mat-icon>&#160; Chats
       </ng-template>
       <mat-list>
         <button mat-raised-button data-toggle="modal" data-target="#addChat">Add Chat</button>
         <h3 mat-subheader>Chats</h3>
         <mat-list-item *ngFor="let chat of getChats()">
-          <mat-icon mat-list-icon>group</mat-icon>
-          <h4 mat-line>{{chat.chatName}}</h4>
-          <p mat-line> Creation Date: {{chat.creationDate | date}} </p>
+            <mat-icon mat-list-icon>group</mat-icon>
+            <h4 mat-line>{{chat.chatName}}</h4>
+            <p mat-line> Creation Date: {{chat.creationDate | date}} </p>
+          <div class="col">
+            <button *ngIf="isUserOwnerOfChat(chat.ownerId)" mat-icon-button (click)="deleteChat(chat.chatId)"><mat-icon>delete</mat-icon></button>
+          </div>
           <mat-divider></mat-divider>
         </mat-list-item>
       </mat-list>
@@ -38,8 +41,7 @@
 
     <mat-tab>
       <ng-template mat-tab-label>
-        <mat-icon class="example-tab-icon">thumb_up</mat-icon>
-        Profile
+        <mat-icon class="example-tab-icon">person_outline</mat-icon>&#160; Profile
       </ng-template>
 
       Content 3

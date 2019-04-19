@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { PostService} from '../services/post.service';
 import {HomeService} from '../services/home.service';
+import Swal from 'sweetalert2';
+import {MatCheckbox} from '@angular/material';
 
 @Component({
   selector: 'app-home',
@@ -10,7 +12,7 @@ import {HomeService} from '../services/home.service';
 export class HomeComponent implements OnInit {
 
   constructor(private postService: PostService, private homeService: HomeService) {}
-  SIGNEDINUSER = 1;
+  SIGNEDINUSER = this.homeService.SIGNEDINUSER;
   private newPost = {
     src: null,
     content: 'sample caption'
@@ -33,9 +35,13 @@ export class HomeComponent implements OnInit {
   boxchecked(e) {
     if (e.checked) this.newChat.members.push(e.source.value);
     else {
-      const i = this.newChat.members.findIndex(mem => mem === e.source.value )
-      this.newChat.members.splice(i,1);
-    };
+      const i = this.newChat.members.findIndex(mem => mem === e.source.value );
+      this.newChat.members.splice(i, 1);
+    }
+  }
+
+  isUserOwnerOfChat(ownerId) {
+    return ownerId === this.SIGNEDINUSER;
   }
 
   getChats() {
@@ -86,6 +92,27 @@ export class HomeComponent implements OnInit {
         creationDate : new Date().getFullYear() + '-' + new Date().getMonth() + '-' + new Date().getDay(),
         ownerId : this.SIGNEDINUSER
     };
+    const a = document.getElementsByTagName('mat-checkbox');
+    for (let i = 0; i < a.length; i++) {
+      console.log(a[i]);
+      a[i].className = 'mat-checkbox mat-accent ng-star-inserted';
+    }
+  }
+
+  deleteChat(chatid) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You wont be able to revert this!',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.value) {
+        this.homeService.deleteChat(chatid);
+      }
+    });
   }
 
 }
