@@ -29,6 +29,9 @@ export class HomeService {
   private contactsOfUser: Contact[] = [];
   public SIGNEDINUSER = 1;
 
+  public result;
+  public flag = false
+
   constructor(private http: HttpClient) { }
 
   getContactsOfUser() {
@@ -94,13 +97,14 @@ export class HomeService {
       );
   }
 
-  addParticipates(chatid, ownerid, xmembers) {
-    const a = {
-      chatId : chatid,
-      ownerId : ownerid,
-      members : xmembers
-    };
-    const url =  this.mainUrl + `/participates`;
+  searchForContact(possibleContact) {
+    let url =  this.mainUrl + `/person?`;
+    if (possibleContact.phonenumber) {
+      url += 'phonenumber=' + possibleContact.phonenumber;
+    }
+    else if (possibleContact.email) {
+      url += 'email=' + possibleContact.email;
+    }
     const headersDict = {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache'
@@ -109,12 +113,17 @@ export class HomeService {
       headers: new HttpHeaders(headersDict)
     };
 
-    this.http.post(url, a )
+    this.http.get(url, requestOptions)
       .subscribe(data => {
-          console.log(data);
+        this.result = data as Contact;
         },
-        (err) => console.log(err),
+        (err) => {
+          console.log(err);
+          this.result = 'User not found. Please type another phone number or email address.';
+        },
         () => {
+          console.log(this.result);
+          this.flag = true;
         }
       );
   }

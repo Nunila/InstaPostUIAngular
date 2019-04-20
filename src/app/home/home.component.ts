@@ -23,7 +23,11 @@ export class HomeComponent implements OnInit {
     creationDate : new Date().getFullYear() + '-' + new Date().getMonth() + '-' + new Date().getDay(),
     ownerId : this.SIGNEDINUSER
   };
-
+  private newContact = {
+    phonenumber : '',
+    email : ''
+  };
+  resultContact;
   ngOnInit() {
     // this.postService.getAllPostsFromDB();
     // this.postService.getAllReactionsfromDB();
@@ -112,6 +116,10 @@ export class HomeComponent implements OnInit {
         this.homeService.deleteChat(chatid);
       }
     });
+  }
+
+  searchForContact() {
+    this.homeService.searchForContact(this.newContact);
   }
 
 }
