@@ -1,44 +1,125 @@
 
 <div class="container outercontainer">
 
-  <h2 class="font">Posts</h2>
-  <button mat-button (click)="refresh()">Refresh</button>
-  <div class="flex-wrap">
+  <mat-tab-group>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">chat</mat-icon>&#160; Chats
+      </ng-template>
+      <mat-list>
+        <button mat-raised-button data-toggle="modal" data-target="#addChat">Add Chat</button>
+        <h3 mat-subheader>Chats</h3>
+        <mat-list-item *ngFor="let chat of getChats()">
+            <mat-icon mat-list-icon>group</mat-icon>
+            <h4 mat-line>{{chat.chatName}}</h4>
+            <p mat-line> Creation Date: {{chat.creationDate | date}} </p>
+          <div class="col">
+            <button *ngIf="isUserOwnerOfChat(chat.ownerId)" mat-icon-button (click)="deleteChat(chat.chatId)"><mat-icon>delete</mat-icon></button>
+          </div>
+          <mat-divider></mat-divider>
+        </mat-list-item>
+      </mat-list>
 
-      <mat-card id="cards" class="post" style="max-width: 70%" *ngFor="let post of getAllPosts()" >
-        <mat-card-header>
-          <div mat-card-avatar class="example-header-image"></div>
-          <mat-card-title style="display: flex">{{post.username}}</mat-card-title>
-          <mat-card-subtitle style="display: flex">{{post.content}} (PostId={{post.postId}}, MessageId={{post.messageId}})</mat-card-subtitle>
-        </mat-card-header>
+    </mat-tab>
 
-        <mat-card-content>
-          <img class="cardsimg" style="max-width: 400px" mat-card-image alt="Photo in post">
-          <p>
-            {{post.postDate}}
-          </p>
-        </mat-card-content>
-        <mat-card-actions >
-          <button mat-icon-button (click)="postService.addReaction(post.messageId, 'like')">
-            <mat-icon matBadge="{{getReactionsMap(post.messageId).likes}}" matBadgeColor="warn">thumb_up</mat-icon>
-          </button>
-          <button  mat-icon-button (click)="postService.addReaction(post.messageId, 'dislike')">
-            <mat-icon matBadge="{{getReactionsMap(post.messageId).dislikes}}"  matBadgeColor="warn">thumb_down</mat-icon>
-          </button>
-        </mat-card-actions>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">contacts</mat-icon>&#160; Contacts
+      </ng-template>
+      <mat-list>
+        <button mat-raised-button >Add Contact</button>
+        <h3 mat-subheader>Contacts</h3>
+        <mat-list-item *ngFor="let contact of getContacts()">
+          <mat-icon mat-list-icon>person_pin</mat-icon>
+          <h4 mat-line>{{contact.firstName}} {{contact.lastName}}</h4>
+          <p mat-line> Phone Number: {{contact.phonenumber}} </p>
+          <p mat-line> Phone Number: {{contact.email}} </p>
+          <mat-divider></mat-divider>
+        </mat-list-item>
+      </mat-list>
+    </mat-tab>
 
-        <app-comment [postId]="post.postId"></app-comment>
-      </mat-card>
-    <nav class="navbar navbar-dark bg-dark addPost font">
-      Add Post
-      <button  mat-icon-button data-toggle="modal" data-target="#addPost"><i class="material-icons">add_circle_outline</i></button>
-    </nav>
-  </div>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">person_outline</mat-icon>&#160; Profile
+      </ng-template>
+
+      Content 3
+    </mat-tab>
+  </mat-tab-group>
 </div>
 
 
 
-<!-- Modal -->
+
+
+<!--<div class="container outercontainer">-->
+
+  <!--<h2 class="font">Posts</h2>-->
+  <!--<button mat-button (click)="refresh()">Refresh</button>-->
+  <!--<div class="flex-wrap">-->
+
+      <!--<mat-card id="cards" class="post" style="max-width: 70%" *ngFor="let post of getAllPosts()" >-->
+        <!--<mat-card-header>-->
+          <!--<div mat-card-avatar class="example-header-image"></div>-->
+          <!--<mat-card-title style="display: flex">{{post.username}}</mat-card-title>-->
+          <!--<mat-card-subtitle style="display: flex">{{post.content}} (PostId={{post.postId}}, MessageId={{post.messageId}})</mat-card-subtitle>-->
+        <!--</mat-card-header>-->
+
+        <!--<mat-card-content>-->
+          <!--<img class="cardsimg" style="max-width: 400px" mat-card-image alt="Photo in post">-->
+          <!--<p>-->
+            <!--{{post.postDate}}-->
+          <!--</p>-->
+        <!--</mat-card-content>-->
+        <!--<mat-card-actions >-->
+          <!--<button mat-icon-button (click)="postService.addReaction(post.messageId, 'like')">-->
+            <!--<mat-icon matBadge="{{getReactionsMap(post.messageId).likes}}" matBadgeColor="warn">thumb_up</mat-icon>-->
+          <!--</button>-->
+          <!--<button  mat-icon-button (click)="postService.addReaction(post.messageId, 'dislike')">-->
+            <!--<mat-icon matBadge="{{getReactionsMap(post.messageId).dislikes}}"  matBadgeColor="warn">thumb_down</mat-icon>-->
+          <!--</button>-->
+        <!--</mat-card-actions>-->
+
+        <!--<app-comment [postId]="post.postId"></app-comment>-->
+      <!--</mat-card>-->
+    <!--<nav class="navbar navbar-dark bg-dark addPost font">-->
+      <!--Add Post-->
+      <!--<button  mat-icon-button data-toggle="modal" data-target="#addPost"><i class="material-icons">add_circle_outline</i></button>-->
+    <!--</nav>-->
+  <!--</div>-->
+<!--</div>-->
+
+<!--Add Chat Modal-->
+<div class="modal fade font" id="addChat" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Chat</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body flex-form">
+        <div class="input-group mb-3">
+
+        </div>
+        <mat-form-field appearance="legacy">
+          <mat-label>Chat Name</mat-label>
+          <input matInput placeholder="caption" [(ngModel)]="newChat.chatName">
+        </mat-form-field>
+        <mat-label>Chat Members</mat-label>
+        <mat-checkbox *ngFor="let contact of getContacts()" (change)="boxchecked($event)" value="{{contact.userId}}">{{contact.firstName}} {{contact.lastName}}</mat-checkbox>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addChat()">Add Chat</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--&lt;!&ndash; Modal &ndash;&gt;-->
 <div class="modal fade font" id="addPost" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">

@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { PostService} from '../services/post.service';
+import {HomeService} from '../services/home.service';
+import Swal from 'sweetalert2';
+import {MatCheckbox} from '@angular/material';
 
 @Component({
   selector: 'app-home',
@@ -8,18 +11,46 @@ import { PostService} from '../services/post.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private postService: PostService) {}
+  constructor(private postService: PostService, private homeService: HomeService) {}
+  SIGNEDINUSER = this.homeService.SIGNEDINUSER;
   private newPost = {
     src: null,
     content: 'sample caption'
   };
+  private newChat = {
+    chatName : 'SomeChatName',
+    members : [],
+    creationDate : new Date().getFullYear() + '-' + new Date().getMonth() + '-' + new Date().getDay(),
+    ownerId : this.SIGNEDINUSER
+  };
 
   ngOnInit() {
-    this.postService.getAllPostsFromDB();
-    this.postService.getAllReactionsfromDB();
-    this.postService.getAllRepliesFromDB();
+    // this.postService.getAllPostsFromDB();
+    // this.postService.getAllReactionsfromDB();
+    // this.postService.getAllRepliesFromDB();
+    this.homeService.getChatsOfUserFromDB(this.SIGNEDINUSER);
+    this.homeService.getContactsOfUserFromDB(this.SIGNEDINUSER);
   }
 
+  boxchecked(e) {
+    if (e.checked) this.newChat.members.push(e.source.value);
+    else {
+      const i = this.newChat.members.findIndex(mem => mem === e.source.value );
+      this.newChat.members.splice(i, 1);
+    }
+  }
+
+  isUserOwnerOfChat(ownerId) {
+    return ownerId === this.SIGNEDINUSER;
+  }
+
+  getChats() {
+    return this.homeService.getChatsOfUser();
+  }
+
+  getContacts() {
+    return this.homeService.getContactsOfUser();
+  }
   refresh() {
     this.postService.refresh();
   }
@@ -51,6 +82,36 @@ export class HomeComponent implements OnInit {
 
   addPost() {
     this.postService.addPost(this.newPost);
+  }
+
+  addChat() {
+    this.homeService.addChat(this.newChat);
+    this.newChat = {
+      chatName : 'SomeChatName',
+        members : [],
+        creationDate : new Date().getFullYear() + '-' + new Date().getMonth() + '-' + new Date().getDay(),
+        ownerId : this.SIGNEDINUSER
+    };
+    const a = document.getElementsByTagName('mat-checkbox');
+    for (let i = 0; i < a.length; i++) {
+      a[i].className = 'mat-checkbox mat-accent ng-star-inserted';
+    }
+  }
+
+  deleteChat(chatid) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You wont be able to revert this!',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.value) {
+        this.homeService.deleteChat(chatid);
+      }
+    });
   }
 
 }
