@@ -24,7 +24,9 @@ interface Contact {
 })
 export class HomeService {
 
-  mainUrl = `http://localhost:5000/InstaPost`;
+  mainUrl = `http://instapostdb.herokuapp.com/InstaPost`;
+  // mainUrl = `http://localhost:5000/InstaPost`;
+
   private chatsOfUser: Chat[] = [];
   private contactsOfUser: Contact[] = [];
   public SIGNEDINUSER = 1;
@@ -50,6 +52,7 @@ export class HomeService {
 
     this.http.get(url, requestOptions)
       .subscribe(data => {
+        console.log(data);
           this.contactsOfUser = data as Contact[];
           console.log(this.contactsOfUser);
         },
