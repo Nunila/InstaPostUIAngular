@@ -24,7 +24,7 @@ interface Contact {
 })
 export class HomeService {
 
-  mainUrl = `http://instapostdb.herokuapp.com/InstaPost`;
+  mainUrl = `https://instapostdb.herokuapp.com/InstaPost`;
   // mainUrl = `http://localhost:5000/InstaPost`;
 
   private chatsOfUser: Chat[] = [];
