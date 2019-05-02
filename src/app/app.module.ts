@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -22,6 +22,7 @@ import {MatDividerModule} from '@angular/material/divider';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatListModule} from '@angular/material/list';
 import { LoginComponent } from './login/login.component';
+import {UserService} from './services/user.service';
 
 
 @NgModule({
@@ -37,6 +38,7 @@ import { LoginComponent } from './login/login.component';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     MatCardModule,
     BrowserAnimationsModule,
     MatButtonModule,
@@ -50,7 +52,7 @@ import { LoginComponent } from './login/login.component';
     MatTabsModule,
     MatListModule,
   ],
-  providers: [PostService, ReplyService, HomeService],
+  providers: [PostService, ReplyService, HomeService, UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
