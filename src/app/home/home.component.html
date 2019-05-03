@@ -34,6 +34,9 @@
           <h4 mat-line>{{contact.firstName}} {{contact.lastName}}</h4>
           <p mat-line> Phone Number: {{contact.phonenumber}} </p>
           <p mat-line> Email: {{contact.email}} </p>
+          <div class="col">
+            <button mat-icon-button (click)="deleteContact(contact.personId)"><mat-icon>delete</mat-icon></button>
+          </div>
           <mat-divider></mat-divider>
         </mat-list-item>
       </mat-list>
@@ -142,12 +145,12 @@
         <mat-list>
           <mat-list-item *ngIf="homeService.flag">
             <mat-icon mat-list-icon>person_pin</mat-icon>
-            <h4 mat-line>{{homeService.result.firstName}} {{homeService.result.lastName}}</h4>
-            <p mat-line> Phone Number: {{homeService.result.phoneNumber}} </p>
-            <p mat-line> Email: {{homeService.result.email}} </p>
+            <h4 mat-line>{{homeService.contactResult.firstName}} {{homeService.contactResult.lastName}}</h4>
+            <p mat-line> Phone Number: {{homeService.contactResult.phoneNumber}} </p>
+            <p mat-line> Email: {{homeService.contactResult.email}} </p>
           </mat-list-item>
           <mat-list-item *ngIf="!homeService.flag">
-            <h6>{{homeService.result}}</h6>
+            <h6>{{homeService.contactResult}}</h6>
           </mat-list-item>
         </mat-list>
       </div>

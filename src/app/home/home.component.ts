@@ -12,7 +12,7 @@ import {MatCheckbox} from '@angular/material';
 export class HomeComponent implements OnInit {
 
   constructor(private postService: PostService, private homeService: HomeService) {}
-  SIGNEDINUSER = this.homeService.SIGNEDINUSER;
+  SIGNEDINUSER = this.homeService.SIGNEDINUSERID;
   private newPost = {
     src: null,
     content: 'sample caption'
@@ -120,6 +120,27 @@ export class HomeComponent implements OnInit {
 
   searchForContact() {
     this.homeService.searchForContact(this.newContact);
+  }
+
+  addContact() {
+    console.log(this.homeService.contactResult);
+    this.homeService.addContact();
+  }
+
+  deleteContact(contactid) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You wont be able to revert this!',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.value) {
+        this.homeService.deleteContact(contactd);
+      }
+    });
   }
 
 }
