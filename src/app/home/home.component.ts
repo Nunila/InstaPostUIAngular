@@ -34,6 +34,7 @@ export class HomeComponent implements OnInit {
     // this.postService.getAllRepliesFromDB();
     this.homeService.getChatsOfUserFromDB(this.SIGNEDINUSER);
     this.homeService.getContactsOfUserFromDB(this.SIGNEDINUSER);
+    this.homeService.getPersonInfoOfSignedInUserFromDB();
   }
 
   boxchecked(e) {

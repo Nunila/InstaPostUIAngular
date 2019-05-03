@@ -8,7 +8,7 @@ interface Chat {
   ownerId: number;
 }
 
-interface Contact {
+interface Person {
   userId: number;
   personId: number;
   username: string;
@@ -28,7 +28,8 @@ export class HomeService {
   mainUrl = `http://localhost:5000/InstaPost`;
 
   private chatsOfUser: Chat[] = [];
-  private contactsOfUser: Contact[] = [];
+  private contactsOfUser: Person[] = [];
+  private personSignedInInfo: Person;
   public SIGNEDINUSERID = 1;
   public SIGNEDINPERSONID = 1;
 
@@ -57,7 +58,6 @@ export class HomeService {
     this.http.get(url, requestOptions)
       .subscribe(data => {
           this.chatsOfUser = data as Chat[];
-          console.log(this.chatsOfUser);
         },
         (err) => console.log(err),
         () => {
@@ -121,9 +121,7 @@ export class HomeService {
 
     this.http.get(url, requestOptions)
       .subscribe(data => {
-          console.log(data);
-          this.contactsOfUser = data as Contact[];
-          console.log(this.contactsOfUser);
+          this.contactsOfUser = data as Person[];
         },
         (err) => console.log(err),
         () => {
@@ -149,7 +147,7 @@ export class HomeService {
 
     this.http.get(url, requestOptions)
       .subscribe(data => {
-        this.contactResult = data as Contact;
+        this.contactResult = data as Person;
         },
         (err) => {
           console.log(err);
@@ -174,7 +172,7 @@ export class HomeService {
 
     this.http.post(url, this.contactResult )
       .subscribe(data => {
-          const a = data as Contact;
+          const a = data as Person;
           this.contactsOfUser.push(a);
         },
         (err) => console.log(err),
@@ -198,6 +196,30 @@ export class HomeService {
       );
   }
 
+  // ---------------------------Methods for Profile -----------------------------------//
 
+  getProfileInfo() {
+    return this.personSignedInInfo;
+  }
+
+  getPersonInfoOfSignedInUserFromDB() {
+    const url =  this.mainUrl + `/person/` + this.SIGNEDINPERSONID;
+    const headersDict = {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headersDict)
+    };
+
+    this.http.get(url, requestOptions)
+      .subscribe(data => {
+          this.personSignedInInfo = data as Person;
+        },
+        (err) => console.log(err),
+        () => {
+        }
+      );
+   }
 
 }
