@@ -33,7 +33,7 @@ export class HomeService {
   public SIGNEDINPERSONID = 1;
 
   public contactResult;
-  public flag = false;
+  public flag = 'none';
 
   constructor(private http: HttpClient) { }
 
@@ -153,11 +153,11 @@ export class HomeService {
         },
         (err) => {
           console.log(err);
-          this.contactResult = 'User not found. Please type another phone number or email address.';
+          this.flag = 'User not found. Please type another phone number or email address.';
         },
         () => {
           console.log(this.contactResult);
-          this.flag = true;
+          this.flag = 'contact';
         }
       );
   }
@@ -179,19 +179,20 @@ export class HomeService {
         },
         (err) => console.log(err),
         () => {
+          this.flag = 'none';
         }
       );
   }
 
   deleteContact(contactId) {
-    const url =  this.mainUrl + `/person/contact/` + this.SIGNEDINPERSONID;
-    this.http.delete(url, contactId)
+    const url =  this.mainUrl + `/person/contact/` + this.SIGNEDINPERSONID + `/delete/` + contactId;
+    this.http.delete(url)
       .subscribe(data => {
         },
         (err) => console.log(err),
         () => {
           // this.getChatsOfUserFromDB(this.SIGNEDINUSERID);
-          const i = this.contactsOfUser.findIndex(contact => contact.personId === contactid);
+          const i = this.contactsOfUser.findIndex(contact => contact.personId === contactId);
           this.contactsOfUser.splice(i, 1);
         }
       );

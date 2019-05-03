@@ -125,6 +125,10 @@ export class HomeComponent implements OnInit {
   addContact() {
     console.log(this.homeService.contactResult);
     this.homeService.addContact();
+    this.newContact = {
+      phonenumber : '',
+      email : ''
+    };
   }
 
   deleteContact(contactid) {
@@ -138,7 +142,7 @@ export class HomeComponent implements OnInit {
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.value) {
-        this.homeService.deleteContact(contactd);
+        this.homeService.deleteContact(contactid);
       }
     });
   }
