@@ -3,6 +3,7 @@ import { PostService} from '../services/post.service';
 import {HomeService} from '../services/home.service';
 import Swal from 'sweetalert2';
 import {MatCheckbox} from '@angular/material';
+import {UserService} from '../services/user.service';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +12,7 @@ import {MatCheckbox} from '@angular/material';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private postService: PostService, private homeService: HomeService) {}
+  constructor(private postService: PostService, private homeService: HomeService, private userService: UserService) {}
   SIGNEDINUSER = this.homeService.SIGNEDINUSER;
   private newPost = {
     src: null,

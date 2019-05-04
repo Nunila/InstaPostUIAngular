@@ -18,13 +18,12 @@ export class LoginComponent implements OnInit {
   submitted = false;
   returnUrl: string;
 
+  private person;
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private loginservice: UserService,
-    private signupservice: UserService,
-    private person: Person
+    private userService: UserService,
   ) {// go in if user logged in already
     if (localStorage.getItem('currentUserId') != null) {
       this.router.navigate(['/home']);
@@ -57,8 +56,8 @@ export class LoginComponent implements OnInit {
       return;
     }
     this.loading = true;
-    this.loginservice.login(this.lf.username.value, this.lf.password.value);
-    if (this.loginservice.getCurrentUserId >= 1) {
+    this.userService.login(this.lf.username.value, this.lf.password.value);
+    if (this.userService.getCurrentUserId() >= 1) {
       this.router.navigate(['/home']);
     }
   }
@@ -67,15 +66,15 @@ export class LoginComponent implements OnInit {
     if (this.signUpForm.invalid) {
       return;
     }
-    this.signupservice.createUser(this.sf.username.value, this.sf.password.value);
-    this.signupservice.getUserbyUname(this.sf.username.value);
-    this.person.userId = this.signupservice.getCurrentUserId;
+    this.userService.createUser(this.sf.username.value, this.sf.password.value);
+    this.userService.getUserbyUname(this.sf.username.value);
+    this.person.userId = this.userService.getCurrentUserId();
     this.person.firstName = this.sf.firstName.value;
     this.person.lastName = this.sf.lastName.value;
     this.person.phoneNum = this.sf.phoneNum.value;
     this.person.email = this.sf.email.value;
     this.person.birthday = this.sf.birthday.value;
-    this.signupservice.createPerson(this.person);
+    this.userService.createPerson(this.person);
     this.router.navigate(['/home']);
   }
 
