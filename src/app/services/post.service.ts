@@ -39,7 +39,7 @@ interface Reply {
 })
 export class PostService {
 
-  mainUrl = `http://localhost:5000/InstaPost`;
+  mainUrl = `http://instapostdb.herokuapp.com/InstaPost`;
   private allPosts: Post[] = new Array();
   private allReactionsMap: Map<number, Reactions> = new Map();
   public mapdone = false;

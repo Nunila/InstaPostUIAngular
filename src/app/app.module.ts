@@ -18,6 +18,7 @@ import { MatFormFieldModule, MatInputModule } from '@angular/material';
 import {MatIconModule} from '@angular/material/icon';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatDividerModule} from '@angular/material/divider';
+import { PostComponent } from './post/post.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import {MatDividerModule} from '@angular/material/divider';
     AppComponent,
     HomeComponent,
     ChatComponent,
-    CommentComponent
+    CommentComponent,
+    PostComponent
   ],
   imports: [
     BrowserModule,

@@ -15,7 +15,7 @@ interface Reply {
 })
 export class ReplyService {
 
-  mainUrl = `http://localhost:5000/InstaPost`;
+  mainUrl = `http://instapostdb.herokuapp.com/InstaPost`;
   private allReplies: Reply[] = new Array();
 
   constructor(private http: HttpClient) { }
