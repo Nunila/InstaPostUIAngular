@@ -1,0 +1,51 @@
+@media(max-width:767px){
+  .addPost {
+    position: fixed;
+    bottom: 8px;
+    width: 80%;
+    color:white;
+  }
+}
+@media (min-width: 768px)  {
+  .addPost {
+    position: fixed;
+    bottom: 8px;
+    width: 50%;
+    color:white;
+  }
+}
+
+mat-list-item{
+  cursor: pointer;
+  text-align: start;
+}
+
+.post {
+  /*width: 50%;*/
+  /*height: 50%;*/
+  margin: 15px;
+}
+
+.flex-wrap {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+}
+
+.flex-form {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  justify-content: flex-start;
+
+}
+
+.font {
+  font-family: 'Baloo Chettan', cursive;
+}
+.outercontainer {
+  justify-content: center;
+  align-content: center;
+}

@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { PostService} from '../services/post.service';
+import {HomeService} from '../services/home.service';
+import Swal from 'sweetalert2';
+import {MatCheckbox} from '@angular/material';
 
 @Component({
   selector: 'app-home',
@@ -8,49 +11,141 @@ import { PostService} from '../services/post.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private postService: PostService) {}
+  constructor(private postService: PostService, private homeService: HomeService) {}
+  SIGNEDINUSER = this.homeService.SIGNEDINUSERID;
   private newPost = {
     src: null,
     content: 'sample caption'
   };
-
+  private newChat = {
+    chatName : 'SomeChatName',
+    members : [],
+    creationDate : new Date().getFullYear() + '-' + new Date().getMonth() + '-' + new Date().getDay(),
+    ownerId : this.SIGNEDINUSER
+  };
+  private newContact = {
+    phonenumber : '',
+    email : ''
+  };
+  resultContact;
   ngOnInit() {
     // this.postService.getAllPostsFromDB();
     // this.postService.getAllReactionsfromDB();
     // this.postService.getAllRepliesFromDB();
+    this.homeService.getChatsOfUserFromDB(this.SIGNEDINUSER);
+    this.homeService.getContactsOfUserFromDB(this.SIGNEDINUSER);
+    this.homeService.getPersonInfoOfSignedInUserFromDB();
   }
 
-  // refresh() {
-  //   this.postService.refresh();
-  // }
-  // getAllPosts() {
-  //   const posts: HTMLCollectionOf<Element> = document.getElementsByClassName('cardsimg');
-  //   if ( posts.length > 0 && this.postService.getAllPosts().length > 0) {
-  //     for (let i = 0 ; i < posts.length ; i++) {
-  //       if (this.postService.getAllPosts()[i].postId === null) {
-  //         posts[i].setAttribute('src', this.postService.getAllPosts()[i].photourl);
-  //       } else {
-  //         posts[i].setAttribute('src', 'http:/instapostdb.herokuapp.com/InstaPost/images/' + this.postService.getAllPosts()[i].photourl);
-  //       }
-  //     }
-  //   }
-  //   return this.postService.getAllPosts();
-  // }
-  //
-  // getReactionsMap(messageId) {
-  //   return this.postService.getReactionsMap(messageId);
-  // }
-  //
-  // loadFile(e) {
-  //   const x = document.getElementById('preview');
-  //   const src = URL.createObjectURL(e.target.files[0]);
-  //   x.setAttribute('src', src);
-  //   this.newPost.src = src;
-  //   console.log(this.newPost);
-  // }
-  //
-  // addPost() {
-  //   this.postService.addPost(this.newPost);
-  // }
+  boxchecked(e) {
+    if (e.checked) this.newChat.members.push(e.source.value);
+    else {
+      const i = this.newChat.members.findIndex(mem => mem === e.source.value );
+      this.newChat.members.splice(i, 1);
+    }
+  }
+
+  isUserOwnerOfChat(ownerId) {
+    return ownerId === this.SIGNEDINUSER;
+  }
+
+  getChats() {
+    return this.homeService.getChatsOfUser();
+  }
+
+  getContacts() {
+    return this.homeService.getContactsOfUser();
+  }
+  refresh() {
+    this.postService.refresh();
+  }
+  getAllPosts() {
+    const posts: HTMLCollectionOf<Element> = document.getElementsByClassName('cardsimg');
+    if ( posts.length > 0 && this.postService.getAllPosts().length > 0) {
+      for (let i = 0 ; i < posts.length ; i++) {
+        if (this.postService.getAllPosts()[i].postId === null) {
+          posts[i].setAttribute('src', this.postService.getAllPosts()[i].photourl);
+        } else {
+          posts[i].setAttribute('src', 'http://localhost:5000/InstaPost/images/' + this.postService.getAllPosts()[i].photourl);
+        }
+      }
+    }
+    return this.postService.getAllPosts();
+  }
+
+  getReactionsMap(messageId) {
+    return this.postService.getReactionsMap(messageId);
+  }
+
+  loadFile(e) {
+    const x = document.getElementById('preview');
+    const src = URL.createObjectURL(e.target.files[0]);
+    x.setAttribute('src', src);
+    this.newPost.src = src;
+    console.log(this.newPost);
+  }
+
+  addPost() {
+    this.postService.addPost(this.newPost);
+  }
+
+  addChat() {
+    this.homeService.addChat(this.newChat);
+    this.newChat = {
+      chatName : 'SomeChatName',
+        members : [],
+        creationDate : new Date().getFullYear() + '-' + new Date().getMonth() + '-' + new Date().getDay(),
+        ownerId : this.SIGNEDINUSER
+    };
+    const a = document.getElementsByTagName('mat-checkbox');
+    for (let i = 0; i < a.length; i++) {
+      a[i].className = 'mat-checkbox mat-accent ng-star-inserted';
+    }
+  }
+
+  deleteChat(chatid) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You wont be able to revert this!',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.value) {
+        this.homeService.deleteChat(chatid);
+      }
+    });
+  }
+
+  searchForContact() {
+    this.homeService.searchForContact(this.newContact);
+  }
+
+  addContact() {
+    console.log(this.homeService.contactResult);
+    this.homeService.addContact();
+    this.newContact = {
+      phonenumber : '',
+      email : ''
+    };
+  }
+
+  deleteContact(contactid) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You wont be able to revert this!',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.value) {
+        this.homeService.deleteContact(contactid);
+      }
+    });
+  }
 
 }

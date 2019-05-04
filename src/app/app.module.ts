@@ -8,6 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { HomeComponent } from './home/home.component';
 import {PostService} from './services/post.service';
 import {ReplyService} from './services/reply.service';
+import {HomeService} from './services/home.service';
 
 import {MatCardModule} from '@angular/material/card';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -19,7 +20,9 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatDividerModule} from '@angular/material/divider';
 import { PostComponent } from './post/post.component';
-
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatListModule} from '@angular/material/list';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -27,8 +30,10 @@ import { PostComponent } from './post/post.component';
     HomeComponent,
     ChatComponent,
     CommentComponent,
-    PostComponent
+    PostComponent,
+    LoginComponent,
   ],
+
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -43,9 +48,11 @@ import { PostComponent } from './post/post.component';
     MatBadgeModule,
     MatFormFieldModule,
     MatInputModule,
-    MatDividerModule
+    MatDividerModule,
+    MatTabsModule,
+    MatListModule,
   ],
-  providers: [PostService, ReplyService],
+  providers: [PostService, ReplyService, HomeService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
