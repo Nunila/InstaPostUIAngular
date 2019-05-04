@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import {HttpHeaders, HttpClient, HttpResponse} from '@angular/common/http';
+import {Router} from '@angular/router';
 
 interface User {
   userId: number;
   username: string;
   password: string;
+  personId: number;
 }
 export interface Person {
   firstName: string;
@@ -23,10 +25,10 @@ export class UserService {
   private mainUrl = `http://localhost:5000/InstaPost`;
   private currentUser: User;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
-  public getCurrentUserId() {
-    return this.currentUser.userId;
+  public getCurrentUser() {
+    return this.currentUser;
   }
 
   login(username: string, password: string) {
@@ -47,6 +49,7 @@ export class UserService {
         (err) => console.log(err),
         () => {
           console.log(this.currentUser);
+          this.router.navigate(['/home']);
           // localStorage.setItem('currentUserId', JSON.stringify(this.currentUser.userId));
         }
       );

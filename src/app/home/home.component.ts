@@ -13,24 +13,32 @@ import {UserService} from '../services/user.service';
 export class HomeComponent implements OnInit {
 
   constructor(private postService: PostService, private homeService: HomeService, private userService: UserService) {}
-  SIGNEDINUSER = this.homeService.SIGNEDINUSER;
+
+  private SIGNEDINUSERID;
+  private SIGNEDINPERSONID;
+
   private newPost = {
     src: null,
     content: 'sample caption'
   };
+
   private newChat = {
     chatName : 'SomeChatName',
     members : [],
     creationDate : new Date().getFullYear() + '-' + new Date().getMonth() + '-' + new Date().getDay(),
-    ownerId : this.SIGNEDINUSER
+    ownerId : this.SIGNEDINUSERID
   };
 
   ngOnInit() {
     // this.postService.getAllPostsFromDB();
     // this.postService.getAllReactionsfromDB();
     // this.postService.getAllRepliesFromDB();
-    this.homeService.getChatsOfUserFromDB(this.SIGNEDINUSER);
-    this.homeService.getContactsOfUserFromDB(this.SIGNEDINUSER);
+    this.SIGNEDINPERSONID = this.userService.getCurrentUser().personId;
+    this.SIGNEDINUSERID = this.userService.getCurrentUser().userId;
+
+    this.homeService.getChatsOfUserFromDB(this.SIGNEDINUSERID);
+    this.homeService.getContactsOfUserFromDB(this.SIGNEDINPERSONID);
+    this.SIGNEDINUSERID = this.userService.getCurrentUser().userId;
   }
 
   boxchecked(e) {
@@ -42,7 +50,7 @@ export class HomeComponent implements OnInit {
   }
 
   isUserOwnerOfChat(ownerId) {
-    return ownerId === this.SIGNEDINUSER;
+    return ownerId === this.SIGNEDINUSERID;
   }
 
   getChats() {
@@ -91,7 +99,7 @@ export class HomeComponent implements OnInit {
       chatName : 'SomeChatName',
         members : [],
         creationDate : new Date().getFullYear() + '-' + new Date().getMonth() + '-' + new Date().getDay(),
-        ownerId : this.SIGNEDINUSER
+        ownerId : this.SIGNEDINUSERID
     };
     const a = document.getElementsByTagName('mat-checkbox');
     for (let i = 0; i < a.length; i++) {

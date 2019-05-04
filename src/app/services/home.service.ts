@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpHeaders, HttpClient} from '@angular/common/http';
+import {UserService} from './user.service';
 
 interface Chat {
   chatId: number;
@@ -27,9 +28,11 @@ export class HomeService {
   mainUrl = `http://localhost:5000/InstaPost`;
   private chatsOfUser: Chat[] = [];
   private contactsOfUser: Contact[] = [];
-  public SIGNEDINUSER = 1;
+  public SIGNEDINUSERID = this.userService.getCurrentUser().userId;
+  public SIGNEDINPERSONID = this.userService.getCurrentUser().personId;
 
-  constructor(private http: HttpClient) { }
+
+  constructor(private http: HttpClient, private userService: UserService) { }
 
   getContactsOfUser() {
     return this.contactsOfUser;
@@ -69,11 +72,11 @@ export class HomeService {
     this.http.post(url, newchat )
       .subscribe(data => {
         const a = data as Chat;
-        this.chatsOfUser.push({chatId: a.chatId, creationDate: a.creationDate, chatName: a.chatName, ownerId: this.SIGNEDINUSER});
+        this.chatsOfUser.push({chatId: a.chatId, creationDate: a.creationDate, chatName: a.chatName, ownerId: this.SIGNEDINUSERID});
         },
         (err) => console.log(err),
         () => {
-          //this.getChatsOfUserFromDB(this.SIGNEDINUSER);
+          // this.getChatsOfUserFromDB(this.SIGNEDINUSER);
 
         }
       );
@@ -87,7 +90,7 @@ export class HomeService {
         },
         (err) => console.log(err),
         () => {
-          //this.getChatsOfUserFromDB(this.SIGNEDINUSER);
+          // this.getChatsOfUserFromDB(this.SIGNEDINUSER);
           const i = this.chatsOfUser.findIndex(chat => chat.chatId === chatid);
           this.chatsOfUser.splice(i, 1);
         }

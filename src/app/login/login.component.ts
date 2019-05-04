@@ -51,16 +51,18 @@ export class LoginComponent implements OnInit {
   get sf() {return this.signUpForm.controls; }
   // when logging in
   onLogSubmit() {
+    console.log('asdasdwqrwqd');
     this.submitted = true;
     if (this.loginForm.invalid) {
       return;
     }
     this.loading = true;
     this.userService.login(this.lf.username.value, this.lf.password.value);
-    if (this.userService.getCurrentUserId() >= 1) {
-      this.router.navigate(['/home']);
-    }
+    // // if (this.userService.getCurrentUserId() >= 1) {
+    //   this.router.navigate(['/home']);
+    // }
   }
+
   onRegisterSubmit() {
     this.submitted = true;
     if (this.signUpForm.invalid) {
@@ -68,7 +70,7 @@ export class LoginComponent implements OnInit {
     }
     this.userService.createUser(this.sf.username.value, this.sf.password.value);
     this.userService.getUserbyUname(this.sf.username.value);
-    this.person.userId = this.userService.getCurrentUserId();
+    this.person.userId = this.userService.getCurrentUser().userId;
     this.person.firstName = this.sf.firstName.value;
     this.person.lastName = this.sf.lastName.value;
     this.person.phoneNum = this.sf.phoneNum.value;
