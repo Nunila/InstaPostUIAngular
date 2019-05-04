@@ -28,17 +28,18 @@ export class HomeComponent implements OnInit {
     creationDate : new Date().getFullYear() + '-' + new Date().getMonth() + '-' + new Date().getDay(),
     ownerId : this.SIGNEDINUSERID
   };
-
+  private newContact = {
+    phonenumber : '',
+    email : ''
+  };
+  resultContact;
   ngOnInit() {
-    // this.postService.getAllPostsFromDB();
-    // this.postService.getAllReactionsfromDB();
-    // this.postService.getAllRepliesFromDB();
     this.SIGNEDINPERSONID = this.userService.getCurrentUser().personId;
     this.SIGNEDINUSERID = this.userService.getCurrentUser().userId;
 
     this.homeService.getChatsOfUserFromDB(this.SIGNEDINUSERID);
     this.homeService.getContactsOfUserFromDB(this.SIGNEDINPERSONID);
-    this.SIGNEDINUSERID = this.userService.getCurrentUser().userId;
+    this.homeService.getPersonInfoOfSignedInUserFromDB();
   }
 
   boxchecked(e) {
@@ -119,6 +120,35 @@ export class HomeComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         this.homeService.deleteChat(chatid);
+      }
+    });
+  }
+
+  searchForContact() {
+    this.homeService.searchForContact(this.newContact);
+  }
+
+  addContact() {
+    console.log(this.homeService.contactResult);
+    this.homeService.addContact();
+    this.newContact = {
+      phonenumber : '',
+      email : ''
+    };
+  }
+
+  deleteContact(contactid) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You wont be able to revert this!',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.value) {
+        this.homeService.deleteContact(contactid);
       }
     });
   }
