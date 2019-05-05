@@ -4,7 +4,7 @@ import {Router} from '@angular/router';
 
 interface User {
   userId: number;
-  username: string;
+  userName: string;
   password: string;
   personId: number;
 }

@@ -12,7 +12,7 @@ interface Chat {
 interface Person {
   userId: number;
   personId: number;
-  username: string;
+  userName: string;
   firstName: string;
   lastName: string;
   birthday: string;

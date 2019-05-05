@@ -32,6 +32,9 @@ export class HomeComponent implements OnInit {
     phonenumber : '',
     email : ''
   };
+  private newPerson ;
+
+  private flag = false;
   resultContact;
   ngOnInit() {
     this.SIGNEDINPERSONID = this.userService.getCurrentUser().personId;
@@ -40,6 +43,16 @@ export class HomeComponent implements OnInit {
     this.homeService.getChatsOfUserFromDB(this.SIGNEDINUSERID);
     this.homeService.getContactsOfUserFromDB(this.SIGNEDINPERSONID);
     this.homeService.getPersonInfoOfSignedInUserFromDB();
+    this.newPerson = {
+      userId: this.SIGNEDINUSERID,
+      personId: 0,
+      userName: this.userService.getCurrentUser().userName,
+      firstName: '',
+      lastName: '',
+      birthday: '',
+      phonenumber: '',
+      email: ''
+    };
   }
 
   boxchecked(e) {
@@ -151,6 +164,13 @@ export class HomeComponent implements OnInit {
         this.homeService.deleteContact(contactid);
       }
     });
+  }
+
+  getProfileInfo() {
+    if (!this.homeService.getProfileInfo())  {
+      return this.newPerson;
+    }
+    return this.homeService.getProfileInfo();
   }
 
 }

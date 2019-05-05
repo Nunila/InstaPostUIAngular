@@ -9,20 +9,21 @@ import { HomeComponent } from './home/home.component';
 import {PostService} from './services/post.service';
 import {ReplyService} from './services/reply.service';
 import {HomeService} from './services/home.service';
+import { LoginComponent } from './login/login.component';
+import {UserService} from './services/user.service';
+import { ChatComponent } from './chat/chat.component';
+import { CommentComponent } from './comment/comment.component';
 
 import {MatCardModule} from '@angular/material/card';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatButtonModule, MatCheckboxModule, MatToolbarModule} from '@angular/material';
-import { ChatComponent } from './chat/chat.component';
-import { CommentComponent } from './comment/comment.component';
 import { MatFormFieldModule, MatInputModule } from '@angular/material';
 import {MatIconModule} from '@angular/material/icon';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatListModule} from '@angular/material/list';
-import { LoginComponent } from './login/login.component';
-import {UserService} from './services/user.service';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 
 
 @NgModule({
@@ -51,6 +52,7 @@ import {UserService} from './services/user.service';
     MatDividerModule,
     MatTabsModule,
     MatListModule,
+    MatDatepickerModule,
   ],
   providers: [PostService, ReplyService, HomeService, UserService],
   bootstrap: [AppComponent]

@@ -46,8 +46,80 @@
       <ng-template mat-tab-label>
         <mat-icon class="example-tab-icon">person_outline</mat-icon>&#160; Profile
       </ng-template>
-
-      Content 3
+      <div class="flex-row">
+        <div class="flex-col col-6">
+          <!--<div class="form-field">-->
+            <!--<label>Username</label>-->
+            <!--<mat-form-field appearance="standard">-->
+              <!--<mat-label>Username</mat-label>-->
+              <!--<input matInput [(ngModel)]="getProfileInfo().userName" placeholder="username">-->
+            <!--</mat-form-field>-->
+          <!--</div>-->
+          <!--<div class="form-field">-->
+            <!--<label>First Name</label>-->
+            <!--<mat-form-field appearance="standard">-->
+              <!--<mat-label>First Name</mat-label>-->
+              <!--<input matInput [(ngModel)]="getProfileInfo().firstName" placeholder="firstname">-->
+            <!--</mat-form-field>-->
+          <!--</div>-->
+          <mat-form-field appearance="standard">
+            <mat-label>Username</mat-label>
+            <input matInput [(ngModel)]="getProfileInfo().userName" placeholder="username">
+          </mat-form-field>
+          <mat-form-field appearance="standard">
+            <mat-label>First Name</mat-label>
+            <input matInput [(ngModel)]="getProfileInfo().firstName" placeholder="first name">
+          </mat-form-field>
+          <mat-form-field appearance="standard">
+            <mat-label>Last Name</mat-label>
+            <input matInput [(ngModel)]="getProfileInfo().lastName" placeholder="last name">
+          </mat-form-field>
+          <!--<div class="form-group row">-->
+            <!--<label for="username">Username:</label>-->
+            <!--<input type="text" class="form-control" [(ngModel)]="getProfileInfo().userName" id="username" placeholder="username">-->
+          <!--</div>-->
+          <!--<div class="form-group row">-->
+            <!--<label for="first">First Name:</label>-->
+            <!--<input type="text" class="form-control" [(ngModel)]="getProfileInfo().firstName" id="first" placeholder="first name">-->
+          <!--</div>-->
+          <!--<div class="form-group row">-->
+            <!--<label for="last">Last Name:</label>-->
+            <!--<input type="text" class="form-control" [(ngModel)]="getProfileInfo().lastName" id="last" placeholder="last name">-->
+          <!--</div>-->
+        </div>
+        <div class="flex-col col-6">
+          <mat-form-field appearance="standard">
+            <mat-label>Phone</mat-label>
+            <input matInput [(ngModel)]="getProfileInfo().phonenumber" placeholder="phonenumber">
+          </mat-form-field>
+          <mat-form-field appearance="standard">
+            <mat-label>Email</mat-label>
+            <input matInput [(ngModel)]="getProfileInfo().email" placeholder="email">
+          </mat-form-field>
+          <!--<mat-form-field>-->
+            <!--<input matInput [matDatepicker]="picker3" placeholder="Birthday" [value]="getProfileInfo().birthday">-->
+            <!--<mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>-->
+            <!--<mat-datepicker #picker3></mat-datepicker>-->
+          <!--</mat-form-field>-->
+          <mat-form-field appearance="standard">
+            <mat-label>Birthday</mat-label>
+            <input matInput [(ngModel)]="getProfileInfo().birthday" placeholder="first name">
+          </mat-form-field>
+          <!--<div class="form-group row">-->
+            <!--<label for="phone">Phone number:</label>-->
+            <!--<input type="text" class="form-control" [(ngModel)]="getProfileInfo().phonenumber" id="phone" placeholder="first name">-->
+          <!--</div>-->
+          <!--<div class="form-group row">-->
+            <!--<label for="email">Email:</label>-->
+            <!--<input type="text" class="form-control" [(ngModel)]="getProfileInfo().email" id="email" placeholder="email">-->
+          <!--</div>-->
+          <!--<div class="form-group row">-->
+            <!--<label for="birthday">Birthday:</label>-->
+            <!--<input type="date" class="form-control" [(ngModel)]="getProfileInfo().birthday" id="birthday" placeholder="birthday">-->
+          <!--</div>-->
+        </div>
+      </div>
+      <button mat-raised-button (click)="saveProfile()">Save</button>
     </mat-tab>
   </mat-tab-group>
 </div>
