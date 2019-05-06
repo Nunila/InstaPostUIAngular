@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { PostService} from '../services/post.service';
 import {HomeService} from '../services/home.service';
 import Swal from 'sweetalert2';
-import {MatCheckbox} from '@angular/material';
 import {UserService} from '../services/user.service';
 
 @Component({
@@ -46,12 +45,12 @@ export class HomeComponent implements OnInit {
     this.newPerson = {
       userId: this.SIGNEDINUSERID,
       personId: 0,
-      userName: this.userService.getCurrentUser().userName,
-      firstName: '',
-      lastName: '',
-      birthday: '',
-      phonenumber: '',
-      email: ''
+      username: this.userService.getCurrentUser().userName,
+      firstName: null,
+      lastName: null,
+      birthday: null,
+      phonenumber: null,
+      email: null
     };
   }
 
@@ -171,6 +170,14 @@ export class HomeComponent implements OnInit {
       return this.newPerson;
     }
     return this.homeService.getProfileInfo();
+  }
+
+  saveProfile() {
+    if (this.SIGNEDINPERSONID === 0) {
+      this.homeService.addPersonProfile(this.newPerson);
+      console.log(this.newPerson);
+      this.SIGNEDINPERSONID = this.homeService.SIGNEDINPERSONID;
+    }
   }
 
 }

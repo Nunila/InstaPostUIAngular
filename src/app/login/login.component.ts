@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit {
   get sf() {return this.signUpForm.controls; }
   // when logging in
   onLogSubmit() {
-    console.log('asdasdwqrwqd');
+    console.log('Login');
     this.submitted = true;
     if (this.loginForm.invalid) {
       return;

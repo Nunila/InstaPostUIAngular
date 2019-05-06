@@ -24,7 +24,7 @@ import {MatDividerModule} from '@angular/material/divider';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatListModule} from '@angular/material/list';
 import {MatDatepickerModule} from '@angular/material/datepicker';
-
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 
 @NgModule({
   declarations: [
@@ -53,6 +53,9 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
     MatTabsModule,
     MatListModule,
     MatDatepickerModule,
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule
+
   ],
   providers: [PostService, ReplyService, HomeService, UserService],
   bootstrap: [AppComponent]

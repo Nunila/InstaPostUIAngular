@@ -64,7 +64,7 @@
           <!--</div>-->
           <mat-form-field appearance="standard">
             <mat-label>Username</mat-label>
-            <input matInput [(ngModel)]="getProfileInfo().userName" placeholder="username">
+            <input matInput readonly [(ngModel)]="getProfileInfo().username" placeholder="username">
           </mat-form-field>
           <mat-form-field appearance="standard">
             <mat-label>First Name</mat-label>
@@ -96,11 +96,16 @@
             <mat-label>Email</mat-label>
             <input matInput [(ngModel)]="getProfileInfo().email" placeholder="email">
           </mat-form-field>
-          <!--<mat-form-field>-->
-            <!--<input matInput [matDatepicker]="picker3" placeholder="Birthday" [value]="getProfileInfo().birthday">-->
-            <!--<mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>-->
-            <!--<mat-datepicker #picker3></mat-datepicker>-->
-          <!--</mat-form-field>-->
+
+
+          <label>
+            Date Time:
+            <input [owlDateTimeTrigger]="dt" [owlDateTime]="dt">
+            <owl-date-time #dt></owl-date-time>
+          </label>
+
+
+
           <mat-form-field appearance="standard">
             <mat-label>Birthday</mat-label>
             <input matInput [(ngModel)]="getProfileInfo().birthday" placeholder="first name">

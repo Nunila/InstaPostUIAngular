@@ -20,6 +20,19 @@ interface Person {
   email: string;
 }
 
+interface CompletePerson {
+  userId: number;
+  personId: number;
+  userName: string;
+  firstName: string;
+  lastName: string;
+  birthday: string;
+  phonenumber: string;
+  email: string;
+  username: string;
+  password: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -32,12 +45,10 @@ export class HomeService {
   public SIGNEDINUSERID = this.userService.getCurrentUser().userId;
   public SIGNEDINPERSONID = this.userService.getCurrentUser().personId;
   private contactsOfUser: Person[] = [];
-  private personSignedInInfo: Person;
+  private personSignedInInfo: CompletePerson;
 
   public contactResult;
   public flag = 'none';
-
-
 
   constructor(private http: HttpClient, private userService: UserService) { }
 
@@ -203,7 +214,7 @@ export class HomeService {
   }
 
   getPersonInfoOfSignedInUserFromDB() {
-    const url =  this.mainUrl + `/person/` + this.SIGNEDINPERSONID;
+    const url =  this.mainUrl + `/person/` + this.SIGNEDINPERSONID + `/complete`;
     const headersDict = {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache'
@@ -214,12 +225,35 @@ export class HomeService {
 
     this.http.get(url, requestOptions)
       .subscribe(data => {
-          this.personSignedInInfo = data as Person;
+          this.personSignedInInfo = data as CompletePerson;
+          console.log(data);
+          console.log(this.personSignedInInfo);
         },
         (err) => console.log(err),
         () => {
         }
       );
-   }
+  }
+
+  addPersonProfile(newPerson: Person) {
+    const url =  this.mainUrl + `/person`;
+    const headersDict = {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headersDict)
+    };
+
+    this.http.post(url, newPerson )
+      .subscribe(data => {
+          const a = data as Person;
+          this.SIGNEDINPERSONID = a.personId;
+        },
+        (err) => console.log(err),
+        () => {
+        }
+      );
+  }
 
 }
