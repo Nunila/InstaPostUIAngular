@@ -48,20 +48,7 @@
       </ng-template>
       <div class="flex-row">
         <div class="flex-col col-6">
-          <!--<div class="form-field">-->
-            <!--<label>Username</label>-->
-            <!--<mat-form-field appearance="standard">-->
-              <!--<mat-label>Username</mat-label>-->
-              <!--<input matInput [(ngModel)]="getProfileInfo().userName" placeholder="username">-->
-            <!--</mat-form-field>-->
-          <!--</div>-->
-          <!--<div class="form-field">-->
-            <!--<label>First Name</label>-->
-            <!--<mat-form-field appearance="standard">-->
-              <!--<mat-label>First Name</mat-label>-->
-              <!--<input matInput [(ngModel)]="getProfileInfo().firstName" placeholder="firstname">-->
-            <!--</mat-form-field>-->
-          <!--</div>-->
+
           <mat-form-field appearance="standard">
             <mat-label>Username</mat-label>
             <input matInput readonly [(ngModel)]="getProfileInfo().username" placeholder="username">
@@ -74,18 +61,6 @@
             <mat-label>Last Name</mat-label>
             <input matInput [(ngModel)]="getProfileInfo().lastName" placeholder="last name">
           </mat-form-field>
-          <!--<div class="form-group row">-->
-            <!--<label for="username">Username:</label>-->
-            <!--<input type="text" class="form-control" [(ngModel)]="getProfileInfo().userName" id="username" placeholder="username">-->
-          <!--</div>-->
-          <!--<div class="form-group row">-->
-            <!--<label for="first">First Name:</label>-->
-            <!--<input type="text" class="form-control" [(ngModel)]="getProfileInfo().firstName" id="first" placeholder="first name">-->
-          <!--</div>-->
-          <!--<div class="form-group row">-->
-            <!--<label for="last">Last Name:</label>-->
-            <!--<input type="text" class="form-control" [(ngModel)]="getProfileInfo().lastName" id="last" placeholder="last name">-->
-          <!--</div>-->
         </div>
         <div class="flex-col col-6">
           <mat-form-field appearance="standard">
@@ -97,35 +72,16 @@
             <input matInput [(ngModel)]="getProfileInfo().email" placeholder="email">
           </mat-form-field>
 
-
-          <label>
-            Date Time:
-            <input [owlDateTimeTrigger]="dt" [owlDateTime]="dt">
-            <owl-date-time #dt></owl-date-time>
-          </label>
-
-
-
           <mat-form-field appearance="standard">
             <mat-label>Birthday</mat-label>
-            <input matInput [(ngModel)]="getProfileInfo().birthday" placeholder="first name">
+            <input matInput [owlDateTime]="dt" [owlDateTimeTrigger]="dt" [(ngModel)]="getProfileInfo().birthday" placeholder="birthday">
+            <owl-date-time [pickerType]="'calendar'" #dt></owl-date-time>
           </mat-form-field>
-          <!--<div class="form-group row">-->
-            <!--<label for="phone">Phone number:</label>-->
-            <!--<input type="text" class="form-control" [(ngModel)]="getProfileInfo().phonenumber" id="phone" placeholder="first name">-->
-          <!--</div>-->
-          <!--<div class="form-group row">-->
-            <!--<label for="email">Email:</label>-->
-            <!--<input type="text" class="form-control" [(ngModel)]="getProfileInfo().email" id="email" placeholder="email">-->
-          <!--</div>-->
-          <!--<div class="form-group row">-->
-            <!--<label for="birthday">Birthday:</label>-->
-            <!--<input type="date" class="form-control" [(ngModel)]="getProfileInfo().birthday" id="birthday" placeholder="birthday">-->
-          <!--</div>-->
         </div>
       </div>
       <button mat-raised-button (click)="saveProfile()">Save</button>
     </mat-tab>
+
   </mat-tab-group>
 </div>
 
@@ -223,7 +179,7 @@
           <mat-list-item *ngIf="homeService.flag === 'contact'">
             <mat-icon mat-list-icon>person_pin</mat-icon>
             <h4 mat-line>{{homeService.contactResult.firstName}} {{homeService.contactResult.lastName}}</h4>
-            <p mat-line> Phone Number: {{homeService.contactResult.phoneNumber}} </p>
+            <p mat-line> Phone Number: {{homeService.contactResult.phonenumber}} </p>
             <p mat-line> Email: {{homeService.contactResult.email}} </p>
           </mat-list-item>
           <mat-list-item *ngIf="homeService.flag != 'none' && homeService.flag !='contact'">
