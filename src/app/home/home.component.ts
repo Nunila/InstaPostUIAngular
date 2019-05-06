@@ -175,8 +175,10 @@ export class HomeComponent implements OnInit {
   saveProfile() {
     if (this.SIGNEDINPERSONID === 0) {
       this.homeService.addPersonProfile(this.newPerson);
-      console.log(this.newPerson);
       this.SIGNEDINPERSONID = this.homeService.SIGNEDINPERSONID;
+    }
+    else {
+      this.homeService.updatePersonProfile();
     }
   }
 

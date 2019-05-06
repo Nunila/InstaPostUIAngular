@@ -90,26 +90,19 @@
         <div class="flex-col col-6">
           <mat-form-field appearance="standard">
             <mat-label>Phone</mat-label>
-            <input matInput [(ngModel)]="getProfileInfo().phonenumber" placeholder="phonenumber">
+            <input matInput [(ngModel)]="getProfileInfo().phoneNumber" placeholder="phonenumber">
           </mat-form-field>
           <mat-form-field appearance="standard">
             <mat-label>Email</mat-label>
             <input matInput [(ngModel)]="getProfileInfo().email" placeholder="email">
           </mat-form-field>
 
-
-          <label>
-            Date Time:
-            <input [owlDateTimeTrigger]="dt" [owlDateTime]="dt">
-            <owl-date-time #dt></owl-date-time>
-          </label>
-
-
-
           <mat-form-field appearance="standard">
             <mat-label>Birthday</mat-label>
-            <input matInput [(ngModel)]="getProfileInfo().birthday" placeholder="first name">
+            <input matInput [owlDateTime]="dt" [owlDateTimeTrigger]="dt" [(ngModel)]="getProfileInfo().birthday" placeholder="birthday">
+            <owl-date-time [pickerType]="'calendar'" #dt></owl-date-time>
           </mat-form-field>
+
           <!--<div class="form-group row">-->
             <!--<label for="phone">Phone number:</label>-->
             <!--<input type="text" class="form-control" [(ngModel)]="getProfileInfo().phonenumber" id="phone" placeholder="first name">-->

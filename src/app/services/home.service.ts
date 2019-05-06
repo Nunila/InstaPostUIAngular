@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpHeaders, HttpClient} from '@angular/common/http';
 import {UserService} from './user.service';
+import {DatePipe} from '@angular/common';
 
 interface Chat {
   chatId: number;
@@ -50,7 +51,7 @@ export class HomeService {
   public contactResult;
   public flag = 'none';
 
-  constructor(private http: HttpClient, private userService: UserService) { }
+  constructor(private http: HttpClient, private userService: UserService, private datepipe: DatePipe) { }
 
   // ---------------------------Methods for Chats -----------------------------------//
 
@@ -226,7 +227,7 @@ export class HomeService {
     this.http.get(url, requestOptions)
       .subscribe(data => {
           this.personSignedInInfo = data as CompletePerson;
-          console.log(data);
+          this.personSignedInInfo.birthday = this.datepipe.transform(this.personSignedInInfo.birthday, 'yyyy-MM-dd');
           console.log(this.personSignedInInfo);
         },
         (err) => console.log(err),
@@ -248,6 +249,31 @@ export class HomeService {
     this.http.post(url, newPerson )
       .subscribe(data => {
           const a = data as Person;
+          this.SIGNEDINPERSONID = a.personId;
+        },
+        (err) => console.log(err),
+        () => {
+        }
+      );
+  }
+
+  updatePersonProfile() {
+    const url =  this.mainUrl + `/person/` + this.SIGNEDINPERSONID;
+    const headersDict = {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headersDict)
+    };
+
+    console.log(this.personSignedInInfo);
+    this.personSignedInInfo.birthday = this.datepipe.transform(this.personSignedInInfo.birthday, 'yyyy-MM-dd');
+    console.log(this.personSignedInInfo);
+
+    this.http.put(url, this.personSignedInInfo )
+      .subscribe(data => {
+          const a = data as CompletePerson;
           this.SIGNEDINPERSONID = a.personId;
         },
         (err) => console.log(err),

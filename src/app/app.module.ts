@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {DatePipe} from '@angular/common';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -57,7 +58,7 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
     OwlNativeDateTimeModule
 
   ],
-  providers: [PostService, ReplyService, HomeService, UserService],
+  providers: [PostService, ReplyService, HomeService, UserService, DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
