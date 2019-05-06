@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import {DatePipe} from "@angular/common";
 import {Router, ActivatedRoute} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
@@ -8,7 +8,8 @@ import {UserService, Person} from '../services/user.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
+  providers: [DatePipe]
 })
 export class LoginComponent implements OnInit {
 
@@ -24,6 +25,7 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private userService: UserService,
+    private datePipe: DatePipe
   ) {// go in if user logged in already
     if (localStorage.getItem('currentUserId') != null) {
       this.router.navigate(['/home']);
@@ -75,7 +77,7 @@ export class LoginComponent implements OnInit {
     this.person.lastName = this.sf.lastName.value;
     this.person.phoneNum = this.sf.phoneNum.value;
     this.person.email = this.sf.email.value;
-    this.person.birthday = this.sf.birthday.value;
+    this.person.birthday = this.datePipe.transform(this.sf.birthday.value, 'MM/DD/yyyy');
     this.userService.createPerson(this.person);
     this.router.navigate(['/home']);
   }
