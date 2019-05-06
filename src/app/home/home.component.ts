@@ -32,9 +32,17 @@ export class HomeComponent implements OnInit {
     email : ''
   };
   private newPerson ;
-
   private flag = false;
   resultContact;
+
+  myData = [
+    ['London', 8136000],
+    ['New York', 8538000],
+    ['Paris', 2244000],
+    ['Berlin', 3470000],
+    ['Kairo', 19500000],
+  ];
+  myColumnNames = ['City', 'Inhabitants'];
   ngOnInit() {
     this.SIGNEDINPERSONID = this.userService.getCurrentUser().personId;
     this.SIGNEDINUSERID = this.userService.getCurrentUser().userId;

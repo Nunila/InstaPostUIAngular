@@ -82,6 +82,13 @@
       <button mat-raised-button (click)="saveProfile()">Save</button>
     </mat-tab>
 
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">insert_chart</mat-icon>&#160; Dashboard
+      </ng-template>
+      <google-chart [type]="'BarChart'" [data]="myData" [columnNames]="myColumnNames" [title]="Test" ></google-chart>
+    </mat-tab>
+
   </mat-tab-group>
 </div>
 
