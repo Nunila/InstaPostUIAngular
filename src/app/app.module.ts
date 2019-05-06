@@ -23,6 +23,7 @@ import { PostComponent } from './post/post.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatListModule} from '@angular/material/list';
 import { LoginComponent } from './login/login.component';
+import {MatMenuModule} from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { LoginComponent } from './login/login.component';
     MatDividerModule,
     MatTabsModule,
     MatListModule,
+    MatMenuModule,
   ],
   providers: [PostService, ReplyService, HomeService],
   bootstrap: [AppComponent]

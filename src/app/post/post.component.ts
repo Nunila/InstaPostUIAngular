@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { PostService } from "../services/post.service";
 
 @Component({
@@ -7,6 +7,7 @@ import { PostService } from "../services/post.service";
   styleUrls: ['./post.component.css']
 })
 export class PostComponent implements OnInit {
+  @Input() chatId: number;
 
   constructor(private postService: PostService) {}
   private newPost = {
@@ -15,7 +16,7 @@ export class PostComponent implements OnInit {
   };
 
   ngOnInit() {
-    this.postService.getAllPostsFromDB();
+    this.postService.getPostsForChatIdFromDB(4);
     this.postService.getAllReactionsfromDB();
     this.postService.getAllRepliesFromDB();
   }

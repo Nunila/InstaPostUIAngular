@@ -7,6 +7,7 @@
       </ng-template>
       <mat-list>
         <button mat-raised-button data-toggle="modal" data-target="#addChat">Add Chat</button>
+        <button mat-button routerLink="/chat">Go to chat</button>
         <h3 mat-subheader>Chats</h3>
         <mat-list-item *ngFor="let chat of getChats()">
             <mat-icon mat-list-icon>group</mat-icon>

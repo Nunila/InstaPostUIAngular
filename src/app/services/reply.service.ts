@@ -15,7 +15,8 @@ interface Reply {
 })
 export class ReplyService {
 
-  mainUrl = `http://instapostdb.herokuapp.com/InstaPost`;
+  //mainUrl = `http://instapostdb.herokuapp.com/InstaPost`;
+  mainUrl = `http://localhost:5000/InstaPost`;
   private allReplies: Reply[] = new Array();
 
   constructor(private http: HttpClient) { }
@@ -24,7 +25,7 @@ export class ReplyService {
     const reply: Reply = {
       messageId: null,
       postId: newReply.postId,
-      userId: null,
+      userId: 1,
       content: newReply.content,
       messageDate: new Date().toString(),
       username: null

@@ -13,8 +13,10 @@ export class CommentComponent implements OnInit {
   constructor(private postService: PostService) { }
   private newReply= {
     postId: null,
-    userId: null,
-    content: null
+    userId: 1,
+    content: null,
+    messageDate: null,
+    username: 'New User'
   }
 
   ngOnInit() {
@@ -39,7 +41,7 @@ export class CommentComponent implements OnInit {
   addReply() {
     console.log(this.postId);
     this.newReply.postId = this.postId;
-    this.postService.addReply(this.newReply);
-    this.newReply.content='';
+    this.postService.addReplyToDB(this.newReply);
+    this.newReply.content=null;
   }
 }

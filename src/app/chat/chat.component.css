@@ -1,9 +1,22 @@
 .chat-header{
   background: lightgray;
+  /*position: fixed;*/
+  /*top: 0px;*/
+  padding-inline: 20px;
 }
 
 .chat-info{
-  align-items: start;
+  align: "left";
+  padding-left: 20px;
+}
+
+.chat-menu-button{
+  font-size: 50px;
+  display: inline-block;
+  padding: 10px;
+  align-self: flex-end;
+  height: 50%;
+  width: 50%;
 }
 
 .menu-icon{
@@ -22,6 +35,7 @@
   color: grey;
   height: 50%;
   width: 50%;
+  align-self: flex-end;
 
   /* Support for all WebKit browsers. */
   -webkit-font-smoothing: antialiased;
