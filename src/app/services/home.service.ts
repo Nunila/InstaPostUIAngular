@@ -8,7 +8,7 @@ interface Chat {
   ownerId: number;
 }
 
-interface Person {
+export interface Person {
   userId: number;
   personId: number;
   username: string;
