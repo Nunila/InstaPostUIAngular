@@ -1,44 +1,15 @@
 import { Injectable } from '@angular/core';
 import {HttpHeaders, HttpClient} from '@angular/common/http';
-
-interface Post {
-  postId: number;
-  chatId: number;
-  userId: number;
-  messageId: number;
-  photourl: string;
-  postDate: string;
-  content: string;
-  username: string;
-}
-
-// interface Reactions {
-//   type: string;
-//   messageId: number;
-//   count: number;
-// }
-
-interface Reactions {
-  messageId: number;
-  likes: number;
-  dislikes: number;
-}
-
-interface Reply {
-  messageId: number;
-  postId: number;
-  userId: number;
-  content: string;
-  messageDate: string;
-  username: string;
-}
+import {Chat, Reactions, Post, Reply} from './interfaces';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PostService {
 
-  //mainUrl = `http://instapostdb.herokuapp.com/InstaPost`;
+  constructor(private http: HttpClient) { }
+
+  // mainUrl = `http://instapostdb.herokuapp.com/InstaPost`;
   mainUrl = `http://localhost:5000/InstaPost`;
   private allPosts: Post[] = new Array();
   private allReactionsMap: Map<number, Reactions> = new Map();
@@ -47,19 +18,46 @@ export class PostService {
   private allRepliesMap: Map<number, Reply[]> = new Map();
   private updatedReplies: Reply[] = new Array();
 
-  constructor(private http: HttpClient) { }
+  private currentChat: Chat ;
 
   refresh() {
     this.allPosts = new Array();
     this.allReactionsMap = new Map();
     this.allRepliesMap = new Map();
 
-    this.getPostsForChatIdFromDB(4);
+    this.getPostsForChatIdFromDB(this.currentChat.chatId);
     this.getAllReactionsfromDB();
     this.getAllRepliesFromDB();
   }
 
-  //----------------------------POST SERVICES-------------------------------
+  setCurrentChat(chat: Chat) {
+    this.currentChat = chat;
+  }
+
+  getCurrentChat() {
+    return this.currentChat;
+  }
+
+  getInfoOfCurrentChat(chatId) {
+    const url =  this.mainUrl + `/chats/` + chatId;
+    const headersDict = {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headersDict)
+    };
+
+    this.http.get(url, requestOptions)
+      .subscribe(data => {
+          this.currentChat = data as Chat;
+        },
+        (err) => console.log(err),
+        () => {
+        }
+      );
+  }
+  // ----------------------------POST SERVICES-------------------------------
 
   addPost(newPost) {
     const post: Post = {
@@ -100,7 +98,7 @@ export class PostService {
       );
   }
 
-  getPostsForChatIdFromDB(chatId){
+  getPostsForChatIdFromDB(chatId) {
     const url =  this.mainUrl + `/posts/chat/` + chatId;
     const headersDict = {
       'Content-Type': 'application/json',
@@ -146,7 +144,7 @@ export class PostService {
     }
   }
 
-  addReplyToDB(newReply){
+  addReplyToDB(newReply) {
     const url =  this.mainUrl + `/messages/allreplies`;
     const headersDict = {
       'Content-Type': 'application/json',

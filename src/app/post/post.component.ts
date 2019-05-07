@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { PostService } from "../services/post.service";
+import { PostService } from '../services/post.service';
 
 @Component({
   selector: 'app-post',
@@ -16,7 +16,7 @@ export class PostComponent implements OnInit {
   };
 
   ngOnInit() {
-    this.postService.getPostsForChatIdFromDB(4);
+    this.postService.getPostsForChatIdFromDB(this.chatId);
     this.postService.getAllReactionsfromDB();
     this.postService.getAllRepliesFromDB();
   }

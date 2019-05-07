@@ -3,8 +3,8 @@
     <div class="panel-heading chat-header">
       <div class="row">
         <div class="chat-info">
-          <h3 align="left">Family Chat</h3>
-          <p>Chat for the Bryant and Jordan family.</p>
+          <h3 align="left">{{getCurrentChat().chatName}}</h3>
+          <p>{{getCurrentChat().creationDate | date : 'dd/MM/yyyy'}}</p>
         </div>
         <div align="right" class="col-sm-2">
           <button mat-icon-button class="chat-menu-button" [matMenuTriggerFor]="menu">
@@ -22,5 +22,5 @@
       </div>
     </div>
   </div>
-  <app-post [chatId]="chatId"></app-post>
+  <app-post [chatId]="CHATID"></app-post>
 </div>

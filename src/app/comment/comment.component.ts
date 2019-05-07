@@ -11,7 +11,7 @@ export class CommentComponent implements OnInit {
   @Input() postId: number;
 
   constructor(private postService: PostService) { }
-  private newReply= {
+  private newReply = {
     postId: null,
     userId: 1,
     content: null,
@@ -42,6 +42,6 @@ export class CommentComponent implements OnInit {
     console.log(this.postId);
     this.newReply.postId = this.postId;
     this.postService.addReplyToDB(this.newReply);
-    this.newReply.content=null;
+    this.newReply.content= null;
   }
 }

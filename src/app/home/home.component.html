@@ -1,5 +1,5 @@
 <div class="container outercontainer">
-
+<!--<button (click)="userService.logout()">logout </button>-->
   <mat-tab-group>
     <mat-tab>
       <ng-template mat-tab-label>
@@ -9,7 +9,8 @@
         <button mat-raised-button data-toggle="modal" data-target="#addChat">Add Chat</button>
         <button mat-button routerLink="/chat">Go to chat</button>
         <h3 mat-subheader>Chats</h3>
-        <mat-list-item *ngFor="let chat of getChats()">
+
+        <mat-list-item *ngFor="let chat of getChats()" [routerLink]="['/chat', chat.chatId, isUserOwnerOfChatRoute(chat.ownerId)]" (click)="postService.setCurrentChat(chat)">
             <mat-icon mat-list-icon>group</mat-icon>
             <h4 mat-line>{{chat.chatName}}</h4>
             <p mat-line> Creation Date: {{chat.creationDate | date}} </p>
@@ -46,9 +47,49 @@
       <ng-template mat-tab-label>
         <mat-icon class="example-tab-icon">person_outline</mat-icon>&#160; Profile
       </ng-template>
+      <div class="flex-row">
+        <div class="flex-col col-6">
 
-      Content 3
+          <mat-form-field appearance="standard">
+            <mat-label>Username</mat-label>
+            <input matInput readonly [(ngModel)]="getProfileInfo().username" placeholder="username">
+          </mat-form-field>
+          <mat-form-field appearance="standard">
+            <mat-label>First Name</mat-label>
+            <input matInput [(ngModel)]="getProfileInfo().firstName" placeholder="first name">
+          </mat-form-field>
+          <mat-form-field appearance="standard">
+            <mat-label>Last Name</mat-label>
+            <input matInput [(ngModel)]="getProfileInfo().lastName" placeholder="last name">
+          </mat-form-field>
+        </div>
+        <div class="flex-col col-6">
+          <mat-form-field appearance="standard">
+            <mat-label>Phone</mat-label>
+            <input matInput [(ngModel)]="getProfileInfo().phonenumber" placeholder="phonenumber">
+          </mat-form-field>
+          <mat-form-field appearance="standard">
+            <mat-label>Email</mat-label>
+            <input matInput [(ngModel)]="getProfileInfo().email" placeholder="email">
+          </mat-form-field>
+
+          <mat-form-field appearance="standard">
+            <mat-label>Birthday</mat-label>
+            <input matInput [owlDateTime]="dt" [owlDateTimeTrigger]="dt" [(ngModel)]="getProfileInfo().birthday" placeholder="birthday">
+            <owl-date-time [pickerType]="'calendar'" #dt></owl-date-time>
+          </mat-form-field>
+        </div>
+      </div>
+      <button mat-raised-button (click)="saveProfile()">Save</button>
     </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">insert_chart</mat-icon>&#160; Dashboard
+      </ng-template>
+      <google-chart [type]="'BarChart'" [data]="myData" [columnNames]="myColumnNames" [title]="Test" ></google-chart>
+    </mat-tab>
+
   </mat-tab-group>
 </div>
 
@@ -146,7 +187,7 @@
           <mat-list-item *ngIf="homeService.flag === 'contact'">
             <mat-icon mat-list-icon>person_pin</mat-icon>
             <h4 mat-line>{{homeService.contactResult.firstName}} {{homeService.contactResult.lastName}}</h4>
-            <p mat-line> Phone Number: {{homeService.contactResult.phoneNumber}} </p>
+            <p mat-line> Phone Number: {{homeService.contactResult.phonenumber}} </p>
             <p mat-line> Email: {{homeService.contactResult.email}} </p>
           </mat-list-item>
           <mat-list-item *ngIf="homeService.flag != 'none' && homeService.flag !='contact'">
