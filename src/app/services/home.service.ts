@@ -3,6 +3,8 @@ import {HttpHeaders, HttpClient} from '@angular/common/http';
 import {UserService} from './user.service';
 import {DatePipe} from '@angular/common';
 import {Chat, Person, CompletePerson} from './interfaces';
+import Swal from 'sweetalert2';
+
 
 @Injectable({
   providedIn: 'root'
@@ -223,6 +225,11 @@ export class HomeService {
         },
         (err) => console.log(err),
         () => {
+          Swal.fire(
+            'Information Saved!',
+            'Your information is now saved.',
+            'success'
+          );
         }
       );
   }
@@ -248,6 +255,11 @@ export class HomeService {
         },
         (err) => console.log(err),
         () => {
+          Swal.fire(
+            'Information Updated!',
+            'Your information is now updated.',
+            'success'
+          );
         }
       );
   }
