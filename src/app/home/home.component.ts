@@ -9,6 +9,12 @@ import {UserService} from '../services/user.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
+
+// @Component({
+//   selector: 'app-contact-list',
+//   templateUrl: './chatL',
+//   styleUrls: ['./chat.component.css']
+// })
 export class HomeComponent implements OnInit {
 
   constructor(private postService: PostService, private homeService: HomeService, private userService: UserService) {}
@@ -49,7 +55,7 @@ export class HomeComponent implements OnInit {
 
     this.homeService.getChatsOfUserFromDB(this.SIGNEDINUSERID);
     this.homeService.getContactsOfUserFromDB(this.SIGNEDINPERSONID);
-    this.homeService.getPersonInfoOfSignedInUserFromDB();
+    this.homeService.getPersonInfoOfSignedInUserFromDB(this.SIGNEDINPERSONID);
     this.newPerson = {
       userId: this.SIGNEDINUSERID,
       personId: 0,

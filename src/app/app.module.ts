@@ -29,6 +29,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { GoogleChartsModule } from 'angular-google-charts';
+import { ToolbarComponent } from './toolbar/toolbar.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { GoogleChartsModule } from 'angular-google-charts';
     CommentComponent,
     PostComponent,
     LoginComponent,
+    ToolbarComponent,
   ],
 
   imports: [

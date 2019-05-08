@@ -22,9 +22,22 @@ export class HomeService {
 
   public contactResult;
   public flag = 'none';
+  public selectedComponent = 'chats';
 
   constructor(private http: HttpClient, private userService: UserService, private datepipe: DatePipe) { }
 
+
+  logout() {
+    this.SIGNEDINPERSONID = 0;
+    this.SIGNEDINUSERID = 0;
+    this.personSignedInInfo = null;
+    this.flag = 'none';
+    this.selectedComponent = 'chats';
+  }
+
+  setSelected(a) {
+    this.selectedComponent = a;
+  }
   // ---------------------------Methods for Chats -----------------------------------//
 
   getChatsOfUser() {
@@ -186,8 +199,8 @@ export class HomeService {
     return this.personSignedInInfo;
   }
 
-  getPersonInfoOfSignedInUserFromDB() {
-    const url =  this.mainUrl + `/person/` + this.SIGNEDINPERSONID + `/complete`;
+  getPersonInfoOfSignedInUserFromDB(pid) {
+    const url =  this.mainUrl + `/person/` + pid + `/complete`;
     const headersDict = {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache'

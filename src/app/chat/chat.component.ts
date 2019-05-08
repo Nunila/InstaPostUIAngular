@@ -7,6 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css']
 })
+
 export class ChatComponent implements OnInit {
   @Input() chatId: number;
 
