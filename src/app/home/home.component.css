@@ -26,6 +26,21 @@ mat-list-item{
   margin: 15px;
 }
 
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: 2%;
+  justify-content: space-around;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  min-width: 200px;
+}
+
 .flex-wrap {
   display: flex;
   flex-wrap: nowrap;
@@ -48,4 +63,15 @@ mat-list-item{
 .outercontainer {
   justify-content: center;
   align-content: center;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+label {
+  align-self: center;
 }

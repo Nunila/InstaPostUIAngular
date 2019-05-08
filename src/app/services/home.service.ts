@@ -1,23 +1,26 @@
 import { Injectable } from '@angular/core';
 import {HttpHeaders, HttpClient} from '@angular/common/http';
+import {UserService} from './user.service';
+import {DatePipe} from '@angular/common';
+import {Chat, Person, CompletePerson} from './interfaces';
 
-interface Chat {
-  chatId: number;
-  chatName: string;
-  creationDate: string;
-  ownerId: number;
-}
+// interface Chat {
+//   chatId: number;
+//   chatName: string;
+//   creationDate: string;
+//   ownerId: number;
+// }
 
-export interface Person {
-  userId: number;
-  personId: number;
-  username: string;
-  firstName: string;
-  lastName: string;
-  birthday: string;
-  phonenumber: string;
-  email: string;
-}
+// export interface Person {
+//   userId: number;
+//   personId: number;
+//   username: string;
+//   firstName: string;
+//   lastName: string;
+//   birthday: string;
+//   phonenumber: string;
+//   email: string;
+// }
 
 @Injectable({
   providedIn: 'root'
@@ -28,15 +31,15 @@ export class HomeService {
   mainUrl = `http://localhost:5000/InstaPost`;
 
   private chatsOfUser: Chat[] = [];
+  public SIGNEDINUSERID = this.userService.getCurrentUser().userId;
+  public SIGNEDINPERSONID = this.userService.getCurrentUser().personId;
   private contactsOfUser: Person[] = [];
-  private personSignedInInfo: Person;
-  public SIGNEDINUSERID = 1;
-  public SIGNEDINPERSONID = 1;
+  private personSignedInInfo: CompletePerson;
 
   public contactResult;
   public flag = 'none';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private userService: UserService, private datepipe: DatePipe) { }
 
   // ---------------------------Methods for Chats -----------------------------------//
 
@@ -82,8 +85,6 @@ export class HomeService {
         },
         (err) => console.log(err),
         () => {
-          // t his.getChatsOfUserFromDB(this.SIGNEDINUSERID);
-
         }
       );
   }
@@ -96,7 +97,6 @@ export class HomeService {
         },
         (err) => console.log(err),
         () => {
-          // his.getChatsOfUserFromDB(this.SIGNEDINUSERID);
           const i = this.chatsOfUser.findIndex(chat => chat.chatId === chatid);
           this.chatsOfUser.splice(i, 1);
         }
@@ -203,7 +203,7 @@ export class HomeService {
   }
 
   getPersonInfoOfSignedInUserFromDB() {
-    const url =  this.mainUrl + `/person/` + this.SIGNEDINPERSONID;
+    const url =  this.mainUrl + `/person/` + this.SIGNEDINPERSONID + `/complete`;
     const headersDict = {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache'
@@ -214,12 +214,60 @@ export class HomeService {
 
     this.http.get(url, requestOptions)
       .subscribe(data => {
-          this.personSignedInInfo = data as Person;
+          this.personSignedInInfo = data as CompletePerson;
+          this.personSignedInInfo.birthday = this.datepipe.transform(this.personSignedInInfo.birthday, 'yyyy-MM-dd');
+          console.log(this.personSignedInInfo);
         },
         (err) => console.log(err),
         () => {
         }
       );
-   }
+  }
+
+  addPersonProfile(newPerson: Person) {
+    const url =  this.mainUrl + `/person`;
+    const headersDict = {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headersDict)
+    };
+
+    this.http.post(url, newPerson )
+      .subscribe(data => {
+          const a = data as Person;
+          this.SIGNEDINPERSONID = a.personId;
+        },
+        (err) => console.log(err),
+        () => {
+        }
+      );
+  }
+
+  updatePersonProfile() {
+    const url =  this.mainUrl + `/person/` + this.SIGNEDINPERSONID;
+    const headersDict = {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headersDict)
+    };
+
+    console.log(this.personSignedInInfo);
+    this.personSignedInInfo.birthday = this.datepipe.transform(this.personSignedInInfo.birthday, 'yyyy-MM-dd');
+    console.log(this.personSignedInInfo);
+
+    this.http.put(url, this.personSignedInInfo )
+      .subscribe(data => {
+          const a = data as CompletePerson;
+          this.SIGNEDINPERSONID = a.personId;
+        },
+        (err) => console.log(err),
+        () => {
+        }
+      );
+  }
 
 }

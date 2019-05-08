@@ -3,8 +3,8 @@
     <div class="panel-heading chat-header">
       <div class="row">
         <div class="chat-info">
-          <h3 align="left">Family Chat</h3>
-          <p>Chat for the Bryant and Jordan family.</p>
+          <h3 align="left">{{getCurrentChat().chatName}}</h3>
+          <p>{{getCurrentChat().creationDate | date : 'dd/MM/yyyy'}}</p>
         </div>
         <div align="right" class="col-sm-2">
           <button mat-icon-button class="chat-menu-button" [matMenuTriggerFor]="menu">
@@ -22,7 +22,7 @@
       </div>
     </div>
   </div>
-  <app-post [chatId]="chatId"></app-post>
+  <app-post [chatId]="CHATID"></app-post>
 </div>
 
 
@@ -38,32 +38,27 @@
         </button>
       </div>
       <div class="modal-body flex-form">
-        <mat-table [dataSource]="contactsArray" class="mat-elevation-z8">
-
-          <!-------Checkbox Column ----------->
-          <ng-container matColumnDef="checkbox">
-            <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell>
-              <mat-checkbox> </mat-checkbox>
-            </td>
-          </ng-container>
-
-          <!------Contact Name---------->
-          <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef> Name </th>
-            <td mat-cell *matCellDef="let contact"> {{contact.firstName}} {{contact.lastName}} </td>
-          </ng-container>
-
-          <!------Phone Number-------->
-          <ng-container matColumnDef="phoneNumber">
-            <th mat-header-cell *matHeaderCellDef> Phone Number </th>
-            <td mat-cell *matCellDef="let contact"> {{contact.phonenumber}} </td>
-          </ng-container>
-
-          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-
-        </mat-table>
+        <p>Select the contacts you want to add to *CHAT NAME*</p>
+        <table class="table">
+          <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Name</th>
+            <th scope="col">Phone Number</th>
+            <th scope="col">Email</th>
+          </tr>
+          </thead>
+          <tbody *ngFor="let contact of contactsArray">
+            <tr>
+              <td>
+                <mat-checkbox (change)="boxchecked($event)" value="{{contact.userId}}"> </mat-checkbox>
+              </td>
+              <td>{{contact.firstName}} {{contact.lastName}}</td>
+              <td>{{contact.phonenumber}}</td>
+              <td>{{contact.email}}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
