@@ -25,8 +25,8 @@ export class PostComponent implements OnInit {
   }
 
   private newPost = {
-    chatId: this.chatId,
-    userId: this.SIGNEDINUSERID,
+    chatId: null,
+    userId: null,
     src: null,
     content: null
   };
@@ -61,7 +61,10 @@ export class PostComponent implements OnInit {
   }
 
   addPost() {
-    this.postService.addPost(this.newPost);
+    this.newPost.chatId = this.chatId;
+    this.newPost.userId = this.SIGNEDINUSERID;
+    console.log(this.newPost.chatId);
+    this.postService.addPostToDB(this.newPost);
     this.newPost.src = null;
     this.newPost.content = null;
   }

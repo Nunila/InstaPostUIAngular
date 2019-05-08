@@ -74,7 +74,25 @@ export class PostService {
   }
 
   addPostToDB(newPost){
-    
+    const url =  this.mainUrl + `/posts`;
+    const headersDict = {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headersDict)
+    };
+    console.log(newPost);
+
+    this.http.post(url, newPost).subscribe(data => {
+      },
+      (err) => console.log(err),
+      () => {
+        // t his.getChatsOfUserFromDB(this.SIGNEDINUSERID);
+
+      }
+    );
+
   }
 
   getAllPosts() {
