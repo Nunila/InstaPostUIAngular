@@ -41,21 +41,17 @@ export class HomeComponent implements OnInit {
   private flag = false;
   resultContact;
 
-  myData = [
-    ['London', 8136000],
-    ['New York', 8538000],
-    ['Paris', 2244000],
-    ['Berlin', 3470000],
-    ['Kairo', 19500000],
-  ];
-  myColumnNames = ['City', 'Inhabitants'];
+
   ngOnInit() {
     this.SIGNEDINPERSONID = this.userService.getCurrentUser().personId;
     this.SIGNEDINUSERID = this.userService.getCurrentUser().userId;
+    this.homeService.SIGNEDINUSERID = this.SIGNEDINUSERID;
+    this.homeService.SIGNEDINPERSONID = this.SIGNEDINPERSONID;
 
     this.homeService.getChatsOfUserFromDB(this.SIGNEDINUSERID);
     this.homeService.getContactsOfUserFromDB(this.SIGNEDINPERSONID);
     this.homeService.getPersonInfoOfSignedInUserFromDB(this.SIGNEDINPERSONID);
+
     this.newPerson = {
       userId: this.SIGNEDINUSERID,
       personId: 0,

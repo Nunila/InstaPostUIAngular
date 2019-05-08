@@ -14,6 +14,8 @@ import { LoginComponent } from './login/login.component';
 import {UserService} from './services/user.service';
 import { ChatComponent } from './chat/chat.component';
 import { CommentComponent } from './comment/comment.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { ToolbarComponent } from './toolbar/toolbar.component';
 
 import {MatCardModule} from '@angular/material/card';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -29,7 +31,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { GoogleChartsModule } from 'angular-google-charts';
-import { ToolbarComponent } from './toolbar/toolbar.component';
+import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -40,6 +42,7 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
     PostComponent,
     LoginComponent,
     ToolbarComponent,
+    DashboardComponent,
   ],
 
   imports: [
@@ -64,7 +67,8 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
     MatDatepickerModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
-    GoogleChartsModule
+    GoogleChartsModule,
+    MatSelectModule
 
   ],
   providers: [PostService, ReplyService, HomeService, UserService, DatePipe],

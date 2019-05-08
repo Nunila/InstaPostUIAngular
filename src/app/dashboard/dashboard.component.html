@@ -1,0 +1,18 @@
+
+<mat-form-field>
+  <mat-label>Select a statistic</mat-label>
+  <mat-select [(value)]="dashboardService.selectedStatistic">
+    <mat-option value="trending#">Trending Hashtag</mat-option>
+    <mat-option value="postsPerDay">Posts Per Day</mat-option>
+    <mat-option value="repliesPerDay">Replies Per Day</mat-option>
+    <mat-option value="likesPerDay">Likes Per Day</mat-option>
+    <mat-option value="dislikesPerDay">Dislikes Per Day</mat-option>
+    <mat-option value="activeuser">Most active users Per Day</mat-option>
+    <mat-option value="postUser">Posts Per Day of Given User</mat-option>
+    <mat-option value="repliesPost">Replies to a Given Post</mat-option>
+    <mat-option value="likesPost">Likes to a Given Post</mat-option>
+    <mat-option value="dislikesPost">Dislikes to a Given Post</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<google-chart [type]="'BarChart'" [data]="myData" [columnNames]="myColumnNames" title="Test" ></google-chart>
