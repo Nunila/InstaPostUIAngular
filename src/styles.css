@@ -4,3 +4,34 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.font {
+  font-family: 'Baloo Chettan', cursive;
+}
+
+@media only screen and (max-width: 1000px) {
+  .laptop {
+    display: none !important;
+  }
+
+  .mobile {
+    display: block !important;
+  }
+}
+@media only screen and (min-width: 1001px) {
+  .laptop {
+    display: block !important;
+  }
+
+  .mobile {
+    display: none !important;
+  }
+}
+
+.background {
+  /*background: #70e1f5;  !* fallback for old browsers *!*/
+  background: #00808060;
+  /*background: -webkit-linear-gradient(to bottom, #ffd194, #70e1f5);  !* Chrome 10-25, Safari 5.1-6 *!*/
+  /*background: linear-gradient(to bottom, #ffd194, #70e1f5); !* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ *!*/
+  background-size: cover;
+}
