@@ -35,6 +35,7 @@ export class HomeService {
   public SIGNEDINPERSONID = this.userService.getCurrentUser().personId;
   private contactsOfUser: Person[] = [];
   private personSignedInInfo: CompletePerson;
+  private usersInChat: Person[] =[];
 
   public contactResult;
   public flag = 'none';
@@ -103,6 +104,32 @@ export class HomeService {
       );
   }
 
+  getUsersInChatFromDB(chatId){
+    const url =  this.mainUrl + `/users/chat/` + chatId;
+    const headersDict = {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headersDict)
+    };
+
+    this.http.get(url, requestOptions)
+      .subscribe(data => {
+          this.usersInChat = data as Person[];
+          console.log(this.usersInChat)
+        },
+        (err) => console.log(err),
+        () => {
+        }
+      );
+  }
+
+  getUsersInChat(){
+    return this.usersInChat;
+
+  }
+
   // ---------------------------Methods for Contacts -----------------------------------//
 
   getContactsOfUser() {
@@ -127,6 +154,47 @@ export class HomeService {
         () => {
         }
       );
+  }
+
+  getContactsOfUserNotInChat(userId: number, chatId: number){
+    const url =  this.mainUrl + '/notparticipants/person/'+userId+'/chat/'+chatId;
+    const headersDict = {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headersDict)
+    };
+
+    this.http.get(url, requestOptions)
+      .subscribe(data => {
+          this.contactsOfUser = data as Person[];
+          console.log(this.contactsOfUser);
+        },
+        (err) => console.log(err),
+        () => {
+        }
+      );
+  }
+
+  addParticipantsToChat(participants, chatId){
+    const url =  this.mainUrl + '/addparticipants/chat/'+chatId;
+    const headersDict = {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headersDict)
+    };
+
+    this.http.post(url, participants).subscribe(data => {
+      },
+      (err) => console.log(err),
+      () => {
+        // t his.getChatsOfUserFromDB(this.SIGNEDINUSERID);
+
+      }
+    );
   }
 
   searchForContact(possibleContact) {
