@@ -2,37 +2,9 @@ import { Injectable } from '@angular/core';
 import {HttpHeaders, HttpClient} from '@angular/common/http';
 import {UserService} from './user.service';
 import {DatePipe} from '@angular/common';
+import {Chat, Person, CompletePerson} from './interfaces';
+import Swal from 'sweetalert2';
 
-interface Chat {
-  chatId: number;
-  chatName: string;
-  creationDate: string;
-  ownerId: number;
-}
-
-interface Person {
-  userId: number;
-  personId: number;
-  userName: string;
-  firstName: string;
-  lastName: string;
-  birthday: string;
-  phonenumber: string;
-  email: string;
-}
-
-interface CompletePerson {
-  userId: number;
-  personId: number;
-  userName: string;
-  firstName: string;
-  lastName: string;
-  birthday: string;
-  phonenumber: string;
-  email: string;
-  username: string;
-  password: string;
-}
 
 @Injectable({
   providedIn: 'root'
@@ -50,9 +22,22 @@ export class HomeService {
 
   public contactResult;
   public flag = 'none';
+  public selectedComponent = 'chats';
 
   constructor(private http: HttpClient, private userService: UserService, private datepipe: DatePipe) { }
 
+
+  logout() {
+    this.SIGNEDINPERSONID = 0;
+    this.SIGNEDINUSERID = 0;
+    this.personSignedInInfo = null;
+    this.flag = 'none';
+    this.selectedComponent = 'chats';
+  }
+
+  setSelected(a) {
+    this.selectedComponent = a;
+  }
   // ---------------------------Methods for Chats -----------------------------------//
 
   getChatsOfUser() {
@@ -214,8 +199,8 @@ export class HomeService {
     return this.personSignedInInfo;
   }
 
-  getPersonInfoOfSignedInUserFromDB() {
-    const url =  this.mainUrl + `/person/` + this.SIGNEDINPERSONID + `/complete`;
+  getPersonInfoOfSignedInUserFromDB(pid) {
+    const url =  this.mainUrl + `/person/` + pid + `/complete`;
     const headersDict = {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache'
@@ -253,6 +238,11 @@ export class HomeService {
         },
         (err) => console.log(err),
         () => {
+          Swal.fire(
+            'Information Saved!',
+            'Your information is now saved.',
+            'success'
+          );
         }
       );
   }
@@ -278,6 +268,11 @@ export class HomeService {
         },
         (err) => console.log(err),
         () => {
+          Swal.fire(
+            'Information Updated!',
+            'Your information is now updated.',
+            'success'
+          );
         }
       );
   }

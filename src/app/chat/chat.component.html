@@ -1,9 +1,29 @@
 
+<app-toolbar></app-toolbar>
 
 <div class="container">
-  <h2>Panel Heading</h2>
   <div class="panel panel-default">
-    <div class="panel-heading">Panel Heading</div>
-    <div class="panel-body">Panel Content</div>
+    <div class="panel-heading chat-header">
+      <div class="row">
+        <div class="chat-info">
+          <h3 align="left">{{getCurrentChat().chatName}}</h3>
+          <p>{{getCurrentChat().creationDate | date : 'dd/MM/yyyy'}}</p>
+        </div>
+        <div align="right" class="col-sm-2">
+          <button mat-icon-button class="chat-menu-button" [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item>
+              <span>Add Participants</span>
+            </button>
+            <button mat-menu-item>
+              <span>Remove Participants</span>
+            </button>
+          </mat-menu>
+        </div>
+      </div>
+    </div>
   </div>
+  <app-post [chatId]="CHATID"></app-post>
 </div>

@@ -1,43 +1,15 @@
 import { Injectable } from '@angular/core';
 import {HttpHeaders, HttpClient} from '@angular/common/http';
-
-interface Post {
-  postId: number;
-  chatId: number;
-  userId: number;
-  messageId: number;
-  photourl: string;
-  postDate: string;
-  content: string;
-  username: string;
-}
-
-// interface Reactions {
-//   type: string;
-//   messageId: number;
-//   count: number;
-// }
-
-interface Reactions {
-  messageId: number;
-  likes: number;
-  dislikes: number;
-}
-
-interface Reply {
-  messageId: number;
-  postId: number;
-  userId: number;
-  content: string;
-  messageDate: string;
-  username: string;
-}
+import {Chat, Reactions, Post, Reply} from './interfaces';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PostService {
 
+  constructor(private http: HttpClient) { }
+
+  // mainUrl = `http://instapostdb.herokuapp.com/InstaPost`;
   mainUrl = `http://localhost:5000/InstaPost`;
   private allPosts: Post[] = new Array();
   private allReactionsMap: Map<number, Reactions> = new Map();
@@ -46,17 +18,46 @@ export class PostService {
   private allRepliesMap: Map<number, Reply[]> = new Map();
   private updatedReplies: Reply[] = new Array();
 
-  constructor(private http: HttpClient) { }
+  private currentChat: Chat ;
 
   refresh() {
     this.allPosts = new Array();
     this.allReactionsMap = new Map();
     this.allRepliesMap = new Map();
 
-    this.getAllPostsFromDB();
+    this.getPostsForChatIdFromDB(this.currentChat.chatId);
     this.getAllReactionsfromDB();
     this.getAllRepliesFromDB();
   }
+
+  setCurrentChat(chat: Chat) {
+    this.currentChat = chat;
+  }
+
+  getCurrentChat() {
+    return this.currentChat;
+  }
+
+  getInfoOfCurrentChat(chatId) {
+    const url =  this.mainUrl + `/chats/` + chatId;
+    const headersDict = {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headersDict)
+    };
+
+    this.http.get(url, requestOptions)
+      .subscribe(data => {
+          this.currentChat = data as Chat;
+        },
+        (err) => console.log(err),
+        () => {
+        }
+      );
+  }
+  // ----------------------------POST SERVICES-------------------------------
 
   addPost(newPost) {
     const post: Post = {
@@ -70,35 +71,6 @@ export class PostService {
       username: 'ANewUser'
     };
     this.allPosts.push(post);
-  }
-
-  addReply(newReply) {
-    const reply: Reply = {
-      messageId: null,
-      postId: newReply.postId,
-      userId: null,
-      content: newReply.content,
-      messageDate: new Date().toString(),
-      username: 'New User'
-    };
-    let replies: Reply[] = new Array();
-    if (!this.allRepliesMap.has(reply.postId)) {
-      replies.push(reply);
-      this.allRepliesMap.set(reply.postId, replies);
-    } else{
-      replies = this.allRepliesMap.get(reply.postId);
-      replies.push(reply);
-      this.allRepliesMap.set(reply.postId, replies);
-    }
-  }
-  addReaction(messageId, likeordislike) {
-    let old = this.allReactionsMap.get(messageId);
-    if (likeordislike === 'like') {
-      old.likes += 1;
-    } else {
-      old.dislikes += 1;
-    }
-    this.allReactionsMap.set(messageId, old);
   }
 
   getAllPosts() {
@@ -117,25 +89,17 @@ export class PostService {
 
     this.http.get(url, requestOptions)
       .subscribe(data => {
-        this.allPosts = data as Post[];
-        console.log(this.allPosts);
-      },
+          this.allPosts = data as Post[];
+          console.log(this.allPosts);
+        },
         (err) => console.log(err),
         () => {
         }
-    );
+      );
   }
 
-  getRepliesMap(postid) {
-    if (this.allRepliesMap.has(postid)) {
-      return this.allRepliesMap.get(postid);
-    } else {
-      return 0;
-    }
-  }
-
-  getAllReactionsfromDB() {
-    const url =  this.mainUrl + `/reactionsPerMessage`;
+  getPostsForChatIdFromDB(chatId) {
+    const url =  this.mainUrl + `/posts/chat/` + chatId;
     const headersDict = {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache'
@@ -146,16 +110,69 @@ export class PostService {
 
     this.http.get(url, requestOptions)
       .subscribe(data => {
-        const reactions = data as Reactions[];
-        reactions.forEach(reaction => {
-            this.allReactionsMap.set(reaction.messageId, reaction);
-        });
+          this.allPosts = data as Post[];
+          console.log(this.allPosts);
         },
         (err) => console.log(err),
         () => {
-          console.log(this.allReactionsMap);
         }
       );
+  }
+
+  //---------------------------------REPLY SERVICES-------------------------------------------
+
+
+  addReply(newReply) {
+    const reply: Reply = {
+      messageId: null,
+      postId: newReply.postId,
+      userId: 1,
+      content: newReply.content,
+      messageDate: new Date().toString(),
+      username: 'New User'
+    };
+    let replies: Reply[] = new Array();
+    if (!this.allRepliesMap.has(reply.postId)) {
+      this.addReplyToDB(reply);
+      this.allReplies.push(reply);
+      this.allRepliesMap.set(reply.postId, replies);
+    } else{
+      replies = this.allRepliesMap.get(reply.postId);
+      this.addReplyToDB(reply);
+      this.allReplies.push(reply);
+      this.allRepliesMap.set(reply.postId, replies);
+    }
+  }
+
+  addReplyToDB(newReply) {
+    const url =  this.mainUrl + `/messages/allreplies`;
+    const headersDict = {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headersDict)
+    };
+    console.log(newReply);
+
+    this.http.post(url, newReply).subscribe(data => {
+        // const a = data as Reply;
+        //   let replies: Reply[] = new Array();
+        //   if (!this.allRepliesMap.has(a.postId)){
+        //     this.allReplies.push({messageId: a.messageId, postId: a.postId, userId: a.userId, content: a.content, messageDate: a.messageDate, username: newReply.username});
+        //     this.allRepliesMap.set(a.postId, replies);
+        //   } else{
+        //     replies = this.allRepliesMap.get(a.postId);
+        //     this.allReplies.push({messageId: a.messageId, postId: a.postId, userId: a.userId, content: a.content, messageDate: a.messageDate, username: newReply.username});
+        //     this.allRepliesMap.set(a.postId, replies);
+        //   }
+      },
+      (err) => console.log(err),
+      () => {
+        // t his.getChatsOfUserFromDB(this.SIGNEDINUSERID);
+
+      }
+    );
   }
 
   getAllRepliesFromDB() {
@@ -192,13 +209,51 @@ export class PostService {
         }
       );
   }
-  postHasReplies(postId) {
-    if (this.allRepliesMap.has(postId)) {
-      return true;
+
+  getRepliesMap(postid) {
+    if (this.allRepliesMap.has(postid)) {
+      return this.allRepliesMap.get(postid);
     } else {
-      return false;
+      return 0;
     }
   }
+
+  //-------------------------------------REACTIONS SERVICES-------------------------------------
+
+  addReaction(messageId, likeordislike) {
+    let old = this.allReactionsMap.get(messageId);
+    if (likeordislike === 'like') {
+      old.likes += 1;
+    } else {
+      old.dislikes += 1;
+    }
+    this.allReactionsMap.set(messageId, old);
+  }
+
+  getAllReactionsfromDB() {
+    const url =  this.mainUrl + `/reactionsPerMessage`;
+    const headersDict = {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headersDict)
+    };
+
+    this.http.get(url, requestOptions)
+      .subscribe(data => {
+        const reactions = data as Reactions[];
+        reactions.forEach(reaction => {
+            this.allReactionsMap.set(reaction.messageId, reaction);
+        });
+        },
+        (err) => console.log(err),
+        () => {
+          console.log(this.allReactionsMap);
+        }
+      );
+  }
+
   getReactionsMap(messageid) {
     if (this.allReactionsMap.get(messageid)) {
       return this.allReactionsMap.get(messageid);

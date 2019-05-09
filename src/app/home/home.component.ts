@@ -9,6 +9,12 @@ import {UserService} from '../services/user.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
+
+// @Component({
+//   selector: 'app-contact-list',
+//   templateUrl: './chatL',
+//   styleUrls: ['./chat.component.css']
+// })
 export class HomeComponent implements OnInit {
 
   constructor(private postService: PostService, private homeService: HomeService, private userService: UserService) {}
@@ -32,16 +38,20 @@ export class HomeComponent implements OnInit {
     email : ''
   };
   private newPerson ;
-
   private flag = false;
   resultContact;
+
+
   ngOnInit() {
     this.SIGNEDINPERSONID = this.userService.getCurrentUser().personId;
     this.SIGNEDINUSERID = this.userService.getCurrentUser().userId;
+    this.homeService.SIGNEDINUSERID = this.SIGNEDINUSERID;
+    this.homeService.SIGNEDINPERSONID = this.SIGNEDINPERSONID;
 
     this.homeService.getChatsOfUserFromDB(this.SIGNEDINUSERID);
     this.homeService.getContactsOfUserFromDB(this.SIGNEDINPERSONID);
-    this.homeService.getPersonInfoOfSignedInUserFromDB();
+    this.homeService.getPersonInfoOfSignedInUserFromDB(this.SIGNEDINPERSONID);
+
     this.newPerson = {
       userId: this.SIGNEDINUSERID,
       personId: 0,
@@ -64,6 +74,11 @@ export class HomeComponent implements OnInit {
 
   isUserOwnerOfChat(ownerId) {
     return ownerId === this.SIGNEDINUSERID;
+  }
+
+  isUserOwnerOfChatRoute(ownerId) {
+    if (this.isUserOwnerOfChat(ownerId))  return 'owner';
+    else return 'member';
   }
 
   getChats() {
