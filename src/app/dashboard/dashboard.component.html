@@ -106,7 +106,7 @@
     <mat-form-field style="margin-top: 2%; width:100%">
       <mat-label>Select a user</mat-label>
       <mat-select [(value)]="dashboardService.selectedUser" (selectionChange)="dashboardService.getPostsPerDayOfUser()">
-        <mat-option *ngFor="let contact of homeService.getContactsOfUser()" [value]="contact.userId">{{contact.username}}</mat-option>
+        <mat-option *ngFor="let contact of homeService.getContactsOfUser()" [value]="contact.userId">{{contact.firstName}} {{contact.lastName}}</mat-option>
       </mat-select>
     </mat-form-field>
 
