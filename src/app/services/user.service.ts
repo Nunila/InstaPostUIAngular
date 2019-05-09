@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpHeaders, HttpClient, HttpResponse} from '@angular/common/http';
+import {HttpHeaders, HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 
 interface User {
@@ -12,15 +12,15 @@ interface User {
   email: string;
   birthday: string;
 }
-export interface NewUser {
-  userName: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  phoneNum: number;
-  email: string;
-  birthday: string;
-}
+// interface NewAccount {
+//   userName: string;
+//   password: string;
+//   firstName: string;
+//   lastName: string;
+//   phoneNum: number;
+//   email: string;
+//   birthday: string;
+// }
 
 interface Credentials {
   userName: string;
@@ -50,7 +50,7 @@ export class UserService {
   login(username: string, password: string) {
     this.credentials.userName = username;
     this.credentials.password = password;
-    const url =  this.mainUrl + `/users/login/`;
+    const url =  this.mainUrl + `/users/login`;
     const headersDict = {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache'
@@ -66,8 +66,7 @@ export class UserService {
         (err) => console.log(err),
         () => {
           console.log(this.currentUser);
-          this.router.navigate(['/home']);
-          // localStorage.setItem('currentUserId', JSON.stringify(this.currentUser.userId));
+          return this.router.navigate(['/home']);
         }
       );
   }
@@ -92,16 +91,8 @@ export class UserService {
       });
   }
 
-  createUser(username: string, password: string) {
-    return this.http.post(this.mainUrl + '/users', {username, password});
-  }
-
-  /*
-  NOTE: CREAR METODO PARA DEVOLVER INFORMACION DE PERSON PARA GUARDAR EN CURRENT USER
-   */
-  
-  signup(userAccount: NewUser) {
-    const url =  this.mainUrl + '/signup';
+  signup(userAccount) {
+    const url =  this.mainUrl + '/users/signup';
     const headersDict = {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache'
@@ -111,14 +102,13 @@ export class UserService {
     };
     this.http.post(url, userAccount)
       .subscribe(data => {
-          const userId = data as number;
-          this.currentUser.userId = userId;
+          const user = data as User;
+          this.currentUser = user;
         },
         (err) => console.log(err),
         () => {
-          console.log(this.currentUser.userId);
-          this.router.navigate(['/home']);
-          // localStorage.setItem('currentUserId', JSON.stringify(this.currentUser.userId));
+          console.log(this.currentUser);
+          return this.router.navigate(['/home']);
         }
       );
   }

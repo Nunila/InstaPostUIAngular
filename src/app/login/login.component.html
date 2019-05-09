@@ -16,18 +16,19 @@
   </div>
   <button mat-raised-button (click)="onLogSubmit()">Log in</button>
 </div>
+
 <div style="float: right;">
   <div class="flex-row">
     <div class="flex-col col-6">
       <mat-form-field appearance="standard">
-        <mat-label class="labels">Username</mat-label>
+        <mat-label>Username</mat-label>
         <input matInput [(ngModel)]="sf().username" placeholder="username" [formControl]="unameSign" required>
-        <mat-error *ngIf="unameSign.invalid">{{getUnameSignErr()}}</mat-error>
+        <mat-error *ngIf="unameSign.invalid">You must enter value.</mat-error>
       </mat-form-field>
       <mat-form-field appearance="standard">
         <mat-label>Password</mat-label>
         <input matInput [(ngModel)]="sf().password" placeholder="password" [formControl]="passwdSign" required>
-        <mat-error *ngIf="passwdSign.invalid">{{getPwdSignErr()}}</mat-error>
+        <mat-error *ngIf="passwdSign.invalid">You must enter value.</mat-error>
       </mat-form-field>
       <mat-form-field appearance="standard">
         <mat-label>First Name</mat-label>
@@ -41,7 +42,7 @@
     <div class="flex-col col-6">
       <mat-form-field appearance="standard">
         <mat-label>Phone</mat-label>
-        <input matInput [(ngModel)]="sf().phonenumber" placeholder="phonenumber">
+        <input matInput [(ngModel)]="sf().phoneNum" placeholder="phonenumber">
       </mat-form-field>
       <mat-form-field appearance="standard">
         <mat-label>Email</mat-label>

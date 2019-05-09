@@ -3,37 +3,37 @@ import {DatePipe} from '@angular/common';
 import {Router, ActivatedRoute} from '@angular/router';
 import {FormControl, Validators} from '@angular/forms';
 
-import {UserService, Person} from '../services/user.service';
+import {UserService} from '../services/user.service';
+
+interface NewAccount {
+  userName: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  phoneNum: number;
+  email: string;
+  birthday: string;
+}
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  providers: [DatePipe]
 })
 export class LoginComponent implements OnInit {
   unameLog = new FormControl('', [Validators.required]);
   passwdLog = new FormControl('', [Validators.required]);
   unameSign = new FormControl('', [Validators.required]);
   passwdSign = new FormControl('', [Validators.required]);
-  loading = false;
-  submitted = false;
-  returnUrl: string;
-
-  private person;
+  private newUser;
+  private logUser;
+  private accntInf: NewAccount;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private userService: UserService,
-    private datePipe: DatePipe
-  ) {// go in if user logged in already
-    if (localStorage.getItem('currentUserId') != null) {
-      this.router.navigate(['/home']);
-    }
-  }
-
-  private newUser;
-  private logUser;
+    private datePipe: DatePipe,
+  ) {}
 
   ngOnInit() {
     this.logUser = {
@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
       firstName: '',
       lastName: '',
       birthday: '',
-      phonenumber: '',
+      phoneNum: '',
       email: ''
     };
   }
@@ -54,37 +54,19 @@ export class LoginComponent implements OnInit {
   lf() {return this.logUser; }
   sf() {return this.newUser; }
   // when logging in
-  getUnameLogErr() {
-    return this.unameLog.hasError('required') ? 'You must enter a value.' : '';
-  }
-  getPwdLogErr() {
-    return this.passwdLog.hasError('required') ? 'You must enter a value.' : '';
-  }
-  getUnameSignErr() {
-    return this.unameSign.hasError('required') ? 'You must enter a value.' : '';
-  }
-  getPwdSignErr() {
-    return this.passwdSign.hasError('required') ? 'You must enter a value.' : '';
-  }
   onLogSubmit() {
-    console.log('Login');
-    this.submitted = true;
-    this.loading = true;
     this.userService.login(this.lf().username, this.lf().password);
   }
 
   onRegisterSubmit() {
-    this.submitted = true;
-    this.userService.createUser(this.sf().username, this.sf().password);
-    this.userService.getUserbyUname(this.sf().username);
-    this.person.userId = this.userService.getCurrentUser().userId;
-    this.person.firstName = this.sf().firstName;
-    this.person.lastName = this.sf().lastName;
-    this.person.phoneNum = this.sf().phoneNum;
-    this.person.email = this.sf().email;
-    this.person.birthday = this.datePipe.transform(this.sf().birthday, 'MM/DD/yyyy');
-    this.userService.createPerson(this.person);
-    this.router.navigate(['/home']);
+    this.accntInf.userName = this.sf().username;
+    this.accntInf.password = this.sf().password;
+    this.accntInf.firstName = this.sf().firstName;
+    this.accntInf.lastName = this.sf().lastName;
+    this.accntInf.phoneNum = this.sf().phoneNum;
+    this.accntInf.email = this.sf().email;
+    this.accntInf.birthday = this.datePipe.transform(this.sf().birthday, 'yyyy-MM-dd');
+    this.userService.signup(this.accntInf);
   }
 
 }
