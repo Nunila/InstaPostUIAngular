@@ -61,3 +61,16 @@ export interface Reply {
   messageDate: string;
   username: string;
 }
+
+// ----------------------STATISTICS ----------------------------------------------//
+
+export interface Hashtag {
+  hashtag: string;
+  countOnDay: number;
+  position: number;
+}
+
+export interface PostPerDay {
+  day: string;
+  total: number;
+}

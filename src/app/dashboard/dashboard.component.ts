@@ -8,18 +8,13 @@ import {DashboardService} from '../services/dashboard.service';
 })
 export class DashboardComponent implements OnInit {
 
-  myData = [
-    ['London', 8136000],
-    ['New York', 8538000],
-    ['Paris', 2244000],
-    ['Berlin', 3470000],
-    ['Kairo', 19500000],
-  ];
-  myColumnNames = ['City', 'Inhabitants'];
-
-  constructor(private dashboardService:DashboardService) { }
+  constructor(private dashboardService: DashboardService) { }
 
   ngOnInit() {
+    if (this.dashboardService.chartData.length === 0)     this.dashboardService.getTrendingHashtags();
+
   }
+
+
 
 }
