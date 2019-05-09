@@ -1,31 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpHeaders, HttpClient, HttpResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
-
-interface User {
-  userId: number;
-  userName: string;
-  personId: number;
-  firstName: string;
-  lastName: string;
-  phoneNum: number;
-  email: string;
-  birthday: string;
-}
-export interface NewUser {
-  userName: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  phoneNum: number;
-  email: string;
-  birthday: string;
-}
-
-interface Credentials {
-  userName: string;
-  password: string;
-}
+import {User, Person, Credentials, NewUser} from './interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +11,10 @@ export class UserService {
   private mainUrl = `http://localhost:5000/InstaPost`;
   private currentUser: User;
 
-  private credentials: Credentials;
+  private credentials: Credentials = {
+    userName: '',
+    password: ''
+  };
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -50,7 +29,7 @@ export class UserService {
   login(username: string, password: string) {
     this.credentials.userName = username;
     this.credentials.password = password;
-    const url =  this.mainUrl + `/users/login/`;
+    const url =  this.mainUrl + `/users/login`;
     const headersDict = {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache'

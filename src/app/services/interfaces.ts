@@ -62,6 +62,31 @@ export interface Reply {
   username: string;
 }
 
+export interface User {
+  userId: number;
+  userName: string;
+  personId: number;
+  firstName: string;
+  lastName: string;
+  phoneNum: number;
+  email: string;
+  birthday: string;
+}
+export interface NewUser {
+  userName: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  phoneNum: number;
+  email: string;
+  birthday: string;
+}
+
+export interface Credentials {
+  userName: string;
+  password: string;
+}
+
 // ----------------------STATISTICS ----------------------------------------------//
 
 export interface Hashtag {

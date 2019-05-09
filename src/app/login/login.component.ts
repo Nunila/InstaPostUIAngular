@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {DatePipe} from '@angular/common';
 import {Router, ActivatedRoute} from '@angular/router';
 import {FormControl, Validators} from '@angular/forms';
-
-import {UserService, Person} from '../services/user.service';
+import {UserService} from '../services/user.service';
+import {User, Person, Credentials, NewUser} from '../services/interfaces';
 
 @Component({
   selector: 'app-login',
@@ -83,7 +83,7 @@ export class LoginComponent implements OnInit {
     this.person.phoneNum = this.sf().phoneNum;
     this.person.email = this.sf().email;
     this.person.birthday = this.datePipe.transform(this.sf().birthday, 'MM/DD/yyyy');
-    this.userService.createPerson(this.person);
+    // this.userService.createPerson(this.person);
     this.router.navigate(['/home']);
   }
 
