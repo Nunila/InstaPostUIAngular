@@ -8,12 +8,15 @@ import {Hashtag, PostPerDay} from './interfaces';
 export class DashboardService {
 
   public selectedStatistic = 'trending#';
+  public selectedUser: number;
 
   private trendingHashtags: Hashtag[] = [];
   public postsPerDay: PostPerDay[] = [];
   public repliesPerDay: PostPerDay[] = [];
   public likesPerDay: PostPerDay[] = [];
   public dislikesPerDay: PostPerDay[] = [];
+  public postsPerDayOfUser: PostPerDay[] = [];
+
   public mostActiveUsers: Map<string, object> = new Map();
   public mostActiveKeys = [];
 
@@ -183,6 +186,31 @@ export class DashboardService {
       .subscribe(data => {
           console.log(data);
           this.dislikesPerDay = data as PostPerDay[];
+        },
+        (err) => console.log(err),
+        () => {
+          // this.trendingHashtags.forEach(hash => {
+          //   this.chartData.push([hash.hashtag, hash.countOnDay]);
+          // });
+          // this.columnNames = ['Hashtags', 'Counts'];
+        }
+      );
+  }
+
+  getPostsPerDayOfUser() {
+    const url =  this.mainUrl + `/posts/numberOfPostsPerDay/` + this.selectedUser;
+    const headersDict = {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headersDict)
+    };
+
+    this.http.get(url, requestOptions)
+      .subscribe(data => {
+          console.log(data);
+          this.postsPerDayOfUser = data as PostPerDay[];
         },
         (err) => console.log(err),
         () => {

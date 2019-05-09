@@ -189,6 +189,8 @@ export class HomeService {
       .subscribe(data => {
           const a = data as Person;
           this.contactsOfUser.push(a);
+          console.log(a);
+        console.log(data);
         },
         (err) => console.log(err),
         () => {

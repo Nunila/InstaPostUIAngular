@@ -9,7 +9,7 @@ export interface Chat {
 export interface Person {
   userId: number;
   personId: number;
-  userName: string;
+  username: string;
   firstName: string;
   lastName: string;
   birthday: string;
@@ -20,7 +20,6 @@ export interface Person {
 export interface CompletePerson {
   userId: number;
   personId: number;
-  userName: string;
   firstName: string;
   lastName: string;
   birthday: string;
