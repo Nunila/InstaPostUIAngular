@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {DatePipe} from "@angular/common";
+import {DatePipe} from '@angular/common';
 import {Router, ActivatedRoute} from '@angular/router';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormControl, Validators} from '@angular/forms';
 
 import {UserService, Person} from '../services/user.service';
 
@@ -12,16 +12,16 @@ import {UserService, Person} from '../services/user.service';
   providers: [DatePipe]
 })
 export class LoginComponent implements OnInit {
-
-  loginForm: FormGroup;
-  signUpForm: FormGroup;
+  unameLog = new FormControl('', [Validators.required]);
+  passwdLog = new FormControl('', [Validators.required]);
+  unameSign = new FormControl('', [Validators.required]);
+  passwdSign = new FormControl('', [Validators.required]);
   loading = false;
   submitted = false;
   returnUrl: string;
 
   private person;
   constructor(
-    private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private userService: UserService,
@@ -32,52 +32,57 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  private newUser;
+  private logUser;
+
   ngOnInit() {
-    this.loginForm = this.formBuilder.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required]
-    });
-    // this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-    this.signUpForm = this.formBuilder.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required],
-      firstName: [''],
-      lastName: [''],
-      phoneNum: [''],
-      email: [''],
-      birthday: ['']
-    });
+    this.logUser = {
+      username: '',
+      password: ''
+    };
+    this.newUser = {
+      username: '',
+      password: '',
+      firstName: '',
+      lastName: '',
+      birthday: '',
+      phonenumber: '',
+      email: ''
+    };
   }
   // for convenient field access in forms
-  get lf() {return this.loginForm.controls; }
-  get sf() {return this.signUpForm.controls; }
+  lf() {return this.logUser; }
+  sf() {return this.newUser; }
   // when logging in
+  getUnameLogErr() {
+    return this.unameLog.hasError('required') ? 'You must enter a value.' : '';
+  }
+  getPwdLogErr() {
+    return this.passwdLog.hasError('required') ? 'You must enter a value.' : '';
+  }
+  getUnameSignErr() {
+    return this.unameSign.hasError('required') ? 'You must enter a value.' : '';
+  }
+  getPwdSignErr() {
+    return this.passwdSign.hasError('required') ? 'You must enter a value.' : '';
+  }
   onLogSubmit() {
     console.log('Login');
     this.submitted = true;
-    if (this.loginForm.invalid) {
-      return;
-    }
     this.loading = true;
-    this.userService.login(this.lf.username.value, this.lf.password.value);
-    // // if (this.userService.getCurrentUserId() >= 1) {
-    //   this.router.navigate(['/home']);
-    // }
+    this.userService.login(this.lf().username, this.lf().password);
   }
 
   onRegisterSubmit() {
     this.submitted = true;
-    if (this.signUpForm.invalid) {
-      return;
-    }
-    this.userService.createUser(this.sf.username.value, this.sf.password.value);
-    this.userService.getUserbyUname(this.sf.username.value);
+    this.userService.createUser(this.sf().username, this.sf().password);
+    this.userService.getUserbyUname(this.sf().username);
     this.person.userId = this.userService.getCurrentUser().userId;
-    this.person.firstName = this.sf.firstName.value;
-    this.person.lastName = this.sf.lastName.value;
-    this.person.phoneNum = this.sf.phoneNum.value;
-    this.person.email = this.sf.email.value;
-    this.person.birthday = this.datePipe.transform(this.sf.birthday.value, 'MM/DD/yyyy');
+    this.person.firstName = this.sf().firstName;
+    this.person.lastName = this.sf().lastName;
+    this.person.phoneNum = this.sf().phoneNum;
+    this.person.email = this.sf().email;
+    this.person.birthday = this.datePipe.transform(this.sf().birthday, 'MM/DD/yyyy');
     this.userService.createPerson(this.person);
     this.router.navigate(['/home']);
   }

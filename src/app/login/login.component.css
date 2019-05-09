@@ -4,39 +4,25 @@
   font-size:  16px;
 }
 
-.login-container {
-  background: #dddddd;
-  padding: 12px;
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: 2%;
+  justify-content: space-around;
 }
 
-.login input {
-  box-sizing: border-box;
-  display: block;
-  width: 100%;
-  border-width: 1px;
-  border-style: solid;
-  padding: 16px;
-  outline: 0;
-  font-family: inherit;
-  font-size: 0.95em;
+.flex-col {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  min-width: 200px;
 }
 
-.login input[type="username"],
-.login input[type="password"] {
-  background: #fff;
-  border-color: #bbb;
-  color: #555;
+.input .placeholder{
+  color: #555555;
 }
 
-.has-error input[type="username"],
-.has-error input[type="password"] {
-  border-color: rgb(216, 12, 12);
-  color: rgb(230, 14, 14);
-}
-
-.btn-log{
-  background: rgb(1, 29, 51);
-  border-color: transparent;
-  color: #fff;
-  cursor: pointer;
+.labels{
+  color: #555555;
 }
