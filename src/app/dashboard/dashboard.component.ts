@@ -12,7 +12,10 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     if (this.dashboardService.chartData.length === 0)     this.dashboardService.getTrendingHashtags();
+  }
 
+  print() {
+    console.log(this.dashboardService.mostActiveKeys);
   }
 
 

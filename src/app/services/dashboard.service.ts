@@ -9,11 +9,13 @@ export class DashboardService {
 
   public selectedStatistic = 'trending#';
 
-  private trendingHashtags: Hashtag[] = new Array();
-  public postsPerDay: PostPerDay[] = new Array();
-  public repliesPerDay: PostPerDay[] = new Array();
-  public likesPerDay: PostPerDay[] = new Array();
-  public dislikesPerDay: PostPerDay[] = new Array();
+  private trendingHashtags: Hashtag[] = [];
+  public postsPerDay: PostPerDay[] = [];
+  public repliesPerDay: PostPerDay[] = [];
+  public likesPerDay: PostPerDay[] = [];
+  public dislikesPerDay: PostPerDay[] = [];
+  public mostActiveUsers: Map<string, object> = new Map();
+  public mostActiveKeys = [];
 
   public chartData = [];
   public columnNames;
@@ -40,6 +42,7 @@ export class DashboardService {
         break;
       }
       case 'activeuser': {
+        this.getMostActiveUsersByDate();
         break;
       }
       case 'postUser': {
@@ -183,6 +186,42 @@ export class DashboardService {
         },
         (err) => console.log(err),
         () => {
+          // this.trendingHashtags.forEach(hash => {
+          //   this.chartData.push([hash.hashtag, hash.countOnDay]);
+          // });
+          // this.columnNames = ['Hashtags', 'Counts'];
+        }
+      );
+  }
+
+  getMostActiveUsersByDate() {
+    this.mostActiveKeys = [];
+    this.mostActiveUsers = new Map();
+    const url =  this.mainUrl + `/users/mostactive`;
+    const headersDict = {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headersDict)
+    };
+
+    this.http.get(url, requestOptions)
+      .subscribe(data => {
+        const entries = Object.entries(data);
+        entries.forEach((dateWithUsers, i) => {
+            let arr = dateWithUsers[1];
+            if (arr.length > 3) {
+              arr.splice(3, arr.length - 3);
+            }
+            this.mostActiveUsers.set(dateWithUsers[0], arr);
+            this.mostActiveKeys.push(dateWithUsers[0]);
+          });
+        },
+        (err) => console.log(err),
+        () => {
+          this.mostActiveKeys.reverse();
+
           // this.trendingHashtags.forEach(hash => {
           //   this.chartData.push([hash.hashtag, hash.countOnDay]);
           // });

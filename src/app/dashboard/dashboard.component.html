@@ -1,5 +1,5 @@
 
-<mat-form-field>
+<mat-form-field style="margin-top: 2%;">
   <mat-label>Select a statistic</mat-label>
   <mat-select [(value)]="dashboardService.selectedStatistic" (selectionChange)="dashboardService.getSelectedStat()">
     <mat-option value="trending#">Trending Hashtag</mat-option>
@@ -83,6 +83,25 @@
     </tbody>
   </table>
 
+  <table class="table" *ngIf="dashboardService.selectedStatistic ==='activeuser' && dashboardService.mostActiveUsers.size > 0">
+    <thead>
+    <tr>
+      <!--<th scope="col">Date</th>-->
+      <th scope="col">Username</th>
+      <th scope="col">Number of Posts and Comments</th>
+    </tr>
+    </thead>
+    <tbody *ngFor="let key of dashboardService.mostActiveKeys">
+        <tr ><th colspan="2">{{key}}</th></tr>
+        <tr *ngFor="let activeUser of dashboardService.mostActiveUsers.get(key)">
+          <!--<td>{{activeUser.day | date : 'dd/MM/yyyy'}}</td>-->
+          <td>{{activeUser.username}}</td>
+          <td>{{activeUser.count}}</td>
+        </tr>
+    </tbody>
+  </table>
+
+  <!--<button (click)="print()">Test</button>-->
 
 
 </div>
