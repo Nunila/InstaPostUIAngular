@@ -72,6 +72,21 @@ export interface User {
   email: string;
   birthday: string;
 }
+// interface NewAccount {
+//   userName: string;
+//   password: string;
+//   firstName: string;
+//   lastName: string;
+//   phoneNum: number;
+//   email: string;
+//   birthday: string;
+// }
+
+export interface Credentials {
+  userName: string;
+  password: string;
+}
+
 export interface NewUser {
   userName: string;
   password: string;
@@ -80,11 +95,6 @@ export interface NewUser {
   phoneNum: number;
   email: string;
   birthday: string;
-}
-
-export interface Credentials {
-  userName: string;
-  password: string;
 }
 
 // ----------------------STATISTICS ----------------------------------------------//

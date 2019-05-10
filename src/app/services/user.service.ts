@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import {HttpHeaders, HttpClient, HttpResponse} from '@angular/common/http';
+import {HttpHeaders, HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {User, Person, Credentials, NewUser} from './interfaces';
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'
@@ -26,10 +27,9 @@ export class UserService {
     return this.currentUser.userId;
   }
 
-  login(username: string, password: string) {
-    this.credentials.userName = username;
-    this.credentials.password = password;
-    const url =  this.mainUrl + `/users/login`;
+  login(username, password) {
+    // const credentials = {userName, password};
+    const url =  this.mainUrl + `/users/login/` + username + '/' + password;
     const headersDict = {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache'
@@ -37,16 +37,27 @@ export class UserService {
     const requestOptions = {
       headers: new HttpHeaders(headersDict)
     };
-    this.http.post(url, this.credentials)
+    // tslint:disable-next-line:no-unused-expression
+    this.http.post(url, requestOptions)
       .subscribe(data => {
           const user = data as User;
           this.currentUser = user;
         },
-        (err) => console.log(err),
+        (err) => {
+          console.log(err);
+          Swal.fire({
+            title: 'Invalid credentials.',
+            text: 'Username/password might be wrong.',
+            type: 'error',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ok!'
+          });
+        },
         () => {
           console.log(this.currentUser);
-          this.router.navigate(['/home']);
-          // localStorage.setItem('currentUserId', JSON.stringify(this.currentUser.userId));
+          return this.router.navigate(['/home']);
         }
       );
   }
@@ -71,16 +82,8 @@ export class UserService {
       });
   }
 
-  createUser(username: string, password: string) {
-    return this.http.post(this.mainUrl + '/users', {username, password});
-  }
-
-  /*
-  NOTE: CREAR METODO PARA DEVOLVER INFORMACION DE PERSON PARA GUARDAR EN CURRENT USER
-   */
-  
-  signup(userAccount: NewUser) {
-    const url =  this.mainUrl + '/signup';
+  signup(userAccount) {
+    const url =  this.mainUrl + '/users/signup';
     const headersDict = {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache'
@@ -90,14 +93,24 @@ export class UserService {
     };
     this.http.post(url, userAccount)
       .subscribe(data => {
-          const userId = data as number;
-          this.currentUser.userId = userId;
+          const user = data as User;
+          this.currentUser = user;
         },
-        (err) => console.log(err),
+        (err) => {
+          console.log(err);
+          Swal.fire({
+            title: 'Username, email or phone number already taken.',
+            text: 'You may have to change one or more values.',
+            type: 'error',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ok!'
+          });
+        },
         () => {
-          console.log(this.currentUser.userId);
-          this.router.navigate(['/home']);
-          // localStorage.setItem('currentUserId', JSON.stringify(this.currentUser.userId));
+          console.log(this.currentUser);
+          return this.router.navigate(['/home']);
         }
       );
   }
