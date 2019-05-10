@@ -15,7 +15,7 @@
   </mat-select>
 </mat-form-field>
 
-<div class="chart-container">
+<div class="chart-container" style="padding-top: 2%">
   <google-chart *ngIf="dashboardService.selectedStatistic ==='trending#' && dashboardService.chartData.length > 0"  [type]="'BarChart'" [data]="dashboardService.chartData"
                 [columnNames]="dashboardService.columnNames" title="Trending Hashtags" width="500" height="300" [dynamicResize]="true" ></google-chart>
   <h4 *ngIf="dashboardService.selectedStatistic ==='trending#' && dashboardService.chartData.length === 0" style="text-align: center;">No hashtags have been mentioned today!</h4>
@@ -33,15 +33,16 @@
                 [columnNames]="dashboardService.columnNames" title="Dislikes Per Day" width="500" height="300" [dynamicResize]="true" ></google-chart>
 
   <div *ngIf="dashboardService.selectedStatistic ==='postUser'">
-    <mat-form-field style="margin-top: 2%; width:100%">
+    <mat-form-field style=" width:100%">
     <mat-label>Select a user</mat-label>
     <mat-select [(value)]="dashboardService.selectedUser" (selectionChange)="dashboardService.getPostsPerDayOfUser()">
     <mat-option *ngFor="let contact of homeService.getContactsOfUser()" [value]="contact.userId">{{contact.firstName}} {{contact.lastName}}</mat-option>
     </mat-select>
     </mat-form-field>
 
-    <google-chart *ngIf="dashboardService.selectedStatistic ==='postUser' && dashboardService.postsPerDayOfUser.length > 0"  [type]="'LineChart'" [data]="dashboardService.chartData"
+    <google-chart *ngIf="dashboardService.selectedStatistic ==='postUser' && dashboardService.postsPerDayOfUser.length > 0"  [type]="'ColumnChart'" [data]="dashboardService.chartData"
                   [columnNames]="dashboardService.columnNames" title="Posts of Selected User Per Day" width="500" height="300" [dynamicResize]="true" ></google-chart>
+    <h4 *ngIf="dashboardService.postsPerDayOfUser.length ===0" style="text-align: center;">No Posts have been shared by this user!</h4>
   </div>
 
 
@@ -55,14 +56,14 @@
   </div>
 
   <div *ngIf="dashboardService.selectedStatistic ==='reactPost'">
-    <mat-form-field style="margin-top: 2%; width:100%">
+    <mat-form-field style=" width:100%">
       <mat-label>Select a post</mat-label>
       <mat-select [(value)]="dashboardService.selectedPost" (selectionChange)="dashboardService.getAllReactionsForPost()">
         <mat-option *ngFor="let post of dashboardService.postsForSelect" [value]="post.postId">{{post.postId}} | {{post.caption}}</mat-option>
       </mat-select>
     </mat-form-field>
 
-    <google-chart *ngIf="dashboardService.postReactions.numberOfDislikes"  [type]="'ColumnChart'" [data]="dashboardService.chartData"
+    <google-chart *ngIf="dashboardService.postReactions.numberOfDislikes != null"  [type]="'ColumnChart'" [data]="dashboardService.chartData"
                   [columnNames]="dashboardService.columnNames" title="Selected Post Reactions" width="500" height="300" [dynamicResize]="true" ></google-chart>
   </div>
 
