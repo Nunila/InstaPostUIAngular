@@ -9,7 +9,7 @@
       </mat-form-field>
       <mat-form-field appearance="standard">
         <mat-label>Password</mat-label>
-          <input matInput [(ngModel)]="lf().password" placeholder="password" [formControl]="passwdLog" required>
+          <input matInput type="password" [(ngModel)]="lf().password" placeholder="password" [formControl]="passwdLog" required>
         <mat-error *ngIf="passwdLog.invalid">You must enter value.</mat-error>
       </mat-form-field>
     </div>
@@ -27,7 +27,7 @@
       </mat-form-field>
       <mat-form-field appearance="standard">
         <mat-label>Password</mat-label>
-        <input matInput [(ngModel)]="sf().password" placeholder="password" [formControl]="passwdSign" required>
+        <input matInput type="password" [(ngModel)]="sf().password" placeholder="password" [formControl]="passwdSign" required>
         <mat-error *ngIf="passwdSign.invalid">You must enter value.</mat-error>
       </mat-form-field>
       <mat-form-field appearance="standard">

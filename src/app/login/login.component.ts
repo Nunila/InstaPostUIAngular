@@ -4,6 +4,7 @@ import {Router, ActivatedRoute} from '@angular/router';
 import {FormControl, Validators} from '@angular/forms';
 
 import {UserService} from '../services/user.service';
+import Swal from 'sweetalert2';
 
 interface NewAccount {
   userName: string;
@@ -27,7 +28,6 @@ export class LoginComponent implements OnInit {
   passwdSign = new FormControl('', [Validators.required]);
   newUser: NewAccount;
   private logUser;
-  accntInf: NewAccount;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -59,12 +59,6 @@ export class LoginComponent implements OnInit {
   }
 
   onRegisterSubmit() {
-    // this.accntInf.userName = this.newUser.userName;
-    // this.accntInf.password = this.newUser.password;
-    // this.accntInf.firstName = this.newUser.firstName;
-    // this.accntInf.lastName = this.newUser.lastName;
-    // this.accntInf.phoneNum = this.newUser.phoneNum;
-    // this.accntInf.email = this.newUser.email;
     this.newUser.birthday = this.datePipe.transform(this.newUser.birthday, 'yyyy-MM-dd');
     console.log(this.newUser);
     this.userService.signup(this.newUser);

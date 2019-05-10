@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpHeaders, HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
+import Swal from 'sweetalert2';
 
 interface User {
   userId: number;
@@ -63,7 +64,18 @@ export class UserService {
           const user = data as User;
           this.currentUser = user;
         },
-        (err) => console.log(err),
+        (err) => {
+          console.log(err);
+          Swal.fire({
+            title: 'Invalid credentials.',
+            text: 'Username/password might be wrong.',
+            type: 'error',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ok!'
+          });
+        },
         () => {
           console.log(this.currentUser);
           return this.router.navigate(['/home']);
@@ -105,7 +117,18 @@ export class UserService {
           const user = data as User;
           this.currentUser = user;
         },
-        (err) => console.log(err),
+        (err) => {
+          console.log(err);
+          Swal.fire({
+            title: 'Username, email or phone number already taken.',
+            text: 'You may have to change one or more values.',
+            type: 'error',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ok!'
+          });
+        },
         () => {
           console.log(this.currentUser);
           return this.router.navigate(['/home']);
