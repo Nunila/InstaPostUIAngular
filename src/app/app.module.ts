@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {DatePipe} from '@angular/common';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -28,10 +27,13 @@ import { PostComponent } from './post/post.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatListModule} from '@angular/material/list';
 import {MatMenuModule} from '@angular/material/menu';
+import { MatTableModule } from '@angular/material';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatSelectModule} from '@angular/material/select';
+
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { GoogleChartsModule } from 'angular-google-charts';
-import {MatSelectModule} from '@angular/material/select';
+
 
 @NgModule({
   declarations: [
@@ -64,11 +66,12 @@ import {MatSelectModule} from '@angular/material/select';
     MatTabsModule,
     MatListModule,
     MatMenuModule,
+    MatTableModule,
     MatDatepickerModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     GoogleChartsModule,
-    MatSelectModule
+    MatSelectModule,
 
   ],
   providers: [PostService, ReplyService, HomeService, UserService, DatePipe],

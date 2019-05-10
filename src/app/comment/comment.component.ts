@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import {PostService} from '../services/post.service';
+import {UserService} from "../services/user.service";
 import {MatBottomSheet, MatBottomSheetRef} from '@angular/material';
 
 @Component({
@@ -10,18 +11,24 @@ import {MatBottomSheet, MatBottomSheetRef} from '@angular/material';
 export class CommentComponent implements OnInit {
   @Input() postId: number;
 
-  constructor(private postService: PostService) { }
-  private newReply = {
-    postId: null,
-    userId: 1,
-    content: null,
-    messageDate: null,
-    username: 'New User'
-  }
+  constructor(private postService: PostService, private userService: UserService) { }
+
+  private SIGNEDINUSERID;
+  private SIGNEDINPERSONID;
 
   ngOnInit() {
     // console.log(this.postId);
     // this.postService.getRepliesByPostIdFromDB(this.postId);
+    this.SIGNEDINPERSONID = this.userService.getCurrentUser().personId;
+    this.SIGNEDINUSERID = this.userService.getCurrentUser().userId;
+
+  }
+
+  private newReply = {
+    postId: null,
+    userId: this.SIGNEDINUSERID,
+    content: null,
+    messageDate: null,
   }
 
   getReactionsMap(messageId) {

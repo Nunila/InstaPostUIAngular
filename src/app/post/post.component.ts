@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { PostService } from '../services/post.service';
+import { UserService} from "../services/user.service";
 
 @Component({
   selector: 'app-post',
@@ -9,17 +10,26 @@ import { PostService } from '../services/post.service';
 export class PostComponent implements OnInit {
   @Input() chatId: number;
 
-  constructor(private postService: PostService) {}
-  private newPost = {
-    src: null,
-    content: 'sample caption'
-  };
+  constructor(private postService: PostService, private userService: UserService) {}
+
+  private SIGNEDINUSERID;
+  private SIGNEDINPERSONID;
 
   ngOnInit() {
+    this.SIGNEDINPERSONID = this.userService.getCurrentUser().personId;
+    this.SIGNEDINUSERID = this.userService.getCurrentUser().userId;
+
     this.postService.getPostsForChatIdFromDB(this.chatId);
     this.postService.getAllReactionsfromDB();
     this.postService.getAllRepliesFromDB();
   }
+
+  private newPost = {
+    chatId: null,
+    userId: null,
+    src: null,
+    content: null
+  };
 
   refresh() {
     this.postService.refresh();
@@ -51,7 +61,12 @@ export class PostComponent implements OnInit {
   }
 
   addPost() {
-    this.postService.addPost(this.newPost);
+    this.newPost.chatId = this.chatId;
+    this.newPost.userId = this.SIGNEDINUSERID;
+    console.log(this.newPost.chatId);
+    this.postService.addPostToDB(this.newPost);
+    this.newPost.src = null;
+    this.newPost.content = null;
   }
 
 }

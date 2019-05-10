@@ -3,8 +3,8 @@
       <details>
         <summary>Show all comments</summary>
         <mat-divider></mat-divider>
-        <table mat-table class="container comment-table">
-          <tr class="comments-list" *ngFor="let reply of getAllReplies()">
+        <table class="table container comment-table" *ngFor="let reply of getAllReplies()">
+          <tr class="comments-list">
             <div class="comment-header">
               <p>{{reply.username}}</p>
               <p>{{reply.messageDate}}</p>
@@ -18,9 +18,9 @@
                 <mat-icon matBadge="{{getReactionsMap(reply.messageId).dislikes}}" matBadgeColor="warn">thumb_down</mat-icon>
               </button>
             </div>
-            <mat-divider></mat-divider>
           </tr>
         </table>
+        <mat-divider></mat-divider>
       </details>
       <div class="row container write-reply">
           <mat-form-field class="reply-input-text">
