@@ -9,15 +9,16 @@
     <mat-option value="dislikesPerDay">Dislikes Per Day</mat-option>
     <mat-option value="activeuser">Most active users Per Day</mat-option>
     <mat-option value="postUser">Posts Per Day of Given User</mat-option>
-    <mat-option value="repliesPost">Replies to a Given Post</mat-option>
-    <mat-option value="likesPost">Likes to a Given Post</mat-option>
-    <mat-option value="dislikesPost">Dislikes to a Given Post</mat-option>
+    <mat-option value="reactPost">Likes, Dislikes and Replies of a Given Post</mat-option>
+    <!--<mat-option value="likesPost">Likes to a Given Post</mat-option>-->
+    <!--<mat-option value="dislikesPost">Dislikes to a Given Post</mat-option>-->
   </mat-select>
 </mat-form-field>
 
 <div class="chart-container">
-  <google-chart *ngIf="dashboardService.selectedStatistic ==='trending#' && dashboardService.chartData"  [type]="'BarChart'" [data]="dashboardService.chartData"
-                [columnNames]="dashboardService.columnNames" title="Trending Hashtags" width="600" height="500"></google-chart>
+  <google-chart *ngIf="dashboardService.selectedStatistic ==='trending#' && dashboardService.chartData.length > 0"  [type]="'BarChart'" [data]="dashboardService.chartData"
+                [columnNames]="dashboardService.columnNames" title="Trending Hashtags" width="400" height="300"></google-chart>
+  <h4 *ngIf="dashboardService.selectedStatistic ==='trending#' && dashboardService.chartData.length === 0" style="text-align: center;">No hashtags have been mentioned today!</h4>
 
   <table class="table" *ngIf="dashboardService.selectedStatistic ==='postsPerDay' && dashboardService.postsPerDay">
     <thead>
@@ -127,6 +128,31 @@
     </table>
   </div>
 
+  <div *ngIf="dashboardService.selectedStatistic ==='reactPost'">
+    <mat-form-field style="margin-top: 2%; width:100%">
+      <mat-label>Select a post</mat-label>
+      <mat-select [(value)]="dashboardService.selectedPost" (selectionChange)="dashboardService.getAllReactionsForPost()">
+        <mat-option *ngFor="let post of dashboardService.postsForSelect" [value]="post.postId">{{post.postId}} | {{post.caption}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col">Number of Likes</th>
+        <th scope="col">Number of Dislikes</th>
+        <th scope="col">Number of Replies</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>{{dashboardService.postReactions.numberOfLikes}}</td>
+        <td>{{dashboardService.postReactions.numberOfDislikes}}</td>
+        <td>{{dashboardService.postReactions.numberOfReplies}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
 
 
 </div>

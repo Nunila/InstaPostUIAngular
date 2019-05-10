@@ -73,3 +73,8 @@ export interface PostPerDay {
   day: string;
   total: number;
 }
+
+export interface PostForSelect {
+  postId: number;
+  caption: string;
+}
