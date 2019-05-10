@@ -29,6 +29,7 @@ export class PostService {
     this.getPostsForChatIdFromDB(this.currentChat.chatId);
     this.getAllReactionsfromDB();
     this.getAllRepliesFromDB();
+    this.getChatReactionsFromDB();
   }
 
   setCurrentChat(chat: Chat) {
@@ -336,6 +337,28 @@ export class PostService {
 
   getChatReactionsMap(){
     return this.userReactionsMap;
+  }
+
+  deleteReaction(reaction){
+    const url =  this.mainUrl + `/deletereaction/user/`+ reaction.userId +'/message/'+ reaction.messageId ;
+    console.log(reaction)
+    const headersDict = {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headersDict)
+    };
+
+    this.http.delete(url)
+      .subscribe(data => {
+        },
+        (err) => console.log(err),
+        () => {
+          // const i = this.chatsOfUser.findIndex(chat => chat.chatId === chatid);
+          // this.chatsOfUser.splice(i, 1);
+        }
+      );
   }
 
 }
