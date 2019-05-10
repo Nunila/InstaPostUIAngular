@@ -17,116 +17,48 @@
 
 <div class="chart-container">
   <google-chart *ngIf="dashboardService.selectedStatistic ==='trending#' && dashboardService.chartData.length > 0"  [type]="'BarChart'" [data]="dashboardService.chartData"
-                [columnNames]="dashboardService.columnNames" title="Trending Hashtags" width="400" height="300"></google-chart>
+                [columnNames]="dashboardService.columnNames" title="Trending Hashtags" width="500" height="300" [dynamicResize]="true" ></google-chart>
   <h4 *ngIf="dashboardService.selectedStatistic ==='trending#' && dashboardService.chartData.length === 0" style="text-align: center;">No hashtags have been mentioned today!</h4>
 
-  <table class="table" *ngIf="dashboardService.selectedStatistic ==='postsPerDay' && dashboardService.postsPerDay">
-    <thead>
-    <tr>
-      <th scope="col">Date</th>
-      <th scope="col">Number of Posts</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let dates of dashboardService.postsPerDay">
-      <!--<th scope="row">1</th>-->
-      <td>{{dates.day | date : 'dd/MM/yyyy'}}</td>
-      <td>{{dates.total}}</td>
-    </tr>
-    </tbody>
-  </table>
+  <google-chart *ngIf="dashboardService.selectedStatistic ==='postsPerDay' && dashboardService.postsPerDay.length > 0"  [type]="'LineChart'" [data]="dashboardService.chartData"
+                [columnNames]="dashboardService.columnNames" title="Posts Per Day" width="500" height="300" [dynamicResize]="true" ></google-chart>
 
-  <table class="table" *ngIf="dashboardService.selectedStatistic ==='repliesPerDay' && dashboardService.repliesPerDay">
-    <thead>
-    <tr>
-      <th scope="col">Date</th>
-      <th scope="col">Number of Replies</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let dates of dashboardService.repliesPerDay">
-      <!--<th scope="row">1</th>-->
-      <td>{{dates.day | date : 'dd/MM/yyyy'}}</td>
-      <td>{{dates.total}}</td>
-    </tr>
-    </tbody>
-  </table>
+  <google-chart *ngIf="dashboardService.selectedStatistic ==='repliesPerDay' && dashboardService.repliesPerDay.length > 0"  [type]="'LineChart'" [data]="dashboardService.chartData"
+                [columnNames]="dashboardService.columnNames" title="Replies Per Day" width="500" height="300" [dynamicResize]="true" ></google-chart>
 
-  <table class="table" *ngIf="dashboardService.selectedStatistic ==='likesPerDay' && dashboardService.likesPerDay">
-    <thead>
-    <tr>
-      <th scope="col">Date</th>
-      <th scope="col">Number of Likes</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let dates of dashboardService.likesPerDay">
-      <!--<th scope="row">1</th>-->
-      <td>{{dates.day | date : 'dd/MM/yyyy'}}</td>
-      <td>{{dates.total}}</td>
-    </tr>
-    </tbody>
-  </table>
+  <google-chart *ngIf="dashboardService.selectedStatistic ==='likesPerDay' && dashboardService.likesPerDay.length > 0"  [type]="'LineChart'" [data]="dashboardService.chartData"
+                [columnNames]="dashboardService.columnNames" title="Likes Per Day" width="500" height="300" [dynamicResize]="true" ></google-chart>
 
-  <table class="table" *ngIf="dashboardService.selectedStatistic ==='dislikesPerDay' && dashboardService.dislikesPerDay">
-    <thead>
-    <tr>
-      <th scope="col">Date</th>
-      <th scope="col">Number of Dislikes</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let dates of dashboardService.dislikesPerDay">
-      <!--<th scope="row">1</th>-->
-      <td>{{dates.day | date : 'dd/MM/yyyy'}}</td>
-      <td>{{dates.total}}</td>
-    </tr>
-    </tbody>
-  </table>
-
-  <table class="table" *ngIf="dashboardService.selectedStatistic ==='activeuser' && dashboardService.mostActiveUsers.size > 0">
-    <thead>
-    <tr>
-      <!--<th scope="col">Date</th>-->
-      <th scope="col">Username</th>
-      <th scope="col">Number of Posts and Comments</th>
-    </tr>
-    </thead>
-    <tbody *ngFor="let key of dashboardService.mostActiveKeys">
-        <tr ><th colspan="2">{{key}}</th></tr>
-        <tr *ngFor="let activeUser of dashboardService.mostActiveUsers.get(key)">
-          <!--<td>{{activeUser.day | date : 'dd/MM/yyyy'}}</td>-->
-          <td>{{activeUser.username}}</td>
-          <td>{{activeUser.count}}</td>
-        </tr>
-    </tbody>
-  </table>
+  <google-chart *ngIf="dashboardService.selectedStatistic ==='dislikesPerDay' && dashboardService.dislikesPerDay.length > 0"  [type]="'LineChart'" [data]="dashboardService.chartData"
+                [columnNames]="dashboardService.columnNames" title="Dislikes Per Day" width="500" height="300" [dynamicResize]="true" ></google-chart>
 
   <div *ngIf="dashboardService.selectedStatistic ==='postUser'">
-
     <mat-form-field style="margin-top: 2%; width:100%">
-      <mat-label>Select a user</mat-label>
-      <mat-select [(value)]="dashboardService.selectedUser" (selectionChange)="dashboardService.getPostsPerDayOfUser()">
-        <mat-option *ngFor="let contact of homeService.getContactsOfUser()" [value]="contact.userId">{{contact.firstName}} {{contact.lastName}}</mat-option>
-      </mat-select>
+    <mat-label>Select a user</mat-label>
+    <mat-select [(value)]="dashboardService.selectedUser" (selectionChange)="dashboardService.getPostsPerDayOfUser()">
+    <mat-option *ngFor="let contact of homeService.getContactsOfUser()" [value]="contact.userId">{{contact.firstName}} {{contact.lastName}}</mat-option>
+    </mat-select>
     </mat-form-field>
 
-    <table class="table" *ngIf="dashboardService.selectedStatistic ==='postUser'">
-      <thead>
-      <tr>
-        <th scope="col">Date</th>
-        <th scope="col">Number of Posts</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let dates of dashboardService.postsPerDayOfUser">
-        <!--<th scope="row">1</th>-->
-        <td>{{dates.day | date : 'dd/MM/yyyy'}}</td>
-        <td>{{dates.total}}</td>
-      </tr>
-      </tbody>
-    </table>
+    <google-chart *ngIf="dashboardService.selectedStatistic ==='postUser' && dashboardService.postsPerDayOfUser.length > 0"  [type]="'LineChart'" [data]="dashboardService.chartData"
+                  [columnNames]="dashboardService.columnNames" title="Posts of Selected User Per Day" width="500" height="300" [dynamicResize]="true" ></google-chart>
   </div>
+
+  <!--<tbody *ngFor="let key of dashboardService.mostActiveKeys">-->
+  <!--<tr ><th colspan="2">{{key}}</th></tr>-->
+  <!--<tr *ngFor="let activeUser of dashboardService.mostActiveUsers.get(key)">-->
+  <!--&lt;!&ndash;<td>{{activeUser.day | date : 'dd/MM/yyyy'}}</td>&ndash;&gt;-->
+  <!--<td>{{activeUser.username}}</td>-->
+  <!--<td>{{activeUser.count}}</td>-->
+  <!--</tr>-->
+  <!--</tbody>-->
+  <div *ngIf="dashboardService.selectedStatistic ==='activeuser' && dashboardService.mostActiveUsers.size > 0">
+    <google-chart *ngFor="let col of dashboardService.activeusercolumnarr; let i=index"  [type]="'LineChart'" [data]="dashboardService.activeuserdataarr[i]"
+                  [columnNames]="col" title="Most Active Users" width="500" height="300" [dynamicResize]="true" ></google-chart>
+  </div>
+
+
+
 
   <div *ngIf="dashboardService.selectedStatistic ==='reactPost'">
     <mat-form-field style="margin-top: 2%; width:100%">
@@ -136,23 +68,146 @@
       </mat-select>
     </mat-form-field>
 
-    <table class="table">
-      <thead>
-      <tr>
-        <th scope="col">Number of Likes</th>
-        <th scope="col">Number of Dislikes</th>
-        <th scope="col">Number of Replies</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr>
-        <td>{{dashboardService.postReactions.numberOfLikes}}</td>
-        <td>{{dashboardService.postReactions.numberOfDislikes}}</td>
-        <td>{{dashboardService.postReactions.numberOfReplies}}</td>
-      </tr>
-      </tbody>
-    </table>
+    <google-chart *ngIf="dashboardService.postReactions.numberOfDislikes"  [type]="'ColumnChart'" [data]="dashboardService.chartData"
+                  [columnNames]="dashboardService.columnNames" title="Selected Post Reactions" width="500" height="300" [dynamicResize]="true" ></google-chart>
   </div>
+
+
+
+
+  <!--<table class="table" *ngIf="dashboardService.selectedStatistic ==='postsPerDay' && dashboardService.postsPerDay">-->
+    <!--<thead>-->
+    <!--<tr>-->
+      <!--<th scope="col">Date</th>-->
+      <!--<th scope="col">Number of Posts</th>-->
+    <!--</tr>-->
+    <!--</thead>-->
+    <!--<tbody>-->
+    <!--<tr *ngFor="let dates of dashboardService.postsPerDay">-->
+      <!--&lt;!&ndash;<th scope="row">1</th>&ndash;&gt;-->
+      <!--<td>{{dates.day | date : 'dd/MM/yyyy'}}</td>-->
+      <!--<td>{{dates.total}}</td>-->
+    <!--</tr>-->
+    <!--</tbody>-->
+  <!--</table>-->
+
+  <!--<table class="table" *ngIf="dashboardService.selectedStatistic ==='repliesPerDay' && dashboardService.repliesPerDay">-->
+    <!--<thead>-->
+    <!--<tr>-->
+      <!--<th scope="col">Date</th>-->
+      <!--<th scope="col">Number of Replies</th>-->
+    <!--</tr>-->
+    <!--</thead>-->
+    <!--<tbody>-->
+    <!--<tr *ngFor="let dates of dashboardService.repliesPerDay">-->
+      <!--&lt;!&ndash;<th scope="row">1</th>&ndash;&gt;-->
+      <!--<td>{{dates.day | date : 'dd/MM/yyyy'}}</td>-->
+      <!--<td>{{dates.total}}</td>-->
+    <!--</tr>-->
+    <!--</tbody>-->
+  <!--</table>-->
+
+  <!--<table class="table" *ngIf="dashboardService.selectedStatistic ==='likesPerDay' && dashboardService.likesPerDay">-->
+    <!--<thead>-->
+    <!--<tr>-->
+      <!--<th scope="col">Date</th>-->
+      <!--<th scope="col">Number of Likes</th>-->
+    <!--</tr>-->
+    <!--</thead>-->
+    <!--<tbody>-->
+    <!--<tr *ngFor="let dates of dashboardService.likesPerDay">-->
+      <!--&lt;!&ndash;<th scope="row">1</th>&ndash;&gt;-->
+      <!--<td>{{dates.day | date : 'dd/MM/yyyy'}}</td>-->
+      <!--<td>{{dates.total}}</td>-->
+    <!--</tr>-->
+    <!--</tbody>-->
+  <!--</table>-->
+
+  <!--<table class="table" *ngIf="dashboardService.selectedStatistic ==='dislikesPerDay' && dashboardService.dislikesPerDay">-->
+    <!--<thead>-->
+    <!--<tr>-->
+      <!--<th scope="col">Date</th>-->
+      <!--<th scope="col">Number of Dislikes</th>-->
+    <!--</tr>-->
+    <!--</thead>-->
+    <!--<tbody>-->
+    <!--<tr *ngFor="let dates of dashboardService.dislikesPerDay">-->
+      <!--&lt;!&ndash;<th scope="row">1</th>&ndash;&gt;-->
+      <!--<td>{{dates.day | date : 'dd/MM/yyyy'}}</td>-->
+      <!--<td>{{dates.total}}</td>-->
+    <!--</tr>-->
+    <!--</tbody>-->
+  <!--</table>-->
+
+  <!--<table class="table" *ngIf="dashboardService.selectedStatistic ==='activeuser' && dashboardService.mostActiveUsers.size > 0">-->
+    <!--<thead>-->
+    <!--<tr>-->
+      <!--&lt;!&ndash;<th scope="col">Date</th>&ndash;&gt;-->
+      <!--<th scope="col">Username</th>-->
+      <!--<th scope="col">Number of Posts and Comments</th>-->
+    <!--</tr>-->
+    <!--</thead>-->
+    <!--<tbody *ngFor="let key of dashboardService.mostActiveKeys">-->
+        <!--<tr ><th colspan="2">{{key}}</th></tr>-->
+        <!--<tr *ngFor="let activeUser of dashboardService.mostActiveUsers.get(key)">-->
+          <!--&lt;!&ndash;<td>{{activeUser.day | date : 'dd/MM/yyyy'}}</td>&ndash;&gt;-->
+          <!--<td>{{activeUser.username}}</td>-->
+          <!--<td>{{activeUser.count}}</td>-->
+        <!--</tr>-->
+    <!--</tbody>-->
+  <!--</table>-->
+
+  <!--<div *ngIf="dashboardService.selectedStatistic ==='postUser'">-->
+
+    <!--<mat-form-field style="margin-top: 2%; width:100%">-->
+      <!--<mat-label>Select a user</mat-label>-->
+      <!--<mat-select [(value)]="dashboardService.selectedUser" (selectionChange)="dashboardService.getPostsPerDayOfUser()">-->
+        <!--<mat-option *ngFor="let contact of homeService.getContactsOfUser()" [value]="contact.userId">{{contact.firstName}} {{contact.lastName}}</mat-option>-->
+      <!--</mat-select>-->
+    <!--</mat-form-field>-->
+
+    <!--<table class="table" *ngIf="dashboardService.selectedStatistic ==='postUser'">-->
+      <!--<thead>-->
+      <!--<tr>-->
+        <!--<th scope="col">Date</th>-->
+        <!--<th scope="col">Number of Posts</th>-->
+      <!--</tr>-->
+      <!--</thead>-->
+      <!--<tbody>-->
+      <!--<tr *ngFor="let dates of dashboardService.postsPerDayOfUser">-->
+        <!--&lt;!&ndash;<th scope="row">1</th>&ndash;&gt;-->
+        <!--<td>{{dates.day | date : 'dd/MM/yyyy'}}</td>-->
+        <!--<td>{{dates.total}}</td>-->
+      <!--</tr>-->
+      <!--</tbody>-->
+    <!--</table>-->
+  <!--</div>-->
+
+  <!--<div *ngIf="dashboardService.selectedStatistic ==='reactPost'">-->
+    <!--<mat-form-field style="margin-top: 2%; width:100%">-->
+      <!--<mat-label>Select a post</mat-label>-->
+      <!--<mat-select [(value)]="dashboardService.selectedPost" (selectionChange)="dashboardService.getAllReactionsForPost()">-->
+        <!--<mat-option *ngFor="let post of dashboardService.postsForSelect" [value]="post.postId">{{post.postId}} | {{post.caption}}</mat-option>-->
+      <!--</mat-select>-->
+    <!--</mat-form-field>-->
+
+    <!--<table class="table">-->
+      <!--<thead>-->
+      <!--<tr>-->
+        <!--<th scope="col">Number of Likes</th>-->
+        <!--<th scope="col">Number of Dislikes</th>-->
+        <!--<th scope="col">Number of Replies</th>-->
+      <!--</tr>-->
+      <!--</thead>-->
+      <!--<tbody>-->
+      <!--<tr>-->
+        <!--<td>{{dashboardService.postReactions.numberOfLikes}}</td>-->
+        <!--<td>{{dashboardService.postReactions.numberOfDislikes}}</td>-->
+        <!--<td>{{dashboardService.postReactions.numberOfReplies}}</td>-->
+      <!--</tr>-->
+      <!--</tbody>-->
+    <!--</table>-->
+  <!--</div>-->
 
 
 </div>

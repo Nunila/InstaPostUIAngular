@@ -92,6 +92,7 @@ export class HomeService {
     const requestOptions = {
       headers: new HttpHeaders(headersDict)
     };
+    console.log(newchat)
 
     this.http.post(url, newchat )
       .subscribe(data => {
