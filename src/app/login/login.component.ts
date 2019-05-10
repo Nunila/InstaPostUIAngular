@@ -25,9 +25,9 @@ export class LoginComponent implements OnInit {
   passwdLog = new FormControl('', [Validators.required]);
   unameSign = new FormControl('', [Validators.required]);
   passwdSign = new FormControl('', [Validators.required]);
-  private newUser;
+  newUser: NewAccount;
   private logUser;
-  private accntInf: NewAccount;
+  accntInf: NewAccount;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -37,16 +37,16 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.logUser = {
-      username: '',
+      userName: '',
       password: ''
     };
     this.newUser = {
-      username: '',
+      userName: '',
       password: '',
       firstName: '',
       lastName: '',
       birthday: '',
-      phoneNum: '',
+      phoneNum: 0,
       email: ''
     };
   }
@@ -55,18 +55,19 @@ export class LoginComponent implements OnInit {
   sf() {return this.newUser; }
   // when logging in
   onLogSubmit() {
-    this.userService.login(this.lf().username, this.lf().password);
+    this.userService.login(this.logUser);
   }
 
   onRegisterSubmit() {
-    this.accntInf.userName = this.sf().username;
-    this.accntInf.password = this.sf().password;
-    this.accntInf.firstName = this.sf().firstName;
-    this.accntInf.lastName = this.sf().lastName;
-    this.accntInf.phoneNum = this.sf().phoneNum;
-    this.accntInf.email = this.sf().email;
-    this.accntInf.birthday = this.datePipe.transform(this.sf().birthday, 'yyyy-MM-dd');
-    this.userService.signup(this.accntInf);
+    // this.accntInf.userName = this.newUser.userName;
+    // this.accntInf.password = this.newUser.password;
+    // this.accntInf.firstName = this.newUser.firstName;
+    // this.accntInf.lastName = this.newUser.lastName;
+    // this.accntInf.phoneNum = this.newUser.phoneNum;
+    // this.accntInf.email = this.newUser.email;
+    this.newUser.birthday = this.datePipe.transform(this.newUser.birthday, 'yyyy-MM-dd');
+    console.log(this.newUser);
+    this.userService.signup(this.newUser);
   }
 
 }

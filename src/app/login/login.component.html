@@ -4,17 +4,17 @@
     <div class="flex-col col-6">
       <mat-form-field appearance="standard">
         <mat-label>Username</mat-label>
-        <input matInput [(ngModel)]="lf().username" placeholder="username" required>
+        <input matInput [(ngModel)]="lf().username" placeholder="username" [formControl]="unameLog" required>
         <mat-error *ngIf="unameLog.invalid">You must enter value.</mat-error>
       </mat-form-field>
       <mat-form-field appearance="standard">
         <mat-label>Password</mat-label>
-        <input matInput [(ngModel)]="lf().password" placeholder="password" required>
+          <input matInput [(ngModel)]="lf().password" placeholder="password" [formControl]="passwdLog" required>
         <mat-error *ngIf="passwdLog.invalid">You must enter value.</mat-error>
       </mat-form-field>
     </div>
   </div>
-  <button mat-raised-button (click)="onLogSubmit()">Log in</button>
+  <button mat-raised-button (click)="onLogSubmit()" [disabled]="unameLog.invalid || passwdLog.invalid">Log in</button>
 </div>
 
 <div style="float: right;">
@@ -22,7 +22,7 @@
     <div class="flex-col col-6">
       <mat-form-field appearance="standard">
         <mat-label>Username</mat-label>
-        <input matInput [(ngModel)]="sf().username" placeholder="username" [formControl]="unameSign" required>
+        <input matInput [(ngModel)]="sf().userName" placeholder="username" [formControl]="unameSign" required>
         <mat-error *ngIf="unameSign.invalid">You must enter value.</mat-error>
       </mat-form-field>
       <mat-form-field appearance="standard">
@@ -55,7 +55,7 @@
       </mat-form-field>
     </div>
   </div>
-  <button mat-raised-button (click)="onRegisterSubmit()">Submit</button>
+  <button mat-raised-button (click)="onRegisterSubmit()" [disabled]="unameSign.invalid || passwdSign.invalid">Submit</button>
 </div>
 
 
