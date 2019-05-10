@@ -44,21 +44,15 @@
                   [columnNames]="dashboardService.columnNames" title="Posts of Selected User Per Day" width="500" height="300" [dynamicResize]="true" ></google-chart>
   </div>
 
-  <!--<tbody *ngFor="let key of dashboardService.mostActiveKeys">-->
-  <!--<tr ><th colspan="2">{{key}}</th></tr>-->
-  <!--<tr *ngFor="let activeUser of dashboardService.mostActiveUsers.get(key)">-->
-  <!--&lt;!&ndash;<td>{{activeUser.day | date : 'dd/MM/yyyy'}}</td>&ndash;&gt;-->
-  <!--<td>{{activeUser.username}}</td>-->
-  <!--<td>{{activeUser.count}}</td>-->
-  <!--</tr>-->
-  <!--</tbody>-->
-  <div *ngIf="dashboardService.selectedStatistic ==='activeuser' && dashboardService.mostActiveUsers.size > 0">
-    <google-chart *ngFor="let col of dashboardService.activeusercolumnarr; let i=index"  [type]="'LineChart'" [data]="dashboardService.activeuserdataarr[i]"
-                  [columnNames]="col" title="Most Active Users" width="500" height="300" [dynamicResize]="true" ></google-chart>
+
+  <div *ngIf="dashboardService.selectedStatistic ==='activeuser' && dashboardService.mostActiveUsers.size > 0" style="flex-direction: column-reverse; display: flex;">
+    <div *ngFor="let col of dashboardService.activeusercolumnarr; let i=index"  >
+      <google-chart  [type]="'ColumnChart'" [data]="dashboardService.activeuserdataarr[i]"
+                     [columnNames]="['count','count']" title="Most Active Users on {{col | date : 'fullDate'}}" width="500" height="300" [dynamicResize]="true" ></google-chart>
+      <hr>
+    </div>
+
   </div>
-
-
-
 
   <div *ngIf="dashboardService.selectedStatistic ==='reactPost'">
     <mat-form-field style="margin-top: 2%; width:100%">

@@ -268,21 +268,15 @@ export class DashboardService {
         console.log(this.mostActiveUsers);
         this.mostActiveKeys.reverse();
         var arr2 = [];
-        this.mostActiveUsers.forEach( (value, key) => {
-          var a = value as object[];
-          // this.activeuserdataarr.push([value['username'], value['count']]);
+        this.mostActiveUsers.forEach( (values, key) => {
+          var aa = values as object[];
           var arr = [];
           this.activeusercolumnarr.push(key);
-          for (let a[0] of value) {
+          for (let a of aa) {
             arr.push([a['username'], a['count']]);
           }
           this.activeuserdataarr.push(arr);
-          // arr2.push(key);
         });
-
-
-        console.log(this.activeuserdataarr);
-        console.log(this.activeusercolumnarr);
         }
       );
   }
