@@ -11,11 +11,13 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./chat.component.css']
 })
 export class ChatComponent implements OnInit {
-  @Input() chatId: number;
+  @Input() chatName: string;
 
   constructor(private postService: PostService, private homeService: HomeService, private userService: UserService, private route: ActivatedRoute, private router: Router ) { }
 
   private CHATID;
+  private CHATNAME;
+  private USERROLE;
   private SIGNEDINUSERID;
   private SIGNEDINPERSONID;
 
@@ -35,9 +37,13 @@ export class ChatComponent implements OnInit {
 
   ngOnInit() {
     this.CHATID = this.route.snapshot.paramMap.get('chatId');
+    this.CHATNAME = this.route.snapshot.paramMap.get('chatName');
+    this.USERROLE = this.route.snapshot.paramMap.get('userRole');
+
     // this.postService.getInfoOfCurrentChat(this.CHATID);
     this.SIGNEDINPERSONID = this.userService.getCurrentUser().personId;
     this.SIGNEDINUSERID = this.userService.getCurrentUser().userId;
+    this.postService.getChatReactionsFromDB(this.SIGNEDINUSERID, this.CHATID);
   }
 
   getCurrentChat() {
@@ -53,8 +59,8 @@ export class ChatComponent implements OnInit {
 
   getUsersInChat(){
     this.homeService.getUsersInChatFromDB(this.CHATID);
-    this.usersInChat = this.homeService.getUsersInChat();
-    console.log(this.usersInChat)
+    //this.usersInChat = this.homeService.getUsersInChat();
+    //console.log(usersInChat);
   }
 
   boxchecked(e) {
@@ -74,6 +80,14 @@ export class ChatComponent implements OnInit {
 
   removeMember(userId){
     this.homeService.deleteParticipant(this.CHATID, userId);
+  }
+
+  userIsOwner(){
+    if(this.USERROLE == 'owner') {
+      return true;
+    } else{
+      return false;
+    }
   }
 
 }

@@ -11,11 +11,14 @@
             <mat-icon>more_vert</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
-            <button mat-menu-item data-toggle="modal" (click)="getUserContacts()" data-target="#addParticipants">
+            <button mat-menu-item data-toggle="modal" *ngIf="userIsOwner()" (click)="getUserContacts()" data-target="#addParticipants">
               <span>Add Participants</span>
             </button>
-            <button mat-menu-item data-toggle="modal" (click)="getUsersInChat()" data-target="#removeParticipants">
+            <button mat-menu-item data-toggle="modal" *ngIf="userIsOwner()" (click)="getUsersInChat()" data-target="#removeParticipants">
               <span>Remove Participants</span>
+            </button>
+            <button mat-menu-item data-toggle="modal" (click)="getUsersInChat()" data-target="#viewParticipants">
+              <span>View Participants</span>
             </button>
           </mat-menu>
         </div>
@@ -38,7 +41,7 @@
         </button>
       </div>
       <div class="modal-body flex-form">
-        <p>Select the contacts you want to add to *CHAT NAME*</p>
+        <p color="red" >Select the contacts you want to add to {{CHATNAME}}</p>
         <table class="table">
           <thead>
           <tr>
@@ -48,7 +51,7 @@
             <th scope="col">Email</th>
           </tr>
           </thead>
-          <tbody *ngFor="let contact of contactsArray">
+          <tbody *ngFor="let contact of homeService.usersToAdd | async">
             <tr>
               <td>
                 <mat-checkbox (change)="boxchecked($event)" value="{{contact.userId}}"> </mat-checkbox>
@@ -80,7 +83,7 @@
         </button>
       </div>
       <div class="modal-body flex-form">
-        <p>Select the contacts you want to remove from *CHAT NAME*</p>
+        <p color="red">Select the contacts you want to remove from {{CHATNAME}}</p>
         <table class="table">
           <thead>
           <tr>
@@ -90,7 +93,7 @@
             <th scope="col"></th>
           </tr>
           </thead>
-          <tbody *ngFor="let member of usersInChat">
+          <tbody *ngFor="let member of homeService.usersInChat | async">
           <tr>
             <td>{{member.firstName}} {{member.lastName}}</td>
             <td>{{member.phonenumber}}</td>
@@ -98,6 +101,45 @@
             <td>
               <button mat-icon-button  data-dismiss="modal" (click)="removeMember(member.userId)"><mat-icon>delete</mat-icon></button>
             </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--------------------------VIEW PARTICIPANTS MODAL----------------------------------------->
+
+<div class="modal fade font" id="viewParticipants" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">View Participants</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body flex-form">
+        <table class="table">
+          <thead>
+          <tr>
+            <th scope="col">Username</th>
+            <th scope="col">Name</th>
+            <th scope="col">Phone Number</th>
+            <th scope="col">Email</th>
+          </tr>
+          </thead>
+          <tbody *ngFor="let member of homeService.usersInChat | async">
+          <tr>
+            <td>{{member.userName}}</td>
+            <td>{{member.firstName}} {{member.lastName}}</td>
+            <td>{{member.phonenumber}}</td>
+            <td>{{member.email}}</td>
           </tr>
           </tbody>
         </table>

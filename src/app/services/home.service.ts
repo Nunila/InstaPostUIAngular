@@ -3,6 +3,7 @@ import {HttpHeaders, HttpClient} from '@angular/common/http';
 import {UserService} from './user.service';
 import {DatePipe} from '@angular/common';
 import {Chat, Person, CompletePerson} from './interfaces';
+import {Observable} from "rxjs";
 
 // interface Chat {
 //   chatId: number;
@@ -35,7 +36,8 @@ export class HomeService {
   public SIGNEDINPERSONID = this.userService.getCurrentUser().personId;
   private contactsOfUser: Person[] = [];
   private personSignedInInfo: CompletePerson;
-  private usersInChat: Person[] =[];
+  public usersInChat: Observable<any>;
+  public usersToAdd: Observable<any>;
 
   public contactResult;
   public flag = 'none';
@@ -114,15 +116,16 @@ export class HomeService {
       headers: new HttpHeaders(headersDict)
     };
 
-    this.http.get(url, requestOptions)
-      .subscribe(data => {
-          this.usersInChat = data as Person[];
-          console.log(this.usersInChat)
-        },
-        (err) => console.log(err),
-        () => {
-        }
-      );
+    this.usersInChat = this.http.get(url, requestOptions);
+    // this.http.get(url, requestOptions)
+    //   .subscribe(data => {
+    //       this.usersInChat = data as Person[];
+    //       console.log(this.usersInChat)
+    //     },
+    //     (err) => console.log(err),
+    //     () => {
+    //     }
+    //   );
   }
 
   getUsersInChat(){
@@ -139,8 +142,8 @@ export class HomeService {
         },
         (err) => console.log(err),
         () => {
-          const i = this.usersInChat.findIndex(user => user.userId === userId);
-          this.usersInChat.splice(i, 1);
+          // const i = this.usersInChat.findIndex(user => user.userId === userId);
+          // this.usersInChat.splice(i, 1);
         }
       );
   }
@@ -181,15 +184,15 @@ export class HomeService {
       headers: new HttpHeaders(headersDict)
     };
 
-    this.http.get(url, requestOptions)
-      .subscribe(data => {
-          this.contactsOfUser = data as Person[];
-          console.log(this.contactsOfUser);
-        },
-        (err) => console.log(err),
-        () => {
-        }
-      );
+    this.usersToAdd = this.http.get(url, requestOptions);
+      // .subscribe(data => {
+      //     this.contactsOfUser = data as Person[];
+      //     console.log(this.contactsOfUser);
+      //   },
+      //   (err) => console.log(err),
+      //   () => {
+      //   }
+      // );
   }
 
   addParticipantsToChat(participants, chatId){

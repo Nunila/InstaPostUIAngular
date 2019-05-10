@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpHeaders, HttpClient} from '@angular/common/http';
-import {Chat, Reactions, Post, Reply} from './interfaces';
+import {Chat, Reactions, Post, Reply, Reaction} from './interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +18,7 @@ export class PostService {
   private allRepliesMap: Map<number, Reply[]> = new Map();
   private updatedReplies: Reply[] = new Array();
 
+  private userReactionsMap: Map<number, string> = new Map();
   private currentChat: Chat ;
 
   refresh() {
@@ -307,6 +308,34 @@ export class PostService {
     } else {
       return 0;
     }
+  }
+
+  getChatReactionsFromDB(userId, chatId){
+    const url =  this.mainUrl + `/reactions/user/`+ userId + '/chat/'+ chatId;
+    const headersDict = {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headersDict)
+    };
+
+    this.http.get(url, requestOptions)
+      .subscribe(data => {
+          const reactions = data as Reaction[];
+          reactions.forEach(reaction => {
+            this.userReactionsMap.set(reaction.messageId, reaction.type)
+          });
+        },
+        (err) => console.log(err),
+        () => {
+          console.log(this.allReactionsMap);
+        }
+      );
+  }
+
+  getChatReactionsMap(){
+    return this.userReactionsMap;
   }
 
 }

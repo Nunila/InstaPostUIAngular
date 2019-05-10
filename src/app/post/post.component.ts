@@ -15,6 +15,8 @@ export class PostComponent implements OnInit {
   private SIGNEDINUSERID;
   private SIGNEDINPERSONID;
 
+  private userChatReactions;
+
   ngOnInit() {
     this.SIGNEDINPERSONID = this.userService.getCurrentUser().personId;
     this.SIGNEDINUSERID = this.userService.getCurrentUser().userId;
@@ -22,6 +24,7 @@ export class PostComponent implements OnInit {
     this.postService.getPostsForChatIdFromDB(this.chatId);
     this.postService.getAllReactionsfromDB();
     this.postService.getAllRepliesFromDB();
+    this.userChatReactions = this.postService.getChatReactionsMap();
   }
 
   private newPost = {
@@ -78,5 +81,13 @@ export class PostComponent implements OnInit {
     };
     console.log(newReaction);
     this.postService.addReactionToDB(newReaction);
+  }
+
+  userAlreadyReacted(messageId, reactionType){
+    if(this.userChatReactions.has(messageId)){
+      var type = this.userChatReactions.get(messageId);
+      if(type == reactionType) return true;
+      else return false;
+    } else return false;
   }
 }
