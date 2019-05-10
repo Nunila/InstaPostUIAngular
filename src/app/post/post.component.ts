@@ -41,7 +41,7 @@ export class PostComponent implements OnInit {
         if (this.postService.getAllPosts()[i].postId === null) {
           posts[i].setAttribute('src', this.postService.getAllPosts()[i].photourl);
         } else {
-          posts[i].setAttribute('src', 'http://instapostdb.herokuapp.com/InstaPost/images/' + this.postService.getAllPosts()[i].photourl);
+          posts[i].setAttribute('src', 'http://localhost:5000/InstaPost/images/' + this.postService.getAllPosts()[i].photourl);
         }
       }
     }
@@ -69,4 +69,14 @@ export class PostComponent implements OnInit {
     this.newPost.content = null;
   }
 
+  addReaction(postId, messageId, reactionType){
+    const newReaction = {
+      userId: this.SIGNEDINUSERID,
+      postId: postId,
+      messageId: messageId,
+      reactionType: reactionType
+    };
+    console.log(newReaction);
+    this.postService.addReactionToDB(newReaction);
+  }
 }

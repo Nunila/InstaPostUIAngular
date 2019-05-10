@@ -61,3 +61,8 @@ export interface Reply {
   messageDate: string;
   username: string;
 }
+
+export interface Reaction {
+  postId: number;
+
+}

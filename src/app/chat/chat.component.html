@@ -96,7 +96,7 @@
             <td>{{member.phonenumber}}</td>
             <td>{{member.email}}</td>
             <td>
-              <button mat-icon-button><mat-icon>delete</mat-icon></button>
+              <button mat-icon-button  data-dismiss="modal" (click)="removeMember(member.userId)"><mat-icon>delete</mat-icon></button>
             </td>
           </tr>
           </tbody>

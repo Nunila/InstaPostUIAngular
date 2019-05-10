@@ -16,10 +16,10 @@
         </p>
       </mat-card-content>
       <mat-card-actions >
-        <button mat-icon-button (click)="postService.addReaction(post.messageId, 'like')">
+        <button mat-icon-button (click)="addReaction(post.postId, post.messageId, 'LIKE')">
           <mat-icon matBadge="{{getReactionsMap(post.messageId).likes}}" matBadgeColor="warn">thumb_up</mat-icon>
         </button>
-        <button  mat-icon-button (click)="postService.addReaction(post.messageId, 'dislike')">
+        <button  mat-icon-button (click)="addReaction(post.postId, post.messageId, 'DISLIKE')">
           <mat-icon matBadge="{{getReactionsMap(post.messageId).dislikes}}"  matBadgeColor="warn">thumb_down</mat-icon>
         </button>
       </mat-card-actions>

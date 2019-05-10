@@ -72,4 +72,8 @@ export class ChatComponent implements OnInit {
     this.contactsToBeAdded.participants=null;
   }
 
+  removeMember(userId){
+    this.homeService.deleteParticipant(this.CHATID, userId);
+  }
+
 }

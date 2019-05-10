@@ -130,6 +130,21 @@ export class HomeService {
 
   }
 
+  deleteParticipant(chatId, userId){
+    console.log(userId)
+    const url =  this.mainUrl + `/removemember/chat/` + chatId +'/user/'+userId;
+
+    this.http.delete(url)
+      .subscribe(data => {
+        },
+        (err) => console.log(err),
+        () => {
+          const i = this.usersInChat.findIndex(user => user.userId === userId);
+          this.usersInChat.splice(i, 1);
+        }
+      );
+  }
+
   // ---------------------------Methods for Contacts -----------------------------------//
 
   getContactsOfUser() {

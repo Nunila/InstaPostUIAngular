@@ -211,7 +211,7 @@ export class PostService {
       .subscribe(data => {
           // console.log(data)
           this.allReplies = data as Reply[];
-          console.log(this.allReplies);
+          //console.log(this.allReplies);
           this.allReplies.forEach(reply => {
             // console.log(reply);
             let replies: Reply[] = new Array();
@@ -224,7 +224,7 @@ export class PostService {
               this.allRepliesMap.set(reply.postId, replies);
             }
           });
-
+          console.log(this.allRepliesMap);
         },
         (err) => console.log(err),
         () => {
@@ -233,6 +233,8 @@ export class PostService {
   }
 
   getRepliesMap(postid) {
+    //console.log(postid);
+    //console.log(this.allRepliesMap.get(postid));
     if (this.allRepliesMap.has(postid)) {
       return this.allRepliesMap.get(postid);
     } else {
@@ -243,13 +245,36 @@ export class PostService {
   //-------------------------------------REACTIONS SERVICES-------------------------------------
 
   addReaction(messageId, likeordislike) {
-    let old = this.allReactionsMap.get(messageId);
-    if (likeordislike === 'like') {
-      old.likes += 1;
-    } else {
-      old.dislikes += 1;
+    if (this.allReactionsMap.has(messageId)){
+      let old = this.allReactionsMap.get(messageId);
+      if (likeordislike === 'like') {
+        old.likes += 1;
+      } else {
+        old.dislikes += 1;
+      }
+      this.allReactionsMap.set(messageId, old);
     }
-    this.allReactionsMap.set(messageId, old);
+  }
+
+  addReactionToDB(reaction){
+    this.addReaction(reaction.messageId, reaction.reactionType);
+    const url =  this.mainUrl + '/reactions';
+    const headersDict = {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headersDict)
+    };
+
+    this.http.post(url, reaction).subscribe(data => {
+      },
+      (err) => console.log(err),
+      () => {
+        // t his.getChatsOfUserFromDB(this.SIGNEDINUSERID);
+
+      }
+    );
   }
 
   getAllReactionsfromDB() {
