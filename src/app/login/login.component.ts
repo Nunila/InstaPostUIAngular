@@ -55,7 +55,7 @@ export class LoginComponent implements OnInit {
   sf() {return this.newUser; }
   // when logging in
   onLogSubmit() {
-    this.userService.login(this.logUser);
+    this.userService.login(this.logUser.userName, this.logUser.password);
   }
 
   onRegisterSubmit() {

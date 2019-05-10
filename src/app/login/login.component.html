@@ -4,7 +4,7 @@
     <div class="flex-col col-6">
       <mat-form-field appearance="standard">
         <mat-label>Username</mat-label>
-        <input matInput [(ngModel)]="lf().username" placeholder="username" [formControl]="unameLog" required>
+        <input matInput [(ngModel)]="lf().userName" placeholder="username" [formControl]="unameLog" required>
         <mat-error *ngIf="unameLog.invalid">You must enter value.</mat-error>
       </mat-form-field>
       <mat-form-field appearance="standard">

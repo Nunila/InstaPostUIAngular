@@ -47,9 +47,9 @@ export class UserService {
     return this.currentUser.userId;
   }
 
-  login(credentials: Credentials) {
+  login(username, password) {
     // const credentials = {userName, password};
-    const url =  this.mainUrl + `/users/login`;
+    const url =  this.mainUrl + `/users/login/` + username + '/' + password;
     const headersDict = {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache'
@@ -58,7 +58,7 @@ export class UserService {
       headers: new HttpHeaders(headersDict)
     };
     // tslint:disable-next-line:no-unused-expression
-    this.http.post(url, credentials)
+    this.http.post(url, requestOptions)
       .subscribe(data => {
           const user = data as User;
           this.currentUser = user;
