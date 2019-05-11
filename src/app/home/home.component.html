@@ -83,7 +83,7 @@
       <button mat-raised-button (click)="saveProfile()">Save</button>
     </mat-tab>
 
-    <mat-tab>
+    <mat-tab style="overflow-y: hidden;">
       <ng-template mat-tab-label>
         <mat-icon class="example-tab-icon">insert_chart</mat-icon>&#160; Dashboard
       </ng-template>
@@ -131,7 +131,6 @@
   </div>
 
 <div class="mobile" *ngIf="homeService.selectedComponent ==='profile'">
-  <h2 class="font"><mat-icon class="example-tab-icon">person</mat-icon>&#160; Profile</h2>
   <div class="flex-row ">
     <div class="flex-col col-6">
       <mat-form-field appearance="standard">

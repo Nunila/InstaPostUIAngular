@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
     chatName : 'SomeChatName',
     members : [],
     creationDate : new Date().getFullYear() + '-' + new Date().getMonth() + '-' + new Date().getDay(),
-    ownerId : this.SIGNEDINUSERID
+    ownerId : this.userService.getCurrentUser().userId
   };
   private newContact = {
     phonenumber : '',

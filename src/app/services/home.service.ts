@@ -94,6 +94,7 @@ export class HomeService {
     const requestOptions = {
       headers: new HttpHeaders(headersDict)
     };
+    console.log(newchat)
 
     this.http.post(url, newchat )
       .subscribe(data => {
@@ -274,6 +275,8 @@ export class HomeService {
       .subscribe(data => {
           const a = data as Person;
           this.contactsOfUser.push(a);
+          console.log(a);
+        console.log(data);
         },
         (err) => console.log(err),
         () => {

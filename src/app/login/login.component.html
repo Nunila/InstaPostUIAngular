@@ -1,29 +1,65 @@
-<h2 class="login-header">Login</h2>
-<form [formGroup]="loginForm" class="login-container" (ngSubmit)="onLogSubmit()">
-  <div class="form-group">
-    <div [ngClass]="{ 'has-error': submitted && lf.username.errors }">
-      <label for= 'username'>Username</label>
-      <input type= 'text' placeholder="username" formControlName="username">
+
+<h2 class="login-header font" style="color: #343a40">Welcome to InstaPost!</h2>
+<div class="login-container">
+  <div class="col">
+    <h3 class="login-header font">Login</h3>
+    <div class="flex-row">
+      <div class="flex-col col-6">
+        <mat-form-field appearance="standard">
+          <mat-label>Username</mat-label>
+          <input matInput [(ngModel)]="lf().userName" placeholder="username" [formControl]="unameLog" required>
+          <mat-error *ngIf="unameLog.invalid">You must enter value.</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="standard">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" [(ngModel)]="lf().password" placeholder="password" [formControl]="passwdLog" required>
+          <mat-error *ngIf="passwdLog.invalid">You must enter value.</mat-error>
+        </mat-form-field>
+      </div>
     </div>
-    <div *ngIf="submitted && lf.username.errors" class="help-block">
-      <div *ngIf="lf.username.errors.required">Username is required</div>
+    <button mat-raised-button (click)="onLogSubmit()" [disabled]="unameLog.invalid || passwdLog.invalid">Log in</button>
+  </div>
+
+  <div class="col">
+    <h3 class="login-header font">A new user? Sign up.</h3>
+    <div class="flex-row">
+      <div class="flex-col col-6">
+        <mat-form-field appearance="standard">
+          <mat-label>Username</mat-label>
+          <input matInput [(ngModel)]="sf().userName" placeholder="username" [formControl]="unameSign" required>
+          <mat-error *ngIf="unameSign.invalid">You must enter value.</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="standard">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" [(ngModel)]="sf().password" placeholder="password" [formControl]="passwdSign" required>
+          <mat-error *ngIf="passwdSign.invalid">You must enter value.</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="standard">
+          <mat-label>First Name</mat-label>
+          <input matInput [(ngModel)]="sf().firstName" placeholder="first name">
+        </mat-form-field>
+        <mat-form-field appearance="standard">
+          <mat-label>Last Name</mat-label>
+          <input matInput [(ngModel)]="sf().lastName" placeholder="last name">
+        </mat-form-field>
+        <mat-form-field appearance="standard">
+          <mat-label>Phone</mat-label>
+          <input matInput [(ngModel)]="sf().phoneNum" placeholder="phonenumber">
+        </mat-form-field>
+        <mat-form-field appearance="standard">
+          <mat-label>Email</mat-label>
+          <input matInput [(ngModel)]="sf().email" placeholder="email">
+        </mat-form-field>
+        <mat-form-field appearance="standard">
+          <mat-label>Birthday</mat-label>
+          <input matInput [owlDateTime]="dt" [owlDateTimeTrigger]="dt" [(ngModel)]="sf().birthday" placeholder="birthday">
+          <owl-date-time [pickerType]="'calendar'" #dt></owl-date-time>
+        </mat-form-field>
+    <button mat-raised-button (click)="onRegisterSubmit()" [disabled]="unameSign.invalid || passwdSign.invalid">Submit</button>
+      </div>
     </div>
   </div>
-  <div class="form-group">
-    <p [ngClass]="{ 'has-error': submitted && lf.password.errors }">
-      <input type="password" placeholder="Password" formControlName="password">
-    </p>
-    <div *ngIf="submitted && lf.password.errors" class="help-block">
-      <div *ngIf="lf.password.errors.required">Password required.</div>
-    </div>
-    <div>
-      <!--<button (click)="onLogSubmit()" class="btn-log">Login</button>-->
-      <input type="submit" value="Login">
-    </div>
-  </div>
-</form>
+</div>
 
 
-<button mat-button routerLink="/home">Go to home</button>
-<button mat-button routerLink="/chat">Go to chat</button>
 

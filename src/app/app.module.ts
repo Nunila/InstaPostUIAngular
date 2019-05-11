@@ -29,9 +29,11 @@ import {MatListModule} from '@angular/material/list';
 import {MatMenuModule} from '@angular/material/menu';
 import { MatTableModule } from '@angular/material';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatSelectModule} from '@angular/material/select';
+
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { GoogleChartsModule } from 'angular-google-charts';
-import {MatSelectModule} from '@angular/material/select';
+
 
 @NgModule({
   declarations: [
@@ -69,7 +71,7 @@ import {MatSelectModule} from '@angular/material/select';
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     GoogleChartsModule,
-    MatSelectModule
+    MatSelectModule,
 
   ],
   providers: [PostService, ReplyService, HomeService, UserService, DatePipe],

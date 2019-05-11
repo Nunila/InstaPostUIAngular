@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpHeaders, HttpClient} from '@angular/common/http';
-import {Hashtag, PostPerDay} from './interfaces';
+import {Hashtag, PostForSelect, PostPerDay} from './interfaces';
+import {DatePipe} from '@angular/common';
+import {count} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -8,12 +10,25 @@ import {Hashtag, PostPerDay} from './interfaces';
 export class DashboardService {
 
   public selectedStatistic = 'trending#';
+  public selectedUser: number;
+  public selectedPost: number;
 
   private trendingHashtags: Hashtag[] = [];
   public postsPerDay: PostPerDay[] = [];
   public repliesPerDay: PostPerDay[] = [];
   public likesPerDay: PostPerDay[] = [];
   public dislikesPerDay: PostPerDay[] = [];
+  public postsPerDayOfUser: PostPerDay[] = [];
+  public postsForSelect: PostForSelect[] = [];
+  public postReactions = {
+    numberOfLikes: null,
+    numberOfDislikes: null,
+    numberOfReplies: null
+  };
+  public activeuserdataarr = [];
+  public activeusercolumnarr = [];
+
+
   public mostActiveUsers: Map<string, object> = new Map();
   public mostActiveKeys = [];
 
@@ -23,22 +38,24 @@ export class DashboardService {
   // mainUrl = `https://instapostdb.herokuapp.com/InstaPost`;
   mainUrl = `http://localhost:5000/InstaPost`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private datepipe: DatePipe) {
+  }
 
   getSelectedStat() {
-    switch  (this.selectedStatistic) {
+    this.chartData = [];
+    switch (this.selectedStatistic) {
       case 'trending#': {
-        this.getTrendingHashtags();
+        if (this.trendingHashtags.length > 0) {
+          this.trendingHashtags.forEach(hash => {
+            this.chartData.push([hash.hashtag, hash.countOnDay]);
+          });
+          this.columnNames = ['Hashtags', 'Counts'];
+        }
+        else this.getTrendingHashtags();
         break;
       }
       case 'postsPerDay': {
         this.getNumberPostsPerDay();
-        break;
-      }
-      case 'dislikesPost': {
-        break;
-      }
-      case 'repliesPost': {
         break;
       }
       case 'activeuser': {
@@ -46,20 +63,22 @@ export class DashboardService {
         break;
       }
       case 'postUser': {
+        //this.getPostsPerDayOfUser();
         break;
       }
       case 'dislikesPerDay': {
         this.getDislikesPerDay();
         break;
       }
-      case 'likesPost': {
+      case 'reactPost': {
+        this.getAllPostsForSelect();
         break;
       }
       case 'likesPerDay': {
         this.getLikesPerDay();
         break;
       }
-      case 'repliesPerDay': {
+      case    'repliesPerDay'  : {
         this.getNumberRepliesPerDay();
         break;
       }
@@ -69,8 +88,9 @@ export class DashboardService {
     }
   }
 
+
   getTrendingHashtags() {
-    const url =  this.mainUrl + `/hashtags/trending`;
+    const url = this.mainUrl + `/hashtags/trending`;
     const headersDict = {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache'
@@ -81,8 +101,8 @@ export class DashboardService {
 
     this.http.get(url, requestOptions)
       .subscribe(data => {
-        console.log(data);
-        this.trendingHashtags = data as Hashtag[];
+          console.log(data);
+          this.trendingHashtags = data as Hashtag[];
         },
         (err) => console.log(err),
         () => {
@@ -95,7 +115,7 @@ export class DashboardService {
   }
 
   getNumberPostsPerDay() {
-    const url =  this.mainUrl + `/posts/numberOfPostsPerDay`;
+    const url = this.mainUrl + `/posts/numberOfPostsPerDay`;
     const headersDict = {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache'
@@ -111,16 +131,16 @@ export class DashboardService {
         },
         (err) => console.log(err),
         () => {
-          // this.trendingHashtags.forEach(hash => {
-          //   this.chartData.push([hash.hashtag, hash.countOnDay]);
-          // });
-          // this.columnNames = ['Hashtags', 'Counts'];
+          this.postsPerDay.forEach(posts => {
+            this.chartData.push([this.datepipe.transform(posts.day, 'fullDate'), posts.total]);
+          });
+          this.columnNames = ['Date', 'Count'];
         }
       );
   }
 
   getNumberRepliesPerDay() {
-    const url =  this.mainUrl + `/messages/numberOfRepliesPerDay`;
+    const url = this.mainUrl + `/messages/numberOfRepliesPerDay`;
     const headersDict = {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache'
@@ -136,16 +156,16 @@ export class DashboardService {
         },
         (err) => console.log(err),
         () => {
-          // this.trendingHashtags.forEach(hash => {
-          //   this.chartData.push([hash.hashtag, hash.countOnDay]);
-          // });
-          // this.columnNames = ['Hashtags', 'Counts'];
+          this.repliesPerDay.forEach(posts => {
+            this.chartData.push([this.datepipe.transform(posts.day, 'fullDate'), posts.total]);
+          });
+          this.columnNames = ['Date', 'Count'];
         }
       );
   }
 
   getLikesPerDay() {
-    const url =  this.mainUrl + `/reactions/likesPerDay`;
+    const url = this.mainUrl + `/reactions/likesPerDay`;
     const headersDict = {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache'
@@ -161,16 +181,16 @@ export class DashboardService {
         },
         (err) => console.log(err),
         () => {
-          // this.trendingHashtags.forEach(hash => {
-          //   this.chartData.push([hash.hashtag, hash.countOnDay]);
-          // });
-          // this.columnNames = ['Hashtags', 'Counts'];
+          this.likesPerDay.forEach(posts => {
+            this.chartData.push([this.datepipe.transform(posts.day, 'fullDate'), posts.total]);
+          });
+          this.columnNames = ['Date', 'Count'];
         }
       );
   }
 
   getDislikesPerDay() {
-    const url =  this.mainUrl + `/reactions/dislikesPerDay`;
+    const url = this.mainUrl + `/reactions/dislikesPerDay`;
     const headersDict = {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache'
@@ -186,18 +206,16 @@ export class DashboardService {
         },
         (err) => console.log(err),
         () => {
-          // this.trendingHashtags.forEach(hash => {
-          //   this.chartData.push([hash.hashtag, hash.countOnDay]);
-          // });
-          // this.columnNames = ['Hashtags', 'Counts'];
+          this.dislikesPerDay.forEach(posts => {
+            this.chartData.push([this.datepipe.transform(posts.day, 'fullDate'), posts.total]);
+          });
+          this.columnNames = ['Date', 'Count'];
         }
       );
   }
 
-  getMostActiveUsersByDate() {
-    this.mostActiveKeys = [];
-    this.mostActiveUsers = new Map();
-    const url =  this.mainUrl + `/users/mostactive`;
+  getPostsPerDayOfUser() {
+    const url = this.mainUrl + `/posts/numberOfPostsPerDay/` + this.selectedUser;
     const headersDict = {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache'
@@ -208,8 +226,35 @@ export class DashboardService {
 
     this.http.get(url, requestOptions)
       .subscribe(data => {
-        const entries = Object.entries(data);
-        entries.forEach((dateWithUsers, i) => {
+          console.log(data);
+          this.postsPerDayOfUser = data as PostPerDay[];
+        },
+        (err) => console.log(err),
+        () => {
+          this.postsPerDayOfUser.forEach(posts => {
+            this.chartData.push([this.datepipe.transform(posts.day, 'fullDate'), posts.total]);
+          });
+          this.columnNames = ['Date', 'Count'];
+        }
+      );
+  }
+
+  getMostActiveUsersByDate() {
+    this.mostActiveKeys = [];
+    this.mostActiveUsers = new Map();
+    const url = this.mainUrl + `/users/mostactive`;
+    const headersDict = {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headersDict)
+    };
+
+    this.http.get(url, requestOptions)
+      .subscribe(data => {
+          const entries = Object.entries(data);
+          entries.forEach((dateWithUsers, i) => {
             let arr = dateWithUsers[1];
             if (arr.length > 3) {
               arr.splice(3, arr.length - 3);
@@ -220,16 +265,66 @@ export class DashboardService {
         },
         (err) => console.log(err),
         () => {
-          this.mostActiveKeys.reverse();
-
-          // this.trendingHashtags.forEach(hash => {
-          //   this.chartData.push([hash.hashtag, hash.countOnDay]);
-          // });
-          // this.columnNames = ['Hashtags', 'Counts'];
+        console.log(this.mostActiveUsers);
+        this.mostActiveKeys.reverse();
+        var arr2 = [];
+        this.mostActiveUsers.forEach( (values, key) => {
+          var aa = values as object[];
+          var arr = [];
+          this.activeusercolumnarr.push(key);
+          for (let a of aa) {
+            arr.push([a['username'], a['count']]);
+          }
+          this.activeuserdataarr.push(arr);
+        });
         }
       );
   }
 
+  getAllPostsForSelect() {
+    const url = this.mainUrl + `/posts/forDashboard`;
+    const headersDict = {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headersDict)
+    };
 
+    this.http.get(url, requestOptions)
+      .subscribe(data => {
+          console.log(data);
+          this.postsForSelect = data as PostForSelect[];
+        },
+        (err) => console.log(err),
+        () => {
 
+        }
+      );
+  }
+
+  getAllReactionsForPost() {
+    const url = this.mainUrl + `/numberofRepliesLikesDislikes/` + this.selectedPost;
+    const headersDict = {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headersDict)
+    };
+
+    this.http.get(url, requestOptions)
+      .subscribe(data => {
+          console.log(data);
+          this.postReactions.numberOfReplies = data['numberOfReplies'];
+          this.postReactions.numberOfDislikes = data['numberOfDislikes'];
+          this.postReactions.numberOfLikes = data['numberOfLikes'];
+        },
+        (err) => console.log(err),
+        () => {
+          this.chartData = [['Replies', this.postReactions.numberOfReplies], ['Likes', this.postReactions.numberOfLikes],['Dislikes', this.postReactions.numberOfDislikes]];
+          this.columnNames = ['Date', 'Reactions'];
+        }
+      );
+  }
 }
