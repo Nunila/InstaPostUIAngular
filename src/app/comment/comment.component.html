@@ -10,10 +10,10 @@
             </div>
             <div class="comment-content" style="display: flex;">{{reply.content}}</div>
             <div style="display: flex;">
-              <button mat-icon-button (click)="addReaction(reply.messageId, 'LIKE')">
+              <button mat-icon-button [disabled]="existReaction(reply.messageId)" [color] ="userAlreadyReacted(reply.messageId, 'LIKE') ? 'primary': 'basic'" (click)="addReaction(reply.messageId, 'LIKE')">
                 <mat-icon matBadge="{{getReactionsMap(reply.messageId).likes}}" matBadgeColor="warn">thumb_up</mat-icon>
               </button>
-              <button mat-icon-button (click)="addReaction(reply.messageId, 'DISLIKE')">
+              <button mat-icon-button [disabled]="existReaction(reply.messageId)" [color] ="userAlreadyReacted(reply.messageId, 'DISLIKE') ? 'primary': 'basic'" (click)="addReaction(reply.messageId, 'DISLIKE')">
                 <mat-icon matBadge="{{getReactionsMap(reply.messageId).dislikes}}" matBadgeColor="warn">thumb_down</mat-icon>
               </button>
             </div>

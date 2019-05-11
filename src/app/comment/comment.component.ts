@@ -16,11 +16,15 @@ export class CommentComponent implements OnInit {
   private SIGNEDINUSERID;
   private SIGNEDINPERSONID;
 
+  private userChatReactions;
+
   ngOnInit() {
     // console.log(this.postId);
     //this.postService.getAllRepliesFromDB();
     this.SIGNEDINPERSONID = this.userService.getCurrentUser().personId;
     this.SIGNEDINUSERID = this.userService.getCurrentUser().userId;
+
+    this.userChatReactions = this.postService.getChatReactionsMap();
 
   }
 
@@ -64,5 +68,16 @@ export class CommentComponent implements OnInit {
     };
     console.log(newReaction);
     this.postService.addReactionToDB(newReaction);
+  }
+
+  userAlreadyReacted(messageId, reactionType){
+    if(this.userChatReactions.has(messageId)){
+      var type = this.userChatReactions.get(messageId);
+      if(type == reactionType) return true;
+      else return false;
+    } else return false;
+  }
+  existReaction(messageId){
+    return this.userChatReactions.has(messageId);
   }
 }

@@ -73,26 +73,34 @@ export class PostComponent implements OnInit {
   }
 
   addReaction(postId, messageId, reactionType){
-    if(this.userChatReactions.has(messageId)){
-      if(this.userChatReactions.get(messageId)==reactionType){
-        const reaction = {
-          userId: this.SIGNEDINUSERID,
-          messageId: messageId,
-        }
-        this.postService.deleteReaction(reaction);
-      } else{
-        //delete reaction and add new one
-      }
-    }else{
-      const newReaction = {
-        userId: this.SIGNEDINUSERID,
-        postId: postId,
-        messageId: messageId,
-        reactionType: reactionType
-      };
-      console.log(newReaction);
-      this.postService.addReactionToDB(newReaction);
-    }
+    // if(this.userChatReactions.has(messageId)){
+    //   if(this.userChatReactions.get(messageId)==reactionType){
+    //     const reaction = {
+    //       userId: this.SIGNEDINUSERID,
+    //       messageId: messageId,
+    //     }
+    //     this.postService.deleteReaction(reaction);
+    //   } else{
+    //     //delete reaction and add new one
+    //   }
+    // }else{
+    //   const newReaction = {
+    //     userId: this.SIGNEDINUSERID,
+    //     postId: postId,
+    //     messageId: messageId,
+    //     reactionType: reactionType
+    //   };
+    //   console.log(newReaction);
+    //   this.postService.addReactionToDB(newReaction);
+    // }
+    const newReaction = {
+      userId: this.SIGNEDINUSERID,
+      postId: postId,
+      messageId: messageId,
+      reactionType: reactionType
+    };
+    console.log(newReaction);
+    this.postService.addReactionToDB(newReaction);
   }
 
   userAlreadyReacted(messageId, reactionType){
@@ -101,5 +109,8 @@ export class PostComponent implements OnInit {
       if(type == reactionType) return true;
       else return false;
     } else return false;
+  }
+  existReaction(messageId){
+    return this.userChatReactions.has(messageId);
   }
 }

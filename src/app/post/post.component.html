@@ -16,10 +16,10 @@
         </p>
       </mat-card-content>
       <mat-card-actions >
-        <button mat-icon-button [color] ="userAlreadyReacted(post.messageId, 'LIKE') ? 'primary': 'basic'" (click)="addReaction(post.postId, post.messageId, 'LIKE')">
+        <button mat-icon-button [disabled]="existReaction(post.messageId)" [color] ="userAlreadyReacted(post.messageId, 'LIKE') ? 'primary': 'basic'" (click)="addReaction(post.postId, post.messageId, 'LIKE')">
           <mat-icon matBadge="{{getReactionsMap(post.messageId).likes}}" matBadgeColor="warn">thumb_up</mat-icon>
         </button>
-        <button  mat-icon-button [color] ="userAlreadyReacted(post.messageId, 'DISLIKE') ? 'primary': 'basic'" (click)="addReaction(post.postId, post.messageId, 'DISLIKE')">
+        <button  mat-icon-button [disabled]="existReaction(post.messageId)" [color] ="userAlreadyReacted(post.messageId, 'DISLIKE') ? 'primary': 'basic'" (click)="addReaction(post.postId, post.messageId, 'DISLIKE')">
           <mat-icon matBadge="{{getReactionsMap(post.messageId).dislikes}}"  matBadgeColor="warn">thumb_down</mat-icon>
         </button>
       </mat-card-actions>

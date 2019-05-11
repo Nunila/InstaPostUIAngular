@@ -29,7 +29,7 @@ export class PostService {
     this.getPostsForChatIdFromDB(this.currentChat.chatId);
     this.getAllReactionsfromDB();
     this.getAllRepliesFromDB();
-    this.getChatReactionsFromDB();
+    //this.getChatReactionsFromDB();
   }
 
   setCurrentChat(chat: Chat) {
@@ -148,12 +148,12 @@ export class PostService {
 
   addReply(newReply) {
     const reply: Reply = {
-      messageId: null,
+      messageId: newReply.messageId,
       postId: newReply.postId,
       userId: newReply.userId,
       content: newReply.content,
       messageDate: new Date().toString(),
-      username: 'New User'
+      username: 'newReply'
     };
     let replies: Reply[] = new Array();
     if (!this.allRepliesMap.has(reply.postId)) {
@@ -260,6 +260,7 @@ export class PostService {
 
   addReactionToDB(reaction){
     this.addReaction(reaction.messageId, reaction.reactionType);
+    this.userReactionsMap.set(reaction.messageId, reaction.type);
     const url =  this.mainUrl + '/reactions';
     const headersDict = {
       'Content-Type': 'application/json',
