@@ -24,6 +24,7 @@
     "angular-google-charts": "^0.1.3",
     "core-js": "^2.5.4",
     "firebase-tools": "^6.9.0",
+    "googleapis": "^39.2.0",
     "hammerjs": "^2.0.8",
     "ng-pick-datetime": "^7.0.0",
     "owl-ng": "^1.0.0-beta.19",

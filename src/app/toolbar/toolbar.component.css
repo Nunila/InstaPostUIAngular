@@ -1,0 +1,11 @@
+
+
+.apart {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+h6 {
+  cursor: pointer;
+}

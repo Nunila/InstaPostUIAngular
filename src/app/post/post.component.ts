@@ -31,7 +31,8 @@ export class PostComponent implements OnInit {
     chatId: null,
     userId: null,
     src: null,
-    content: null
+    content: null,
+    fileName: null
   };
 
   refresh() {
@@ -57,16 +58,32 @@ export class PostComponent implements OnInit {
 
   loadFile(e) {
     const x = document.getElementById('preview');
+    console.log(e.target.files[0]);
+
     const src = URL.createObjectURL(e.target.files[0]);
     x.setAttribute('src', src);
     this.newPost.src = src;
     console.log(this.newPost);
+
+    const reader = new FileReader();
+    reader.readAsBinaryString(e.target.files[0]);
+
+    // reader.onload((e) => {
+    //   const contentType = fileData.type || 'application/octet-stream';
+    //   const metadata = {
+    //     title: fileData.fileName,
+    //     mimeType: contentType
+    //   };
+    // });
+    //
+    // const base64Data = btoa(reader.result);
+
   }
 
   addPost() {
     this.newPost.chatId = this.chatId;
     this.newPost.userId = this.SIGNEDINUSERID;
-    console.log(this.newPost.chatId);
+    console.log(this.newPost);
     this.postService.addPostToDB(this.newPost);
     this.newPost.src = null;
     this.newPost.content = null;
