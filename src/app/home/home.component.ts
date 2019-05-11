@@ -9,6 +9,12 @@ import {UserService} from '../services/user.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
+
+// @Component({
+//   selector: 'app-contact-list',
+//   templateUrl: './chatL',
+//   styleUrls: ['./chat.component.css']
+// })
 export class HomeComponent implements OnInit {
 
   constructor(private postService: PostService, private homeService: HomeService, private userService: UserService) {}
@@ -25,7 +31,7 @@ export class HomeComponent implements OnInit {
     chatName : 'SomeChatName',
     members : [],
     creationDate : new Date().getFullYear() + '-' + new Date().getMonth() + '-' + new Date().getDay(),
-    ownerId : this.SIGNEDINUSERID
+    ownerId : this.userService.getCurrentUser().userId
   };
   private newContact = {
     phonenumber : '',
@@ -35,21 +41,17 @@ export class HomeComponent implements OnInit {
   private flag = false;
   resultContact;
 
-  myData = [
-    ['London', 8136000],
-    ['New York', 8538000],
-    ['Paris', 2244000],
-    ['Berlin', 3470000],
-    ['Kairo', 19500000],
-  ];
-  myColumnNames = ['City', 'Inhabitants'];
+
   ngOnInit() {
     this.SIGNEDINPERSONID = this.userService.getCurrentUser().personId;
     this.SIGNEDINUSERID = this.userService.getCurrentUser().userId;
+    this.homeService.SIGNEDINUSERID = this.SIGNEDINUSERID;
+    this.homeService.SIGNEDINPERSONID = this.SIGNEDINPERSONID;
 
     this.homeService.getChatsOfUserFromDB(this.SIGNEDINUSERID);
     this.homeService.getContactsOfUserFromDB(this.SIGNEDINPERSONID);
-    this.homeService.getPersonInfoOfSignedInUserFromDB();
+    this.homeService.getPersonInfoOfSignedInUserFromDB(this.SIGNEDINPERSONID);
+
     this.newPerson = {
       userId: this.SIGNEDINUSERID,
       personId: 0,

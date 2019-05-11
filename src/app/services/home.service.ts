@@ -3,7 +3,8 @@ import {HttpHeaders, HttpClient} from '@angular/common/http';
 import {UserService} from './user.service';
 import {DatePipe} from '@angular/common';
 import {Chat, Person, CompletePerson} from './interfaces';
-import {Observable} from "rxjs";
+import Swal from 'sweetalert2';
+import {Observable} from 'rxjs';
 
 // interface Chat {
 //   chatId: number;
@@ -41,9 +42,22 @@ export class HomeService {
 
   public contactResult;
   public flag = 'none';
+  public selectedComponent = 'chats';
 
   constructor(private http: HttpClient, private userService: UserService, private datepipe: DatePipe) { }
 
+
+  logout() {
+    this.SIGNEDINPERSONID = 0;
+    this.SIGNEDINUSERID = 0;
+    this.personSignedInInfo = null;
+    this.flag = 'none';
+    this.selectedComponent = 'chats';
+  }
+
+  setSelected(a) {
+    this.selectedComponent = a;
+  }
   // ---------------------------Methods for Chats -----------------------------------//
 
   getChatsOfUser() {
@@ -80,6 +94,7 @@ export class HomeService {
     const requestOptions = {
       headers: new HttpHeaders(headersDict)
     };
+    console.log(newchat)
 
     this.http.post(url, newchat )
       .subscribe(data => {
@@ -106,7 +121,7 @@ export class HomeService {
       );
   }
 
-  getUsersInChatFromDB(chatId){
+  getUsersInChatFromDB(chatId) {
     const url =  this.mainUrl + `/users/chat/` + chatId;
     const headersDict = {
       'Content-Type': 'application/json',
@@ -128,14 +143,14 @@ export class HomeService {
     //   );
   }
 
-  getUsersInChat(){
+  getUsersInChat() {
     return this.usersInChat;
 
   }
 
-  deleteParticipant(chatId, userId){
+  deleteParticipant(chatId, userId) {
     console.log(userId)
-    const url =  this.mainUrl + `/removemember/chat/` + chatId +'/user/'+userId;
+    const url =  this.mainUrl + `/removemember/chat/` + chatId + '/user/' + userId;
 
     this.http.delete(url)
       .subscribe(data => {
@@ -175,7 +190,7 @@ export class HomeService {
   }
 
   getContactsOfUserNotInChat(userId: number, chatId: number){
-    const url =  this.mainUrl + '/notparticipants/person/'+userId+'/chat/'+chatId;
+    const url =  this.mainUrl + '/notparticipants/person/' + userId + '/chat/' + chatId;
     const headersDict = {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache'
@@ -195,8 +210,8 @@ export class HomeService {
       // );
   }
 
-  addParticipantsToChat(participants, chatId){
-    const url =  this.mainUrl + '/addparticipants/chat/'+chatId;
+  addParticipantsToChat(participants, chatId) {
+    const url =  this.mainUrl + '/addparticipants/chat/' + chatId;
     const headersDict = {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache'
@@ -260,6 +275,8 @@ export class HomeService {
       .subscribe(data => {
           const a = data as Person;
           this.contactsOfUser.push(a);
+          console.log(a);
+        console.log(data);
         },
         (err) => console.log(err),
         () => {
@@ -288,8 +305,8 @@ export class HomeService {
     return this.personSignedInInfo;
   }
 
-  getPersonInfoOfSignedInUserFromDB() {
-    const url =  this.mainUrl + `/person/` + this.SIGNEDINPERSONID + `/complete`;
+  getPersonInfoOfSignedInUserFromDB(pid) {
+    const url =  this.mainUrl + `/person/` + pid + `/complete`;
     const headersDict = {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache'
@@ -327,6 +344,11 @@ export class HomeService {
         },
         (err) => console.log(err),
         () => {
+          Swal.fire(
+            'Information Saved!',
+            'Your information is now saved.',
+            'success'
+          );
         }
       );
   }
@@ -352,6 +374,11 @@ export class HomeService {
         },
         (err) => console.log(err),
         () => {
+          Swal.fire(
+            'Information Updated!',
+            'Your information is now updated.',
+            'success'
+          );
         }
       );
   }

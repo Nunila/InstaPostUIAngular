@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import {HttpHeaders, HttpClient} from '@angular/common/http';
 import {Chat, Reactions, Post, Reply, Reaction} from './interfaces';
+import {UserService} from './user.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PostService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private userService:UserService) { }
 
   // mainUrl = `http://instapostdb.herokuapp.com/InstaPost`;
   mainUrl = `http://localhost:5000/InstaPost`;
@@ -30,6 +31,7 @@ export class PostService {
     this.getAllReactionsfromDB();
     this.getAllRepliesFromDB();
     //this.getChatReactionsFromDB();
+    this.getChatReactionsFromDB(this.userService.getCurrentUser().userId, this.currentChat.chatId);
   }
 
   setCurrentChat(chat: Chat) {
@@ -75,7 +77,45 @@ export class PostService {
     this.allPosts.push(post);
   }
 
-  addPostToDB(newPost){
+  uploadToDrive(fileToUpload){
+
+    drive.files.create({
+      resource: fileToUpload,
+      media: fileToUpload.media,
+      fields: 'id'
+    }, function (err, file) {
+      if (err) {
+        // Handle error
+        console.error(err);
+      } else {
+        console.log('File Id: ', file.id);
+      }
+    });
+
+    const url =  'https://www.googleapis.com/upload/drive/v3/files?uploadType=media';
+    const headersDict = {
+      'Content-Type': fileToUpload.media.mimeType,
+      'Content-Length': 'no-cache'
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headersDict)
+    };
+    console.log(newPost);
+
+    this.http.post(url, newPost).subscribe(data => {
+      },
+      (err) => console.log(err),
+      () => {
+        // t his.getChatsOfUserFromDB(this.SIGNEDINUSERID);
+
+      }
+    );
+  }
+
+  addPostToDB(newPost, fileToUpload){
+    this.uploadToDrive(fileToUpload);
+
+
     const url =  this.mainUrl + `/posts`;
     const headersDict = {
       'Content-Type': 'application/json',
@@ -312,8 +352,8 @@ export class PostService {
     }
   }
 
-  getChatReactionsFromDB(userId, chatId){
-    const url =  this.mainUrl + `/reactions/user/`+ userId + '/chat/'+ chatId;
+  getChatReactionsFromDB(userId, chatId) {
+    const url =  this.mainUrl + `/reactions/user/` + userId + '/chat/' + chatId;
     const headersDict = {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache'
@@ -326,7 +366,7 @@ export class PostService {
       .subscribe(data => {
           const reactions = data as Reaction[];
           reactions.forEach(reaction => {
-            this.userReactionsMap.set(reaction.messageId, reaction.type)
+            this.userReactionsMap.set(reaction.messageId, reaction.type);
           });
         },
         (err) => console.log(err),
@@ -340,9 +380,9 @@ export class PostService {
     return this.userReactionsMap;
   }
 
-  deleteReaction(reaction){
-    const url =  this.mainUrl + `/deletereaction/user/`+ reaction.userId +'/message/'+ reaction.messageId ;
-    console.log(reaction)
+  deleteReaction(reaction) {
+    const url =  this.mainUrl + `/deletereaction/user/` + reaction.userId + '/message/' + reaction.messageId ;
+    console.log(reaction);
     const headersDict = {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache'

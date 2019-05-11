@@ -31,8 +31,18 @@ export class PostComponent implements OnInit {
     chatId: null,
     userId: null,
     src: null,
-    content: null
+    content: null,
+    fileName: null
   };
+
+  private fileToUpload = {
+    name: null,
+    media: {
+     mimeType: null,
+      body: null
+    },
+    size:null
+  }
 
   refresh() {
     this.postService.refresh();
@@ -57,17 +67,37 @@ export class PostComponent implements OnInit {
 
   loadFile(e) {
     const x = document.getElementById('preview');
+    console.log(e.target.files[0]);
+
     const src = URL.createObjectURL(e.target.files[0]);
     x.setAttribute('src', src);
-    this.newPost.src = src;
+    this.newPost.src = e.target.files[0].name;
     console.log(this.newPost);
+
+    const reader = new FileReader();
+
+    this.fileToUpload.name = e.target.files[0].name;
+    this.fileToUpload.media.mimeType = e.target.files[0].type;
+    this.fileToUpload.media.body = reader.readAsBinaryString(e.target.files[0]);
+    this.fileToUpload.size = e.target.files[0].size;
+
+    // reader.onload((e) => {
+    //   const contentType = fileData.type || 'application/octet-stream';
+    //   const metadata = {
+    //     title: fileData.fileName,
+    //     mimeType: contentType
+    //   };
+    // });
+    //
+    // const base64Data = btoa(reader.result);
+
   }
 
   addPost() {
     this.newPost.chatId = this.chatId;
     this.newPost.userId = this.SIGNEDINUSERID;
-    console.log(this.newPost.chatId);
-    this.postService.addPostToDB(this.newPost);
+    console.log(this.newPost);
+    this.postService.addPostToDB(this.newPost, this.fileToUpload);
     this.newPost.src = null;
     this.newPost.content = null;
   }

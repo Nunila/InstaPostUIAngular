@@ -13,6 +13,9 @@ import { LoginComponent } from './login/login.component';
 import {UserService} from './services/user.service';
 import { ChatComponent } from './chat/chat.component';
 import { CommentComponent } from './comment/comment.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { ToolbarComponent } from './toolbar/toolbar.component';
+
 import {MatCardModule} from '@angular/material/card';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatButtonModule, MatCheckboxModule, MatToolbarModule} from '@angular/material';
@@ -26,8 +29,11 @@ import {MatListModule} from '@angular/material/list';
 import {MatMenuModule} from '@angular/material/menu';
 import { MatTableModule } from '@angular/material';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatSelectModule} from '@angular/material/select';
+
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { GoogleChartsModule } from 'angular-google-charts';
+
 
 @NgModule({
   declarations: [
@@ -37,6 +43,8 @@ import { GoogleChartsModule } from 'angular-google-charts';
     CommentComponent,
     PostComponent,
     LoginComponent,
+    ToolbarComponent,
+    DashboardComponent,
   ],
 
   imports: [
@@ -63,6 +71,8 @@ import { GoogleChartsModule } from 'angular-google-charts';
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     GoogleChartsModule,
+    MatSelectModule,
+
   ],
   providers: [PostService, ReplyService, HomeService, UserService, DatePipe],
   bootstrap: [AppComponent]
