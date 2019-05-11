@@ -12,11 +12,13 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 
 export class ChatComponent implements OnInit {
-  @Input() chatId: number;
+  @Input() chatName: string;
 
   constructor(private postService: PostService, private homeService: HomeService, private userService: UserService, private route: ActivatedRoute, private router: Router ) { }
 
   private CHATID;
+  private CHATNAME;
+  private USERROLE;
   private SIGNEDINUSERID;
   private SIGNEDINPERSONID;
 
@@ -25,14 +27,24 @@ export class ChatComponent implements OnInit {
     content: 'sample caption'
   };
 
+  private contactsToBeAdded = {
+    participants: [],
+    chatId: null,
+  };
+
   public contactsArray: Person[];
   public displayedColumns: string[] = ['checkbox','name', 'phoneNumber'];
+  public usersInChat: Person[];
 
   ngOnInit() {
     this.CHATID = this.route.snapshot.paramMap.get('chatId');
+    this.CHATNAME = this.route.snapshot.paramMap.get('chatName');
+    this.USERROLE = this.route.snapshot.paramMap.get('userRole');
+
     // this.postService.getInfoOfCurrentChat(this.CHATID);
     this.SIGNEDINPERSONID = this.userService.getCurrentUser().personId;
     this.SIGNEDINUSERID = this.userService.getCurrentUser().userId;
+    this.postService.getChatReactionsFromDB(this.SIGNEDINUSERID, this.CHATID);
   }
 
   getCurrentChat() {
@@ -40,8 +52,43 @@ export class ChatComponent implements OnInit {
   }
 
   getUserContacts(){
-    this.homeService.getChatsOfUserFromDB(this.SIGNEDINUSERID)
+    this.contactsArray = null;
+    this.homeService.getContactsOfUserNotInChat(this.SIGNEDINPERSONID, this.CHATID);
     this.contactsArray = this.homeService.getContactsOfUser();
     console.log(this.contactsArray)
   }
+
+  getUsersInChat(){
+    this.homeService.getUsersInChatFromDB(this.CHATID);
+    //this.usersInChat = this.homeService.getUsersInChat();
+    //console.log(usersInChat);
+  }
+
+  boxchecked(e) {
+    if (e.checked) this.contactsToBeAdded.participants.push(e.source.value);
+    else {
+      const i = this.contactsToBeAdded.participants.findIndex(mem => mem === e.source.value );
+      this.contactsToBeAdded.participants.splice(i, 1);
+    }
+  }
+
+  addParticipantsToChat(){
+    console.log(this.contactsToBeAdded)
+    this.contactsToBeAdded.chatId = this.CHATID;
+    this.homeService.addParticipantsToChat(this.contactsToBeAdded, this.CHATID);
+    this.contactsToBeAdded.participants=null;
+  }
+
+  removeMember(userId){
+    this.homeService.deleteParticipant(this.CHATID, userId);
+  }
+
+  userIsOwner(){
+    if(this.USERROLE == 'owner') {
+      return true;
+    } else{
+      return false;
+    }
+  }
+
 }

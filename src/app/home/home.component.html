@@ -12,7 +12,7 @@
       <mat-list>
         <button mat-raised-button data-toggle="modal" data-target="#addChat">Add Chat</button>
         <h3 mat-subheader>Chats</h3>
-        <mat-list-item *ngFor="let chat of getChats()" [routerLink]="['/chat', chat.chatId, isUserOwnerOfChatRoute(chat.ownerId)]" (click)="postService.setCurrentChat(chat)">
+        <mat-list-item *ngFor="let chat of getChats()" [routerLink]="['/chat', chat.chatId, chat.chatName, isUserOwnerOfChatRoute(chat.ownerId)]" (click)="postService.setCurrentChat(chat)">
             <mat-icon mat-list-icon>group</mat-icon>
             <h4 mat-line>{{chat.chatName}}</h4>
             <p mat-line> Creation Date: {{chat.creationDate | date}} </p>

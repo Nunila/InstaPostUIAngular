@@ -15,6 +15,8 @@ export class PostComponent implements OnInit {
   private SIGNEDINUSERID;
   private SIGNEDINPERSONID;
 
+  private userChatReactions;
+
   ngOnInit() {
     this.SIGNEDINPERSONID = this.userService.getCurrentUser().personId;
     this.SIGNEDINUSERID = this.userService.getCurrentUser().userId;
@@ -22,13 +24,15 @@ export class PostComponent implements OnInit {
     this.postService.getPostsForChatIdFromDB(this.chatId);
     this.postService.getAllReactionsfromDB();
     this.postService.getAllRepliesFromDB();
+    this.userChatReactions = this.postService.getChatReactionsMap();
   }
 
   private newPost = {
     chatId: null,
     userId: null,
     src: null,
-    content: null
+    content: null,
+    fileName: null
   };
 
   refresh() {
@@ -41,7 +45,7 @@ export class PostComponent implements OnInit {
         if (this.postService.getAllPosts()[i].postId === null) {
           posts[i].setAttribute('src', this.postService.getAllPosts()[i].photourl);
         } else {
-          posts[i].setAttribute('src', 'http://instapostdb.herokuapp.com/InstaPost/images/' + this.postService.getAllPosts()[i].photourl);
+          posts[i].setAttribute('src', 'http://localhost:5000/InstaPost/images/' + this.postService.getAllPosts()[i].photourl);
         }
       }
     }
@@ -54,19 +58,65 @@ export class PostComponent implements OnInit {
 
   loadFile(e) {
     const x = document.getElementById('preview');
+    console.log(e.target.files[0]);
+
     const src = URL.createObjectURL(e.target.files[0]);
     x.setAttribute('src', src);
     this.newPost.src = src;
     console.log(this.newPost);
+
+    const reader = new FileReader();
+    reader.readAsBinaryString(e.target.files[0]);
+
+    // reader.onload((e) => {
+    //   const contentType = fileData.type || 'application/octet-stream';
+    //   const metadata = {
+    //     title: fileData.fileName,
+    //     mimeType: contentType
+    //   };
+    // });
+    //
+    // const base64Data = btoa(reader.result);
+
   }
 
   addPost() {
     this.newPost.chatId = this.chatId;
     this.newPost.userId = this.SIGNEDINUSERID;
-    console.log(this.newPost.chatId);
+    console.log(this.newPost);
     this.postService.addPostToDB(this.newPost);
     this.newPost.src = null;
     this.newPost.content = null;
   }
 
+  addReaction(postId, messageId, reactionType){
+    if(this.userChatReactions.has(messageId)){
+      if(this.userChatReactions.get(messageId)==reactionType){
+        const reaction = {
+          userId: this.SIGNEDINUSERID,
+          messageId: messageId,
+        }
+        this.postService.deleteReaction(reaction);
+      } else{
+        //delete reaction and add new one
+      }
+    }else{
+      const newReaction = {
+        userId: this.SIGNEDINUSERID,
+        postId: postId,
+        messageId: messageId,
+        reactionType: reactionType
+      };
+      console.log(newReaction);
+      this.postService.addReactionToDB(newReaction);
+    }
+  }
+
+  userAlreadyReacted(messageId, reactionType){
+    if(this.userChatReactions.has(messageId)){
+      var type = this.userChatReactions.get(messageId);
+      if(type == reactionType) return true;
+      else return false;
+    } else return false;
+  }
 }

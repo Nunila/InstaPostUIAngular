@@ -18,7 +18,7 @@ export class CommentComponent implements OnInit {
 
   ngOnInit() {
     // console.log(this.postId);
-    // this.postService.getRepliesByPostIdFromDB(this.postId);
+    //this.postService.getAllRepliesFromDB();
     this.SIGNEDINPERSONID = this.userService.getCurrentUser().personId;
     this.SIGNEDINUSERID = this.userService.getCurrentUser().userId;
 
@@ -26,7 +26,7 @@ export class CommentComponent implements OnInit {
 
   private newReply = {
     postId: null,
-    userId: this.SIGNEDINUSERID,
+    userId: null,
     content: null,
     messageDate: null,
   }
@@ -36,8 +36,10 @@ export class CommentComponent implements OnInit {
   }
 
   getAllReplies() {
-    // console.log(this.postService.getAllReplies());
-    return this.postService.getRepliesMap(this.postId);
+    //console.log(this.postService.getAllReplies());
+    const replies = this.postService.getRepliesMap(this.postId);
+    //console.log(replies);
+    return replies;
   }
 
   getRepliesByPostId() {
@@ -47,8 +49,20 @@ export class CommentComponent implements OnInit {
 
   addReply() {
     console.log(this.postId);
+    this.newReply.userId = this.SIGNEDINUSERID;
     this.newReply.postId = this.postId;
     this.postService.addReplyToDB(this.newReply);
     this.newReply.content= null;
+  }
+
+  addReaction(messageId, reactionType){
+    const newReaction = {
+      userId: this.SIGNEDINUSERID,
+      postId: this.postId,
+      messageId: messageId,
+      reactionType: reactionType
+    };
+    console.log(newReaction);
+    this.postService.addReactionToDB(newReaction);
   }
 }

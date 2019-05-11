@@ -4,7 +4,7 @@ import {UserService} from './user.service';
 import {DatePipe} from '@angular/common';
 import {Chat, Person, CompletePerson} from './interfaces';
 import Swal from 'sweetalert2';
-
+import {Observable} from 'rxjs';
 
 // interface Chat {
 //   chatId: number;
@@ -37,6 +37,8 @@ export class HomeService {
   public SIGNEDINPERSONID = this.userService.getCurrentUser().personId;
   private contactsOfUser: Person[] = [];
   private personSignedInInfo: CompletePerson;
+  public usersInChat: Observable<any>;
+  public usersToAdd: Observable<any>;
 
   public contactResult;
   public flag = 'none';
@@ -118,6 +120,48 @@ export class HomeService {
       );
   }
 
+  getUsersInChatFromDB(chatId) {
+    const url =  this.mainUrl + `/users/chat/` + chatId;
+    const headersDict = {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headersDict)
+    };
+
+    this.usersInChat = this.http.get(url, requestOptions);
+    // this.http.get(url, requestOptions)
+    //   .subscribe(data => {
+    //       this.usersInChat = data as Person[];
+    //       console.log(this.usersInChat)
+    //     },
+    //     (err) => console.log(err),
+    //     () => {
+    //     }
+    //   );
+  }
+
+  getUsersInChat() {
+    return this.usersInChat;
+
+  }
+
+  deleteParticipant(chatId, userId) {
+    console.log(userId)
+    const url =  this.mainUrl + `/removemember/chat/` + chatId + '/user/' + userId;
+
+    this.http.delete(url)
+      .subscribe(data => {
+        },
+        (err) => console.log(err),
+        () => {
+          // const i = this.usersInChat.findIndex(user => user.userId === userId);
+          // this.usersInChat.splice(i, 1);
+        }
+      );
+  }
+
   // ---------------------------Methods for Contacts -----------------------------------//
 
   getContactsOfUser() {
@@ -142,6 +186,47 @@ export class HomeService {
         () => {
         }
       );
+  }
+
+  getContactsOfUserNotInChat(userId: number, chatId: number){
+    const url =  this.mainUrl + '/notparticipants/person/' + userId + '/chat/' + chatId;
+    const headersDict = {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headersDict)
+    };
+
+    this.usersToAdd = this.http.get(url, requestOptions);
+      // .subscribe(data => {
+      //     this.contactsOfUser = data as Person[];
+      //     console.log(this.contactsOfUser);
+      //   },
+      //   (err) => console.log(err),
+      //   () => {
+      //   }
+      // );
+  }
+
+  addParticipantsToChat(participants, chatId) {
+    const url =  this.mainUrl + '/addparticipants/chat/' + chatId;
+    const headersDict = {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headersDict)
+    };
+
+    this.http.post(url, participants).subscribe(data => {
+      },
+      (err) => console.log(err),
+      () => {
+        // t his.getChatsOfUserFromDB(this.SIGNEDINUSERID);
+
+      }
+    );
   }
 
   searchForContact(possibleContact) {

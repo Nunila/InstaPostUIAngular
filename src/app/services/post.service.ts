@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import {HttpHeaders, HttpClient} from '@angular/common/http';
-import {Chat, Reactions, Post, Reply} from './interfaces';
+import {Chat, Reactions, Post, Reply, Reaction} from './interfaces';
+import {UserService} from './user.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PostService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private userService:UserService) { }
 
   // mainUrl = `http://instapostdb.herokuapp.com/InstaPost`;
   mainUrl = `http://localhost:5000/InstaPost`;
@@ -18,6 +19,7 @@ export class PostService {
   private allRepliesMap: Map<number, Reply[]> = new Map();
   private updatedReplies: Reply[] = new Array();
 
+  private userReactionsMap: Map<number, string> = new Map();
   private currentChat: Chat ;
 
   refresh() {
@@ -28,6 +30,7 @@ export class PostService {
     this.getPostsForChatIdFromDB(this.currentChat.chatId);
     this.getAllReactionsfromDB();
     this.getAllRepliesFromDB();
+    this.getChatReactionsFromDB(this.userService.getCurrentUser().userId, this.currentChat.chatId);
   }
 
   setCurrentChat(chat: Chat) {
@@ -211,7 +214,7 @@ export class PostService {
       .subscribe(data => {
           // console.log(data)
           this.allReplies = data as Reply[];
-          console.log(this.allReplies);
+          //console.log(this.allReplies);
           this.allReplies.forEach(reply => {
             // console.log(reply);
             let replies: Reply[] = new Array();
@@ -224,7 +227,7 @@ export class PostService {
               this.allRepliesMap.set(reply.postId, replies);
             }
           });
-
+          console.log(this.allRepliesMap);
         },
         (err) => console.log(err),
         () => {
@@ -233,6 +236,8 @@ export class PostService {
   }
 
   getRepliesMap(postid) {
+    //console.log(postid);
+    //console.log(this.allRepliesMap.get(postid));
     if (this.allRepliesMap.has(postid)) {
       return this.allRepliesMap.get(postid);
     } else {
@@ -243,13 +248,36 @@ export class PostService {
   //-------------------------------------REACTIONS SERVICES-------------------------------------
 
   addReaction(messageId, likeordislike) {
-    let old = this.allReactionsMap.get(messageId);
-    if (likeordislike === 'like') {
-      old.likes += 1;
-    } else {
-      old.dislikes += 1;
+    if (this.allReactionsMap.has(messageId)){
+      let old = this.allReactionsMap.get(messageId);
+      if (likeordislike === 'like') {
+        old.likes += 1;
+      } else {
+        old.dislikes += 1;
+      }
+      this.allReactionsMap.set(messageId, old);
     }
-    this.allReactionsMap.set(messageId, old);
+  }
+
+  addReactionToDB(reaction){
+    this.addReaction(reaction.messageId, reaction.reactionType);
+    const url =  this.mainUrl + '/reactions';
+    const headersDict = {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headersDict)
+    };
+
+    this.http.post(url, reaction).subscribe(data => {
+      },
+      (err) => console.log(err),
+      () => {
+        // t his.getChatsOfUserFromDB(this.SIGNEDINUSERID);
+
+      }
+    );
   }
 
   getAllReactionsfromDB() {
@@ -282,6 +310,56 @@ export class PostService {
     } else {
       return 0;
     }
+  }
+
+  getChatReactionsFromDB(userId, chatId) {
+    const url =  this.mainUrl + `/reactions/user/` + userId + '/chat/' + chatId;
+    const headersDict = {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headersDict)
+    };
+
+    this.http.get(url, requestOptions)
+      .subscribe(data => {
+          const reactions = data as Reaction[];
+          reactions.forEach(reaction => {
+            this.userReactionsMap.set(reaction.messageId, reaction.type);
+          });
+        },
+        (err) => console.log(err),
+        () => {
+          console.log(this.allReactionsMap);
+        }
+      );
+  }
+
+  getChatReactionsMap(){
+    return this.userReactionsMap;
+  }
+
+  deleteReaction(reaction) {
+    const url =  this.mainUrl + `/deletereaction/user/` + reaction.userId + '/message/' + reaction.messageId ;
+    console.log(reaction);
+    const headersDict = {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
+    };
+    const requestOptions = {
+      headers: new HttpHeaders(headersDict)
+    };
+
+    this.http.delete(url)
+      .subscribe(data => {
+        },
+        (err) => console.log(err),
+        () => {
+          // const i = this.chatsOfUser.findIndex(chat => chat.chatId === chatid);
+          // this.chatsOfUser.splice(i, 1);
+        }
+      );
   }
 
 }

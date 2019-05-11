@@ -74,3 +74,11 @@ export interface PostPerDay {
   day: string;
   total: number;
 }
+export interface Reaction {
+  reactionId: number;
+  userId: number;
+  postId: number;
+  messageId: number;
+  type: string;
+  reactionDate: string;
+}
