@@ -63,7 +63,7 @@ export interface Reply {
 
 export interface User {
   userId: number;
-  userName: string;
+  username: string;
   personId: number;
   firstName: string;
   lastName: string;

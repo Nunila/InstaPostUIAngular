@@ -5,7 +5,7 @@
         <table class="table container comment-table" *ngFor="let reply of getAllReplies()">
           <tr class="comments-list">
             <div class="comment-header">
-              <p>{{reply.username}}</p>
+              <p>{{reply.username}} &#160;</p>
               <p>{{reply.messageDate}}</p>
             </div>
             <div class="comment-content" style="display: flex;">{{reply.content}}</div>

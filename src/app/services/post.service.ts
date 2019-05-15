@@ -9,7 +9,7 @@ import {drive} from "googleapis/build/src/apis/drive";
 })
 export class PostService {
 
-  constructor(private http: HttpClient, private userService:UserService) { }
+  constructor(private http: HttpClient, private userService: UserService) { }
 
   // mainUrl = `http://instapostdb.herokuapp.com/InstaPost`;
   mainUrl = `http://localhost:5000/InstaPost`;
@@ -78,32 +78,19 @@ export class PostService {
     this.allPosts.push(post);
   }
 
-  uploadToDrive(fileToUpload){
+  addPostToDB(newPost){
 
-    // File.create({
-    //   resource: fileToUpload,
-    //   media: fileToUpload.media,
-    //   fields: 'id'
-    // }, function (err, file) {
-    //   if (err) {
-    //     // Handle error
-    //     console.error(err);
-    //   } else {
-    //     console.log('File Id: ', file.id);
-    //   }
-    // });
-
-    const url =  'https://www.googleapis.com/upload/drive/v3/files?uploadType=media';
+    const url =  this.mainUrl + `/posts`;
     const headersDict = {
-      'Content-Type': fileToUpload.media.mimeType,
-      'Content-Length': fileToUpload.size,
-      'Authorization': "Bearer ya29.GlsGB9hIJL6aeYUo_9tsONWT6qWZoS188EbhQuuo9HlnQq0TAhPjj_gYzlhNuqBhRAMkS2-NBYrqWhc-QODKaatE2eKcsqJJw8SQDZJPbxhHgH8-LPlyYMTohBV2",
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
     };
     const requestOptions = {
       headers: new HttpHeaders(headersDict)
     };
+    console.log(newPost);
 
-    this.http.post(url, { name: fileToUpload.name, media: fileToUpload.media, fields: 'id'} ).subscribe(data => {
+    this.http.post(url, newPost).subscribe(data => {
       },
       (err) => console.log(err),
       () => {
@@ -111,34 +98,10 @@ export class PostService {
 
       }
     );
-  }
-
-  addPostToDB(newPost, fileToUpload){
-    this.uploadToDrive(fileToUpload);
-
-
-    // const url =  this.mainUrl + `/posts`;
-    // const headersDict = {
-    //   'Content-Type': 'application/json',
-    //   'Cache-Control': 'no-cache'
-    // };
-    // const requestOptions = {
-    //   headers: new HttpHeaders(headersDict)
-    // };
-    // console.log(newPost);
-    //
-    // this.http.post(url, newPost).subscribe(data => {
-    //   },
-    //   (err) => console.log(err),
-    //   () => {
-    //     // t his.getChatsOfUserFromDB(this.SIGNEDINUSERID);
-    //
-    //   }
-    // );
 
   }
 
-  getAllPosts() {
+  getAllPosts(){
     return this.allPosts;
   }
 
@@ -164,6 +127,7 @@ export class PostService {
   }
 
   getPostsForChatIdFromDB(chatId) {
+    this.allPosts = [];
     const url =  this.mainUrl + `/posts/chat/` + chatId;
     const headersDict = {
       'Content-Type': 'application/json',
@@ -176,7 +140,7 @@ export class PostService {
     this.http.get(url, requestOptions)
       .subscribe(data => {
           this.allPosts = data as Post[];
-          console.log(this.allPosts);
+          // console.log(this.allPosts);
         },
         (err) => console.log(err),
         () => {
@@ -196,7 +160,7 @@ export class PostService {
       messageDate: new Date().toString(),
       username: 'newReply'
     };
-    let replies: Reply[] = new Array();
+    let replies: Reply[] = [];
     if (!this.allRepliesMap.has(reply.postId)) {
       this.addReplyToDB(reply);
       this.allReplies.push(reply);
@@ -221,26 +185,33 @@ export class PostService {
     console.log(newReply);
 
     this.http.post(url, newReply).subscribe(data => {
-        // const a = data as Reply;
-        //   let replies: Reply[] = new Array();
-        //   if (!this.allRepliesMap.has(a.postId)){
-        //     this.allReplies.push({messageId: a.messageId, postId: a.postId, userId: a.userId, content: a.content, messageDate: a.messageDate, username: newReply.username});
-        //     this.allRepliesMap.set(a.postId, replies);
-        //   } else{
-        //     replies = this.allRepliesMap.get(a.postId);
-        //     this.allReplies.push({messageId: a.messageId, postId: a.postId, userId: a.userId, content: a.content, messageDate: a.messageDate, username: newReply.username});
-        //     this.allRepliesMap.set(a.postId, replies);
-        //   }
-      },
+        const a = data as Reply;
+        console.log(a);
+        let replies: Reply[] = [];
+        if (!this.allRepliesMap.has(a.postId)) {
+          replies.push({messageId: a.messageId, postId: a.postId, userId: a.userId, content: a.content,
+            messageDate: a.messageDate, username: newReply.username});
+          // this.allReplies.push({messageId: a.messageId, postId: a.postId, userId: a.userId, content: a.content,
+          // messageDate: a.messageDate, username: newReply.username});
+          this.allRepliesMap.set(a.postId, replies);
+        } else {
+          replies = this.allRepliesMap.get(a.postId);
+          replies.push({messageId: a.messageId, postId: a.postId, userId: a.userId, content: a.content,
+            messageDate: a.messageDate, username: newReply.username});
+          // this.allReplies.push({messageId: a.messageId, postId: a.postId, userId: a.userId, content: a.content,
+          // messageDate: a.messageDate, username: newReply.username});
+          this.allRepliesMap.set(a.postId, replies);
+        }
+        },
       (err) => console.log(err),
       () => {
-        // t his.getChatsOfUserFromDB(this.SIGNEDINUSERID);
-
+        // console.log(this.allRepliesMap.get(newReply.postId));
       }
     );
   }
 
   getAllRepliesFromDB() {
+    this.allRepliesMap = new Map();
     const url = this.mainUrl + '/messages/allreplies';
     const headersDict = {
       'Content-Type': 'application/json',
@@ -252,12 +223,9 @@ export class PostService {
 
     this.http.get(url, requestOptions)
       .subscribe(data => {
-          // console.log(data)
           this.allReplies = data as Reply[];
-          //console.log(this.allReplies);
           this.allReplies.forEach(reply => {
-            // console.log(reply);
-            let replies: Reply[] = new Array();
+            let replies: Reply[] = [];
             if (!this.allRepliesMap.has(reply.postId)) {
               replies.push(reply);
               this.allRepliesMap.set(reply.postId, replies);
@@ -267,7 +235,7 @@ export class PostService {
               this.allRepliesMap.set(reply.postId, replies);
             }
           });
-          console.log(this.allRepliesMap);
+          // console.log(this.allRepliesMap);
         },
         (err) => console.log(err),
         () => {
@@ -276,8 +244,8 @@ export class PostService {
   }
 
   getRepliesMap(postid) {
-    //console.log(postid);
-    //console.log(this.allRepliesMap.get(postid));
+    // console.log(postid);
+    // console.log(this.allRepliesMap.get(postid));
     if (this.allRepliesMap.has(postid)) {
       return this.allRepliesMap.get(postid);
     } else {
@@ -285,23 +253,30 @@ export class PostService {
     }
   }
 
-  //-------------------------------------REACTIONS SERVICES-------------------------------------
+  // -------------------------------------REACTIONS SERVICES-------------------------------------
 
   addReaction(messageId, likeordislike) {
-    if (this.allReactionsMap.has(messageId)){
+    if (this.allReactionsMap.has(messageId)) {
       let old = this.allReactionsMap.get(messageId);
-      if (likeordislike === 'like') {
-        old.likes += 1;
+      if (likeordislike === 'LIKE') {
+        old.likes++;
       } else {
-        old.dislikes += 1;
+        old.dislikes++;
       }
       this.allReactionsMap.set(messageId, old);
     }
+    else {
+      let reac: Reactions = {messageId, likes: 0, dislikes: 0};
+      if (likeordislike === 'LIKE')  reac.likes++;
+      else reac.dislikes++;
+      this.allReactionsMap.set(messageId, reac);
+      console.log();
+    }
   }
 
-  addReactionToDB(reaction){
+  addReactionToDB(reaction) {
     this.addReaction(reaction.messageId, reaction.reactionType);
-    this.userReactionsMap.set(reaction.messageId, reaction.type);
+    this.userReactionsMap.set(reaction.messageId, reaction.reactionType);
     const url =  this.mainUrl + '/reactions';
     const headersDict = {
       'Content-Type': 'application/json',
@@ -322,6 +297,7 @@ export class PostService {
   }
 
   getAllReactionsfromDB() {
+    this.allReactionsMap = new Map();
     const url =  this.mainUrl + `/reactionsPerMessage`;
     const headersDict = {
       'Content-Type': 'application/json',
@@ -334,6 +310,7 @@ export class PostService {
     this.http.get(url, requestOptions)
       .subscribe(data => {
         const reactions = data as Reactions[];
+        console.log(reactions);
         reactions.forEach(reaction => {
             this.allReactionsMap.set(reaction.messageId, reaction);
         });
@@ -354,6 +331,7 @@ export class PostService {
   }
 
   getChatReactionsFromDB(userId, chatId) {
+    this.userReactionsMap = new Map();
     const url =  this.mainUrl + `/reactions/user/` + userId + '/chat/' + chatId;
     const headersDict = {
       'Content-Type': 'application/json',
@@ -377,7 +355,7 @@ export class PostService {
       );
   }
 
-  getChatReactionsMap(){
+  getChatReactionsMap() {
     return this.userReactionsMap;
   }
 

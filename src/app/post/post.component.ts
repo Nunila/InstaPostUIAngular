@@ -97,7 +97,7 @@ export class PostComponent implements OnInit {
     this.newPost.chatId = this.chatId;
     this.newPost.userId = this.SIGNEDINUSERID;
     console.log(this.newPost);
-    this.postService.addPostToDB(this.newPost, this.fileToUpload);
+    this.postService.addPostToDB(this.newPost);
     this.newPost.src = null;
     this.newPost.content = null;
   }
