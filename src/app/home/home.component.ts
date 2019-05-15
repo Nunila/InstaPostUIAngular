@@ -41,6 +41,8 @@ export class HomeComponent implements OnInit {
   private flag = false;
   resultContact;
 
+  private setPics = false;
+
 
   ngOnInit() {
 
@@ -125,9 +127,6 @@ export class HomeComponent implements OnInit {
     console.log(this.newPost);
   }
 
-  addPost() {
-    this.postService.addPost(this.newPost);
-  }
 
   addChat() {
     this.homeService.addChat(this.newChat);

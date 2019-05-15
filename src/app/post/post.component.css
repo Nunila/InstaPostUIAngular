@@ -7,7 +7,7 @@
 .flex-wrap {
   display: flex;
   flex-wrap: nowrap;
-  flex-direction: column;
+  flex-direction: column-reverse;
   justify-content: center;
   align-content: center;
 }

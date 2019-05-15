@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { PostService } from '../services/post.service';
-import { UserService} from "../services/user.service";
+import { UserService} from '../services/user.service';
 
 @Component({
   selector: 'app-post',
@@ -15,8 +15,18 @@ export class PostComponent implements OnInit {
   private SIGNEDINUSERID;
   private SIGNEDINPERSONID;
 
-  private userChatReactions;
+  private photo;
 
+  private userChatReactions;
+  private newPost = {
+    chatId: null,
+    userId: null,
+    src: null,
+    content: null,
+    fileName: null
+  };
+
+  private picsset = false;
   ngOnInit() {
     this.SIGNEDINPERSONID = this.userService.getCurrentUser().personId;
     this.SIGNEDINUSERID = this.userService.getCurrentUser().userId;
@@ -27,27 +37,23 @@ export class PostComponent implements OnInit {
     this.userChatReactions = this.postService.getChatReactionsMap();
   }
 
-  private newPost = {
-    chatId: null,
-    userId: null,
-    src: null,
-    content: null,
-    fileName: null
-  };
+
 
   refresh() {
     this.postService.refresh();
   }
+
   getAllPosts() {
     const posts: HTMLCollectionOf<Element> = document.getElementsByClassName('cardsimg');
-    if ( posts.length > 0 && this.postService.getAllPosts().length > 0) {
+    if ( posts.length > 0 && this.postService.getAllPosts().length > 0 && this.postService.photoMap.size > 0 ) {
       for (let i = 0 ; i < posts.length ; i++) {
-        if (this.postService.getAllPosts()[i].postId === null) {
-          posts[i].setAttribute('src', this.postService.getAllPosts()[i].photourl);
-        } else {
-          posts[i].setAttribute('src', 'http://localhost:5000/InstaPost/images/' + this.postService.getAllPosts()[i].photourl);
-        }
+        // if (this.postService.getAllPosts()[i].postId === 19) {
+        //   posts[i].setAttribute('src', 'https://' + this.postService.getAllPosts()[i].photourl);
+        // } else {
+          posts[i].setAttribute('src', this.postService.photoMap.get(this.postService.getAllPosts()[i].photourl) );
+        // }
       }
+      this.picsset = true;
     }
     return this.postService.getAllPosts();
   }
@@ -59,24 +65,13 @@ export class PostComponent implements OnInit {
   loadFile(e) {
     const x = document.getElementById('preview');
     console.log(e.target.files[0]);
+    this.photo = e.target.files[0];
 
     const src = URL.createObjectURL(e.target.files[0]);
     x.setAttribute('src', src);
-    this.newPost.src = src;
+    this.newPost.src = this.photo.name;
+    this.newPost.fileName = this.photo.name;
     console.log(this.newPost);
-
-    const reader = new FileReader();
-    reader.readAsBinaryString(e.target.files[0]);
-
-    // reader.onload((e) => {
-    //   const contentType = fileData.type || 'application/octet-stream';
-    //   const metadata = {
-    //     title: fileData.fileName,
-    //     mimeType: contentType
-    //   };
-    // });
-    //
-    // const base64Data = btoa(reader.result);
 
   }
 
@@ -84,12 +79,13 @@ export class PostComponent implements OnInit {
     this.newPost.chatId = this.chatId;
     this.newPost.userId = this.SIGNEDINUSERID;
     console.log(this.newPost);
-    this.postService.addPostToDB(this.newPost);
-    this.newPost.src = null;
-    this.newPost.content = null;
+    this.postService.addPostToDB(this.newPost, this.photo);
+    // this.newPost.src = null;
+    // this.newPost.content = null;
+    // this.newPost.fileName = '';
   }
 
-  addReaction(postId, messageId, reactionType){
+  addReaction(postId, messageId, reactionType) {
     // if(this.userChatReactions.has(messageId)){
     //   if(this.userChatReactions.get(messageId)==reactionType){
     //     const reaction = {

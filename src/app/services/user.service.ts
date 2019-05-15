@@ -3,6 +3,9 @@ import {HttpHeaders, HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {User, Person, Credentials, NewUser} from './interfaces';
 import Swal from 'sweetalert2';
+import * as firebase from 'firebase/app';
+import 'firebase/storage';
+
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +20,21 @@ export class UserService {
     password: ''
   };
 
-  constructor(private http: HttpClient, private router: Router) {}
+  public firebaseStorage;
+
+  constructor(private http: HttpClient, private router: Router) {
+    const firebaseConfig = {
+      apiKey: 'AIzaSyD_dpemBfkRYlOxtvXH0_M_r4Xv-juDxu8',
+      authDomain: 'instapostpr1-1557532099483.firebaseapp.com',
+      databaseURL: 'https://instapostpr1-1557532099483.firebaseio.com',
+      projectId: 'instapostpr1-1557532099483',
+      storageBucket: 'instapostpr1-1557532099483.appspot.com',
+      messagingSenderId: '871691407800',
+      appId: '1:871691407800:web:bf017b4b6db5ffdc'
+    };
+    firebase.initializeApp(firebaseConfig);
+    this.firebaseStorage = firebase.storage();
+  }
 
   public getCurrentUser() {
     return this.currentUser;

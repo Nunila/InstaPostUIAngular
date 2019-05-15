@@ -22,6 +22,8 @@ export class PostService {
   private userReactionsMap: Map<number, string> = new Map();
   private currentChat: Chat ;
 
+  public photoMap: Map<string, string> = new Map();
+
   refresh() {
     this.allPosts = new Array();
     this.allReactionsMap = new Map();
@@ -63,21 +65,23 @@ export class PostService {
   }
   // ----------------------------POST SERVICES-------------------------------
 
-  addPost(newPost) {
-    const post: Post = {
-      postId: null,
-      chatId: null,
-      userId: null,
-      messageId: null,
-      photourl: newPost.src,
-      postDate: new Date().toString(),
-      content: newPost.content,
-      username: 'ANewUser'
-    };
-    this.allPosts.push(post);
-  }
+  // addPost(newPost) {
+  //   const post: Post = {
+  //     postId: null,
+  //     chatId: null,
+  //     userId: null,
+  //     messageId: null,
+  //     photourl: newPost.src,
+  //     postDate: new Date().toString(),
+  //     content: newPost.content,
+  //     username: 'ANewUser'
+  //   };
+  //   this.allPosts.push(post);
+  // }
 
-  addPostToDB(newPost) {
+
+
+  addPostToDB(newPost, file) {
     const url =  this.mainUrl + `/posts`;
     const headersDict = {
       'Content-Type': 'application/json',
@@ -86,16 +90,24 @@ export class PostService {
     const requestOptions = {
       headers: new HttpHeaders(headersDict)
     };
-    console.log(newPost);
+    const storageRef = this.userService.firebaseStorage.ref();
+    const imageRef = storageRef.child('instapost-images/' + file.name);
 
-    this.http.post(url, newPost).subscribe(data => {
-      },
-      (err) => console.log(err),
-      () => {
-        // t his.getChatsOfUserFromDB(this.SIGNEDINUSERID);
-
-      }
-    );
+    imageRef.put(file).then((snapshot) => {
+      this.http.post(url, newPost).subscribe(data => {
+            const a = data as Post;
+            this.allPosts.push({postId: a.postId, messageId: a.messageId, username: this.userService.getCurrentUser().username,
+              content: a.content, photourl: a.photourl, chatId: a.chatId, postDate: a.postDate, userId: a.userId});
+            imageRef.getDownloadURL().then(urla => {
+              this.photoMap.set(a.photourl, urla);
+            });
+          },
+          (err) => console.log(err),
+          () => {
+            console.log(this.allPosts);
+          }
+        );
+    });
 
   }
 
@@ -142,11 +154,18 @@ export class PostService {
         },
         (err) => console.log(err),
         () => {
+          const storageRef = this.userService.firebaseStorage.ref();
+          this.allPosts.forEach(post => {
+            var imageRef = storageRef.child('instapost-images/' + post.photourl);
+            imageRef.getDownloadURL().then(urla => {
+              this.photoMap.set(post.photourl, urla);
+            });
+          });
         }
       );
   }
 
-  //---------------------------------REPLY SERVICES-------------------------------------------
+  // ---------------------------------REPLY SERVICES-------------------------------------------
 
 
   addReply(newReply) {
