@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpHeaders, HttpClient} from '@angular/common/http';
 import {Chat, Reactions, Post, Reply, Reaction} from './interfaces';
 import {UserService} from './user.service';
+import {drive} from "googleapis/build/src/apis/drive";
 
 @Injectable({
   providedIn: 'root'
@@ -79,30 +80,30 @@ export class PostService {
 
   uploadToDrive(fileToUpload){
 
-    drive.files.create({
-      resource: fileToUpload,
-      media: fileToUpload.media,
-      fields: 'id'
-    }, function (err, file) {
-      if (err) {
-        // Handle error
-        console.error(err);
-      } else {
-        console.log('File Id: ', file.id);
-      }
-    });
+    // File.create({
+    //   resource: fileToUpload,
+    //   media: fileToUpload.media,
+    //   fields: 'id'
+    // }, function (err, file) {
+    //   if (err) {
+    //     // Handle error
+    //     console.error(err);
+    //   } else {
+    //     console.log('File Id: ', file.id);
+    //   }
+    // });
 
     const url =  'https://www.googleapis.com/upload/drive/v3/files?uploadType=media';
     const headersDict = {
       'Content-Type': fileToUpload.media.mimeType,
-      'Content-Length': 'no-cache'
+      'Content-Length': fileToUpload.size,
+      'Authorization': "Bearer ya29.GlsGB9hIJL6aeYUo_9tsONWT6qWZoS188EbhQuuo9HlnQq0TAhPjj_gYzlhNuqBhRAMkS2-NBYrqWhc-QODKaatE2eKcsqJJw8SQDZJPbxhHgH8-LPlyYMTohBV2",
     };
     const requestOptions = {
       headers: new HttpHeaders(headersDict)
     };
-    console.log(newPost);
 
-    this.http.post(url, newPost).subscribe(data => {
+    this.http.post(url, { name: fileToUpload.name, media: fileToUpload.media, fields: 'id'} ).subscribe(data => {
       },
       (err) => console.log(err),
       () => {
@@ -116,24 +117,24 @@ export class PostService {
     this.uploadToDrive(fileToUpload);
 
 
-    const url =  this.mainUrl + `/posts`;
-    const headersDict = {
-      'Content-Type': 'application/json',
-      'Cache-Control': 'no-cache'
-    };
-    const requestOptions = {
-      headers: new HttpHeaders(headersDict)
-    };
-    console.log(newPost);
-
-    this.http.post(url, newPost).subscribe(data => {
-      },
-      (err) => console.log(err),
-      () => {
-        // t his.getChatsOfUserFromDB(this.SIGNEDINUSERID);
-
-      }
-    );
+    // const url =  this.mainUrl + `/posts`;
+    // const headersDict = {
+    //   'Content-Type': 'application/json',
+    //   'Cache-Control': 'no-cache'
+    // };
+    // const requestOptions = {
+    //   headers: new HttpHeaders(headersDict)
+    // };
+    // console.log(newPost);
+    //
+    // this.http.post(url, newPost).subscribe(data => {
+    //   },
+    //   (err) => console.log(err),
+    //   () => {
+    //     // t his.getChatsOfUserFromDB(this.SIGNEDINUSERID);
+    //
+    //   }
+    // );
 
   }
 
