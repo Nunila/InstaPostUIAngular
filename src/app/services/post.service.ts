@@ -157,7 +157,7 @@ export class PostService {
       messageDate: new Date().toString(),
       username: 'newReply'
     };
-    let replies: Reply[] = new Array();
+    let replies: Reply[] = [];
     if (!this.allRepliesMap.has(reply.postId)) {
       this.addReplyToDB(reply);
       this.allReplies.push(reply);
@@ -182,21 +182,26 @@ export class PostService {
     console.log(newReply);
 
     this.http.post(url, newReply).subscribe(data => {
-        // const a = data as Reply;
-        //   let replies: Reply[] = new Array();
-        //   if (!this.allRepliesMap.has(a.postId)){
-        //     this.allReplies.push({messageId: a.messageId, postId: a.postId, userId: a.userId, content: a.content, messageDate: a.messageDate, username: newReply.username});
-        //     this.allRepliesMap.set(a.postId, replies);
-        //   } else{
-        //     replies = this.allRepliesMap.get(a.postId);
-        //     this.allReplies.push({messageId: a.messageId, postId: a.postId, userId: a.userId, content: a.content, messageDate: a.messageDate, username: newReply.username});
-        //     this.allRepliesMap.set(a.postId, replies);
-        //   }
-      },
+        const a = data as Reply;
+        let replies: Reply[] = [];
+        if (!this.allRepliesMap.has(a.postId)) {
+          replies.push({messageId: a.messageId, postId: a.postId, userId: a.userId, content: a.content,
+            messageDate: a.messageDate, username: newReply.username});
+          // this.allReplies.push({messageId: a.messageId, postId: a.postId, userId: a.userId, content: a.content,
+          // messageDate: a.messageDate, username: newReply.username});
+          this.allRepliesMap.set(a.postId, replies);
+        } else {
+          replies = this.allRepliesMap.get(a.postId);
+          replies.push({messageId: a.messageId, postId: a.postId, userId: a.userId, content: a.content,
+            messageDate: a.messageDate, username: newReply.username});
+          // this.allReplies.push({messageId: a.messageId, postId: a.postId, userId: a.userId, content: a.content,
+          // messageDate: a.messageDate, username: newReply.username});
+          this.allRepliesMap.set(a.postId, replies);
+        }
+        },
       (err) => console.log(err),
       () => {
-        // t his.getChatsOfUserFromDB(this.SIGNEDINUSERID);
-
+        console.log(this.allRepliesMap.get(newReply.postId));
       }
     );
   }
@@ -213,11 +218,8 @@ export class PostService {
 
     this.http.get(url, requestOptions)
       .subscribe(data => {
-          // console.log(data)
           this.allReplies = data as Reply[];
-          //console.log(this.allReplies);
           this.allReplies.forEach(reply => {
-            // console.log(reply);
             let replies: Reply[] = new Array();
             if (!this.allRepliesMap.has(reply.postId)) {
               replies.push(reply);
@@ -237,8 +239,8 @@ export class PostService {
   }
 
   getRepliesMap(postid) {
-    //console.log(postid);
-    //console.log(this.allRepliesMap.get(postid));
+    // console.log(postid);
+    // console.log(this.allRepliesMap.get(postid));
     if (this.allRepliesMap.has(postid)) {
       return this.allRepliesMap.get(postid);
     } else {
@@ -246,21 +248,27 @@ export class PostService {
     }
   }
 
-  //-------------------------------------REACTIONS SERVICES-------------------------------------
+  // -------------------------------------REACTIONS SERVICES-------------------------------------
 
   addReaction(messageId, likeordislike) {
-    if (this.allReactionsMap.has(messageId)){
+    if (this.allReactionsMap.has(messageId)) {
       let old = this.allReactionsMap.get(messageId);
-      if (likeordislike === 'like') {
-        old.likes += 1;
+      if (likeordislike === 'LIKE') {
+        old.likes++;
       } else {
-        old.dislikes += 1;
+        old.dislikes++;
       }
       this.allReactionsMap.set(messageId, old);
     }
+    else {
+      let reac: Reactions = {messageId, likes: 0, dislikes: 0};
+      if (likeordislike === 'LIKE')  reac.likes++;
+      else reac.dislikes++;
+      this.allReactionsMap.set(messageId, reac);
+    }
   }
 
-  addReactionToDB(reaction){
+  addReactionToDB(reaction) {
     this.addReaction(reaction.messageId, reaction.reactionType);
     this.userReactionsMap.set(reaction.messageId, reaction.type);
     const url =  this.mainUrl + '/reactions';
