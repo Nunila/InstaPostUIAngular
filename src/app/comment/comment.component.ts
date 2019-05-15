@@ -22,6 +22,7 @@ export class CommentComponent implements OnInit {
     userId: null,
     content: null,
     messageDate: null,
+    username: ''
   };
 
   ngOnInit() {
@@ -53,6 +54,7 @@ export class CommentComponent implements OnInit {
     console.log(this.postId);
     this.newReply.userId = this.SIGNEDINUSERID;
     this.newReply.postId = this.postId;
+    this.newReply.username = this.userService.getCurrentUser().username;
     this.postService.addReplyToDB(this.newReply);
     this.newReply.content = null;
   }
@@ -67,8 +69,8 @@ export class CommentComponent implements OnInit {
     this.postService.addReactionToDB(newReaction);
   }
 
-  userAlreadyReacted(messageId, reactionType){
-    if(this.userChatReactions.has(messageId)){
+  userAlreadyReacted(messageId, reactionType) {
+    if (this.userChatReactions.has(messageId)) {
       var type = this.userChatReactions.get(messageId);
       if(type == reactionType) return true;
       else return false;

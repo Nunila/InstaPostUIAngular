@@ -43,25 +43,33 @@ export class HomeComponent implements OnInit {
 
 
   ngOnInit() {
+
     this.SIGNEDINPERSONID = this.userService.getCurrentUser().personId;
     this.SIGNEDINUSERID = this.userService.getCurrentUser().userId;
+    console.log(this.SIGNEDINPERSONID + 'personid');
+    console.log(this.SIGNEDINUSERID + 'usernid');
+
     this.homeService.SIGNEDINUSERID = this.SIGNEDINUSERID;
     this.homeService.SIGNEDINPERSONID = this.SIGNEDINPERSONID;
 
-    this.homeService.getChatsOfUserFromDB(this.SIGNEDINUSERID);
-    this.homeService.getContactsOfUserFromDB(this.SIGNEDINPERSONID);
-    this.homeService.getPersonInfoOfSignedInUserFromDB(this.SIGNEDINPERSONID);
+    if (!this.homeService.variablesHaveBeenInitialized) {
+      console.log('ENTROOO');
+      this.homeService.getChatsOfUserFromDB(this.SIGNEDINUSERID);
+      this.homeService.getContactsOfUserFromDB(this.SIGNEDINPERSONID);
+      this.homeService.getPersonInfoOfSignedInUserFromDB(this.SIGNEDINPERSONID);
 
-    this.newPerson = {
-      userId: this.SIGNEDINUSERID,
-      personId: 0,
-      username: this.userService.getCurrentUser().userName,
-      firstName: null,
-      lastName: null,
-      birthday: null,
-      phonenumber: null,
-      email: null
-    };
+      this.newPerson = {
+        userId: this.SIGNEDINUSERID,
+        personId: 0,
+        username: this.userService.getCurrentUser().username,
+        firstName: null,
+        lastName: null,
+        birthday: null,
+        phonenumber: null,
+        email: null
+      };
+      this.homeService.variablesHaveBeenInitialized = true;
+    }
   }
 
   boxchecked(e) {

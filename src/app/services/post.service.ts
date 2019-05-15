@@ -8,7 +8,7 @@ import {UserService} from './user.service';
 })
 export class PostService {
 
-  constructor(private http: HttpClient, private userService:UserService) { }
+  constructor(private http: HttpClient, private userService: UserService) { }
 
   // mainUrl = `http://instapostdb.herokuapp.com/InstaPost`;
   mainUrl = `http://localhost:5000/InstaPost`;
@@ -77,7 +77,7 @@ export class PostService {
     this.allPosts.push(post);
   }
 
-  addPostToDB(newPost){
+  addPostToDB(newPost) {
     const url =  this.mainUrl + `/posts`;
     const headersDict = {
       'Content-Type': 'application/json',
@@ -125,6 +125,7 @@ export class PostService {
   }
 
   getPostsForChatIdFromDB(chatId) {
+    this.allPosts = [];
     const url =  this.mainUrl + `/posts/chat/` + chatId;
     const headersDict = {
       'Content-Type': 'application/json',
@@ -137,7 +138,7 @@ export class PostService {
     this.http.get(url, requestOptions)
       .subscribe(data => {
           this.allPosts = data as Post[];
-          console.log(this.allPosts);
+          // console.log(this.allPosts);
         },
         (err) => console.log(err),
         () => {
@@ -183,6 +184,7 @@ export class PostService {
 
     this.http.post(url, newReply).subscribe(data => {
         const a = data as Reply;
+        console.log(a);
         let replies: Reply[] = [];
         if (!this.allRepliesMap.has(a.postId)) {
           replies.push({messageId: a.messageId, postId: a.postId, userId: a.userId, content: a.content,
@@ -201,12 +203,13 @@ export class PostService {
         },
       (err) => console.log(err),
       () => {
-        console.log(this.allRepliesMap.get(newReply.postId));
+        // console.log(this.allRepliesMap.get(newReply.postId));
       }
     );
   }
 
   getAllRepliesFromDB() {
+    this.allRepliesMap = new Map();
     const url = this.mainUrl + '/messages/allreplies';
     const headersDict = {
       'Content-Type': 'application/json',
@@ -220,7 +223,7 @@ export class PostService {
       .subscribe(data => {
           this.allReplies = data as Reply[];
           this.allReplies.forEach(reply => {
-            let replies: Reply[] = new Array();
+            let replies: Reply[] = [];
             if (!this.allRepliesMap.has(reply.postId)) {
               replies.push(reply);
               this.allRepliesMap.set(reply.postId, replies);
@@ -230,7 +233,7 @@ export class PostService {
               this.allRepliesMap.set(reply.postId, replies);
             }
           });
-          console.log(this.allRepliesMap);
+          // console.log(this.allRepliesMap);
         },
         (err) => console.log(err),
         () => {
@@ -265,12 +268,13 @@ export class PostService {
       if (likeordislike === 'LIKE')  reac.likes++;
       else reac.dislikes++;
       this.allReactionsMap.set(messageId, reac);
+      console.log();
     }
   }
 
   addReactionToDB(reaction) {
     this.addReaction(reaction.messageId, reaction.reactionType);
-    this.userReactionsMap.set(reaction.messageId, reaction.type);
+    this.userReactionsMap.set(reaction.messageId, reaction.reactionType);
     const url =  this.mainUrl + '/reactions';
     const headersDict = {
       'Content-Type': 'application/json',
@@ -291,6 +295,7 @@ export class PostService {
   }
 
   getAllReactionsfromDB() {
+    this.allReactionsMap = new Map();
     const url =  this.mainUrl + `/reactionsPerMessage`;
     const headersDict = {
       'Content-Type': 'application/json',
@@ -303,6 +308,7 @@ export class PostService {
     this.http.get(url, requestOptions)
       .subscribe(data => {
         const reactions = data as Reactions[];
+        console.log(reactions);
         reactions.forEach(reaction => {
             this.allReactionsMap.set(reaction.messageId, reaction);
         });
@@ -323,6 +329,7 @@ export class PostService {
   }
 
   getChatReactionsFromDB(userId, chatId) {
+    this.userReactionsMap = new Map();
     const url =  this.mainUrl + `/reactions/user/` + userId + '/chat/' + chatId;
     const headersDict = {
       'Content-Type': 'application/json',
@@ -346,7 +353,7 @@ export class PostService {
       );
   }
 
-  getChatReactionsMap(){
+  getChatReactionsMap() {
     return this.userReactionsMap;
   }
 

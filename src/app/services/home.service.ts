@@ -43,6 +43,8 @@ export class HomeService {
   public contactResult;
   public flag = 'none';
   public selectedComponent = 'chats';
+  public variablesHaveBeenInitialized = false;
+
 
   constructor(private http: HttpClient, private userService: UserService, private datepipe: DatePipe) { }
 
@@ -53,6 +55,7 @@ export class HomeService {
     this.personSignedInInfo = null;
     this.flag = 'none';
     this.selectedComponent = 'chats';
+    this.variablesHaveBeenInitialized = false;
   }
 
   setSelected(a) {
