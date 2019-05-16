@@ -4,6 +4,12 @@
   margin: 15px;
 }
 
+.columnpr {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
+}
+
 .flex-wrap {
   display: flex;
   flex-wrap: nowrap;

@@ -9,7 +9,7 @@
     <!--Visible in lapotp view -->
     <div class="navbar-nav mobile">
       <div class="apart">
-        <h6 class="nav-item nav-link" [ngClass]="{'active': homeService.selectedComponent=='chats'}" (click)="homeService.setSelected('chats')">Chats <span class="sr-only">(current)</span></h6>
+        <h6 class="nav-item nav-link" routerLink="/home" [ngClass]="{'active': homeService.selectedComponent=='chats'}" (click)="homeService.setSelected('chats')">Chats <span class="sr-only">(current)</span></h6>
         <h6 class="nav-item nav-link" routerLink="/login" (click)="logout()">Logout</h6>
       </div>
       <div style="text-align: left">

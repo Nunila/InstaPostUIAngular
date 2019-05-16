@@ -29,8 +29,8 @@ import {Observable} from 'rxjs';
 })
 export class HomeService {
 
-  // mainUrl = `https://instapostdb.herokuapp.com/InstaPost`;
-  mainUrl = `http://localhost:5000/InstaPost`;
+  mainUrl = `//instapostdb.herokuapp.com/InstaPost`;
+  // mainUrl = `http://localhost:5000/InstaPost`;
 
   private chatsOfUser: Chat[] = [];
   public SIGNEDINUSERID = this.userService.getCurrentUser().userId;

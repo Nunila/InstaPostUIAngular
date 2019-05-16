@@ -10,8 +10,8 @@ export class PostService {
 
   constructor(private http: HttpClient, private userService: UserService) { }
 
-  // mainUrl = `http://instapostdb.herokuapp.com/InstaPost`;
-  mainUrl = `http://localhost:5000/InstaPost`;
+  mainUrl = `//instapostdb.herokuapp.com/InstaPost`;
+  // mainUrl = `http://localhost:5000/InstaPost`;
   private allPosts: Post[] = new Array();
   private allReactionsMap: Map<number, Reactions> = new Map();
   public mapdone = false;
