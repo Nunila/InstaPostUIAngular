@@ -10,8 +10,8 @@ export class PostService {
 
   constructor(private http: HttpClient, private userService: UserService) { }
 
-  // mainUrl = `http://instapostdb.herokuapp.com/InstaPost`;
-  mainUrl = `http://localhost:5000/InstaPost`;
+  mainUrl = `//instapostdb.herokuapp.com/InstaPost`;
+  // mainUrl = `http://localhost:5000/InstaPost`;
   private allPosts: Post[] = new Array();
   private allReactionsMap: Map<number, Reactions> = new Map();
   public mapdone = false;
@@ -97,7 +97,7 @@ export class PostService {
       this.http.post(url, newPost).subscribe(data => {
             const a = data as Post;
             this.allPosts.push({postId: a.postId, messageId: a.messageId, username: this.userService.getCurrentUser().username,
-              content: a.content, photourl: a.photourl, chatId: a.chatId, postDate: a.postDate, userId: a.userId});
+              content: newPost.content, photourl: a.photourl, chatId: a.chatId, postDate: a.postDate, userId: a.userId});
             imageRef.getDownloadURL().then(urla => {
               this.photoMap.set(a.photourl, urla);
             });

@@ -2,11 +2,11 @@
   <button mat-button (click)="refresh()">Refresh</button>
   <div class="flex-wrap">
 
-    <mat-card id="cards" class="post" style="max-width: 70%" *ngFor="let post of getAllPosts()" >
+    <mat-card id="cards" class="post" style="max-width: 85%" *ngFor="let post of getAllPosts()" >
       <mat-card-header>
         <div mat-card-avatar class="example-header-image"></div>
         <mat-card-title style="display: flex">{{post.username}}</mat-card-title>
-        <mat-card-subtitle style="display: flex">{{post.content}} (PostId={{post.postId}}, MessageId={{post.messageId}})</mat-card-subtitle>
+        <mat-card-subtitle style="display: flex; font-size: large">{{post.content}} </mat-card-subtitle>
       </mat-card-header>
 
       <mat-card-content>
@@ -26,10 +26,11 @@
 
       <app-comment [postId]="post.postId"></app-comment>
     </mat-card>
-    <nav class="navbar navbar-dark bg-dark addPost font">
+    <nav class="navbar navbar-dark bg-dark addPost font laptop">
       Add Post
       <button  mat-icon-button data-toggle="modal" data-target="#addPost"><i class="material-icons">add_circle_outline</i></button>
     </nav>
+    <button  mat-fab mat-icon-button class="mobile addfab" data-toggle="modal" data-target="#addPost"><i style="margin-top: -16px;" class="material-icons">add_circle_outline</i></button>
   </div>
 </div>
 

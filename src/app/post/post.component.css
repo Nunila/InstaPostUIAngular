@@ -4,6 +4,12 @@
   margin: 15px;
 }
 
+.columnpr {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
+}
+
 .flex-wrap {
   display: flex;
   flex-wrap: nowrap;
@@ -32,4 +38,11 @@
 .outercontainer {
   justify-content: center;
   align-content: center;
+}
+
+.addfab {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  color:white;
 }

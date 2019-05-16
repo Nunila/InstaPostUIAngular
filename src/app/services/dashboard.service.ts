@@ -35,8 +35,8 @@ export class DashboardService {
   public chartData = [];
   public columnNames;
 
-  // mainUrl = `https://instapostdb.herokuapp.com/InstaPost`;
-  mainUrl = `http://localhost:5000/InstaPost`;
+  mainUrl = `//instapostdb.herokuapp.com/InstaPost`;
+  // mainUrl = `http://localhost:5000/InstaPost`;
 
   constructor(private http: HttpClient, private datepipe: DatePipe) {
   }

@@ -12,7 +12,9 @@ import 'firebase/storage';
 })
 export class UserService {
 
-  private mainUrl = `http://localhost:5000/InstaPost`;
+  // private mainUrl = `http://localhost:5000/InstaPost`;
+  mainUrl = `//instapostdb.herokuapp.com/InstaPost`;
+
   private currentUser: User;
 
   private credentials: Credentials = {
