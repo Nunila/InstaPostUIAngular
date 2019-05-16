@@ -44,18 +44,18 @@
         </mat-form-field>
         <mat-form-field appearance="standard">
           <mat-label>Phone</mat-label>
-          <input matInput [(ngModel)]="sf().phoneNum" placeholder="phonenumber">
+          <input matInput [(ngModel)]="sf().phoneNum" placeholder="phonenumber" [formControl]="phonenumberSign" required>
         </mat-form-field>
         <mat-form-field appearance="standard">
           <mat-label>Email</mat-label>
-          <input matInput [(ngModel)]="sf().email" placeholder="email">
+          <input matInput [(ngModel)]="sf().email" placeholder="email" [formControl]="emailSign" required>
         </mat-form-field>
         <mat-form-field appearance="standard">
           <mat-label>Birthday</mat-label>
           <input matInput [owlDateTime]="dt" [owlDateTimeTrigger]="dt" [(ngModel)]="sf().birthday" placeholder="birthday">
           <owl-date-time [pickerType]="'calendar'" #dt></owl-date-time>
         </mat-form-field>
-    <button mat-raised-button (click)="onRegisterSubmit()" [disabled]="unameSign.invalid || passwdSign.invalid">Submit</button>
+    <button mat-raised-button (click)="onRegisterSubmit()" [disabled]="unameSign.invalid || passwdSign.invalid || phonenumberSign.invalid || emailSign.invalid">Submit</button>
       </div>
     </div>
   </div>

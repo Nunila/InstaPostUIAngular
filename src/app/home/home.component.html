@@ -230,7 +230,7 @@
         </div>
         <mat-form-field appearance="legacy">
           <mat-label>Chat Name</mat-label>
-          <input matInput placeholder="caption" [(ngModel)]="newChat.chatName">
+          <input matInput placeholder="Chat Name" [(ngModel)]="newChat.chatName">
         </mat-form-field>
         <mat-label>Chat Members</mat-label>
         <mat-checkbox *ngFor="let contact of getContacts()" (change)="boxchecked($event)" value="{{contact.userId}}">{{contact.firstName}} {{contact.lastName}}</mat-checkbox>

@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { PostService } from '../services/post.service';
 import { UserService} from '../services/user.service';
+import {FormControl, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-post',
@@ -14,6 +15,9 @@ export class PostComponent implements OnInit {
 
   private SIGNEDINUSERID;
   private SIGNEDINPERSONID;
+
+  postCaption = new FormControl('', [Validators.required]);
+  postPhoto = new FormControl('', [Validators.required]);
 
   private photo;
 

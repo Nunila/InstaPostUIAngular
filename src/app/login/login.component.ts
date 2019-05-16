@@ -11,7 +11,7 @@ interface NewAccount {
   password: string;
   firstName: string;
   lastName: string;
-  phoneNum: number;
+  phoneNum: string;
   email: string;
   birthday: string;
 }
@@ -26,6 +26,8 @@ export class LoginComponent implements OnInit {
   passwdLog = new FormControl('', [Validators.required]);
   unameSign = new FormControl('', [Validators.required]);
   passwdSign = new FormControl('', [Validators.required]);
+  phonenumberSign = new FormControl('', [Validators.required]);
+  emailSign = new FormControl('', [Validators.required]);
   newUser: NewAccount;
   private logUser;
   constructor(
@@ -46,7 +48,7 @@ export class LoginComponent implements OnInit {
       firstName: '',
       lastName: '',
       birthday: '',
-      phoneNum: 0,
+      phoneNum: '',
       email: ''
     };
   }

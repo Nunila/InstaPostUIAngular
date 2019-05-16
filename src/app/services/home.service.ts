@@ -171,6 +171,11 @@ export class HomeService {
         () => {
           // const i = this.usersInChat.findIndex(user => user.userId === userId);
           // this.usersInChat.splice(i, 1);
+          Swal.fire(
+            'Participant Removed!',
+            'The participants has been removed!',
+            'success'
+          );
         }
       );
   }
@@ -236,8 +241,11 @@ export class HomeService {
       },
       (err) => console.log(err),
       () => {
-        // t his.getChatsOfUserFromDB(this.SIGNEDINUSERID);
-
+        Swal.fire(
+          'Participant Added!',
+          'The participant has been added!',
+          'success'
+        );
       }
     );
   }
@@ -354,7 +362,18 @@ export class HomeService {
           const a = data as Person;
           this.SIGNEDINPERSONID = a.personId;
         },
-        (err) => console.log(err),
+        (err) => {
+        console.log(err)
+          Swal.fire({
+            title: 'Username, email or phone number already taken.',
+            text: 'You may have to change one or more values.',
+            type: 'error',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ok!'
+          });
+        },
         () => {
           Swal.fire(
             'Information Saved!',
@@ -384,7 +403,18 @@ export class HomeService {
           const a = data as CompletePerson;
           this.SIGNEDINPERSONID = a.personId;
         },
-        (err) => console.log(err),
+        (err) => {
+        console.log(err)
+          Swal.fire({
+            title: 'Username, email or phone number already taken.',
+            text: 'You may have to change one or more values.',
+            type: 'error',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ok!'
+          });
+        },
         () => {
           Swal.fire(
             'Information Updated!',

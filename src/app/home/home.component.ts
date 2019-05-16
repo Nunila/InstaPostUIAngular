@@ -28,7 +28,7 @@ export class HomeComponent implements OnInit {
   };
 
   private newChat = {
-    chatName : 'SomeChatName',
+    chatName : '',
     members : [],
     creationDate : new Date().getFullYear() + '-' + new Date().getMonth() + '-' + new Date().getDay(),
     ownerId : this.userService.getCurrentUser().userId
